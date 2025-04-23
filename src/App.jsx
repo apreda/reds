@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>Dear Castelli</h1>
+        <h1>Dear Castellini</h1>
         <p className="subtitle">Transform your Reds fan frustration into respectful emails</p>
       </header>
 

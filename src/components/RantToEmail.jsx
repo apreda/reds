@@ -64,7 +64,7 @@ export default function RantToEmail({ emailContent, onSend, onBack }) {
           disabled={sending || !email || !name}
           className="send-button"
         >
-          {sending ? 'Sending...' : 'Send to Castelli'}
+          {sending ? 'Sending...' : 'Send to Castellini'}
         </button>
       </div>
     </div>

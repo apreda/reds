@@ -73,7 +73,7 @@ app.post(['/send', '/api/send'], async (req, res) => {
     });
 
     const mailOptions = {
-      from: `"${senderName} via Dear Castelli" <${process.env.EMAIL_USER}>`,
+      from: `"${senderName} via Dear Castellini" <${process.env.EMAIL_USER}>`,
       to: process.env.RECIPIENT_EMAIL || 'owner@reds.com',
       subject: 'A Message From a Passionate Reds Fan',
       text: emailText,

@@ -6,7 +6,7 @@ export default function ChatBox({ onComplete }) {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await fetch('http://localhost:3001/rewrite', {
+    const res = await fetch('/api/rewrite', {
       method: 'POST',
       body: JSON.stringify({ rant }),
       headers: { 'Content-Type': 'application/json' }

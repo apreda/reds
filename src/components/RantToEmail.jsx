@@ -10,7 +10,7 @@ export default function RantToEmail({ emailContent, onSend, onBack }) {
     
     setSending(true);
     try {
-      const res = await fetch('http://localhost:3001/send', {
+      const res = await fetch('/api/send', {
         method: 'POST',
         body: JSON.stringify({ 
           emailText: emailContent,
@@ -64,7 +64,7 @@ export default function RantToEmail({ emailContent, onSend, onBack }) {
           disabled={sending || !email || !name}
           className="send-button"
         >
-          {sending ? 'Sending...' : 'Send to Bob'}
+          {sending ? 'Sending...' : 'Send to Castelli'}
         </button>
       </div>
     </div>

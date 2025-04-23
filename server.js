@@ -21,8 +21,8 @@ const openai = new OpenAI({
   baseURL: 'https://api.deepseek.com/v1'  // Deepseek API endpoint
 });
 
-// Rewrite API endpoint
-app.post('/rewrite', async (req, res) => {
+// Rewrite API endpoint - support both /rewrite and /api/rewrite paths
+app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
   const { rant } = req.body;
 
   if (!rant) {
@@ -54,8 +54,8 @@ app.post('/rewrite', async (req, res) => {
   }
 });
 
-// Send email API endpoint
-app.post('/send', async (req, res) => {
+// Send email API endpoint - support both /send and /api/send paths
+app.post(['/send', '/api/send'], async (req, res) => {
   const { emailText, senderName, senderEmail } = req.body;
 
   if (!emailText || !senderName || !senderEmail) {
@@ -73,7 +73,7 @@ app.post('/send', async (req, res) => {
     });
 
     const mailOptions = {
-      from: `"${senderName} via Dear Bobbot" <${process.env.EMAIL_USER}>`,
+      from: `"${senderName} via Dear Castelli" <${process.env.EMAIL_USER}>`,
       to: process.env.RECIPIENT_EMAIL || 'owner@reds.com',
       subject: 'A Message From a Passionate Reds Fan',
       text: emailText,

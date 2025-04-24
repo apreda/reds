@@ -15,10 +15,10 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Initialize OpenAI SDK with the Deepseek API key and base URL
+// Initialize OpenAI SDK with API key
 const openai = new OpenAI({ 
-  apiKey: process.env.DEEPSEEK_API_KEY,
-  baseURL: 'https://api.deepseek.com/v1'  // Deepseek API endpoint
+  apiKey: process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY,
+  // No baseURL specified to use default OpenAI endpoint
 });
 
 // Rewrite API endpoint
@@ -42,10 +42,10 @@ app.post('/rewrite', async (req, res) => {
     `;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek-chat',
+      model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
-      max_tokens: 500  // Limit token length for faster responses but ensure enough for a complete email
+      max_tokens: 500
     });
 
     res.status(200).json({ email: completion.choices[0].message.content });
@@ -134,10 +134,10 @@ app.post('/rewrite-structured', async (req, res) => {
     `;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek-chat',
+      model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
-      max_tokens: 500  // Limit token length for faster responses but ensure enough for a complete email
+      max_tokens: 500
     });
 
     res.status(200).json({ email: completion.choices[0].message.content });

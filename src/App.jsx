@@ -28,7 +28,7 @@ function App() {
       <main>
         <header className="content-header">
           <div className="header-content">
-            <img src="./src/images/ba1.png" alt="Reds Fan" className="mobile-header-image" />
+            <img src="/images/ba1.png" alt="Reds Fan" className="mobile-header-image" />
             <div className="header-text">
               <h1>Dear Castellini</h1>
               <p className="subtitle">Transform your Reds fan frustration into respectful emails</p>

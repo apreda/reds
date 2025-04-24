@@ -16,25 +16,20 @@ app.use(cors());
 app.use(express.json());
 
 // Initialize OpenAI SDK with API key
-let openai;
-try {
-  // Check if API key is available
-  const apiKey = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
-  console.log('API key starts with:', apiKey ? apiKey.substring(0, 10) + '...' : 'undefined');
-  
-  if (!apiKey) {
-    console.error('No API key provided in environment variables');
-  }
-  
-  openai = new OpenAI({ 
-    apiKey: apiKey,
-    // No baseURL specified to use default OpenAI endpoint
-  });
-  
-  console.log('OpenAI client initialized successfully');
-} catch (error) {
-  console.error('Error initializing OpenAI client:', error);
+const apiKey = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
+console.log('API key available:', !!apiKey);
+
+if (!apiKey) {
+  console.error('WARNING: No API key provided in environment variables');
 }
+
+// Always initialize the OpenAI client, even without an API key
+// This avoids 'undefined' errors, and the API call will fail with a proper error message
+const openai = new OpenAI({ 
+  apiKey: apiKey || 'dummy-key-to-prevent-undefined-errors',
+});
+
+console.log('OpenAI client initialized successfully');
 
 // Helper function to format targets for prompt
 const formatTargets = (targets) => {

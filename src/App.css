@@ -1,4 +1,11 @@
 /* App.css */
+
+/* Ensure proper viewport settings */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
 :root {
   --primary-color: #C6011F; /* Reds primary color */
   --secondary-color: #000000; /* Reds secondary color */
@@ -27,6 +34,9 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .app-container {
@@ -345,13 +355,52 @@ footer {
 
 
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem 0.5rem;
+  }
+  
   main {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
   
   h1 {
     font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .free-form-option,
+  .structured-option {
+    padding: 1.5rem 1rem;
+  }
+  
+  .input-options-vertical {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1rem 0.5rem;
+  }
+  
+  .app-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem 0.25rem;
+  }
+
+  .free-form-option,
+  .structured-option {
+    border-radius: var(--border-radius);
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .rant-input {
+    min-height: 120px;
   }
   
   .action-buttons {
@@ -361,5 +410,18 @@ footer {
   
   .back-button, .send-button {
     width: 100%;
+  }
+  
+  .form-field {
+    width: 100%;
+  }
+  
+  .target-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .option-divider {
+    width: 90%;
   }
 }

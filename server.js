@@ -56,11 +56,7 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
-      max_tokens: 300,  // Limit token length for faster responses
-      presence_penalty: 0.1,  // Slightly discourages repetition
-      frequency_penalty: 0.1,  // Slightly discourages repetition
-      best_of: 2,  // Returns the best result from 2 generations
-      n: 2  // Returns 2 possible completions
+      max_tokens: 500  // Limit token length for faster responses but ensure enough for a complete email
     });
 
     res.status(200).json({ email: completion.choices[0].message.content });
@@ -148,11 +144,7 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
         model: 'deepseek-chat',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
-        max_tokens: 300,  // Limit token length for faster responses
-        presence_penalty: 0.1,  // Slightly discourages repetition
-        frequency_penalty: 0.1,  // Slightly discourages repetition
-        best_of: 2,  // Returns the best result from 2 generations
-        n: 2  // Returns 2 possible completions
+        max_tokens: 500  // Limit token length for faster responses but ensure enough for a complete email
       });
       
       console.log('Received successful response from Deepseek API');

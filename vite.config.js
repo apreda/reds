@@ -3,9 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '')
+  // Only load environment variables that start with VITE_
+  const env = loadEnv(mode, process.cwd(), 'VITE_')
   
   return {
     plugins: [react()],
@@ -19,7 +18,9 @@ export default defineConfig(({ mode }) => {
       }
     },
     define: {
-      'process.env': env
+      // Only expose VITE_ prefixed env vars to the client
+      'process.env.VITE_OPENAI_API_KEY': JSON.stringify(env.VITE_OPENAI_API_KEY),
+      // Add any other VITE_ prefixed env vars you need here
     }
   }
 })

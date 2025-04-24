@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import ChatBox from './components/ChatBox'
+import StructuredForm from './components/StructuredForm'
 import RantToEmail from './components/RantToEmail'
 import SendEmail from './components/SendEmail'
 
@@ -31,7 +32,15 @@ function App() {
 
       <main>
         {step === 'rant' && (
-          <ChatBox onComplete={handleRantComplete} />
+          <div className="input-options">
+            <div className="free-form-option">
+              <ChatBox onComplete={handleRantComplete} />
+            </div>
+            <div className="divider"></div>
+            <div className="structured-option">
+              <StructuredForm onComplete={handleRantComplete} />
+            </div>
+          </div>
         )}
         
         {step === 'email' && (

@@ -55,7 +55,12 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.8
+      temperature: 0.7,
+      max_tokens: 300,  // Limit token length for faster responses
+      presence_penalty: 0.1,  // Slightly discourages repetition
+      frequency_penalty: 0.1,  // Slightly discourages repetition
+      best_of: 2,  // Returns the best result from 2 generations
+      n: 2  // Returns 2 possible completions
     });
 
     res.status(200).json({ email: completion.choices[0].message.content });
@@ -142,7 +147,12 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
       const completion = await openai.chat.completions.create({
         model: 'deepseek-chat',
         messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7
+        temperature: 0.7,
+        max_tokens: 300,  // Limit token length for faster responses
+        presence_penalty: 0.1,  // Slightly discourages repetition
+        frequency_penalty: 0.1,  // Slightly discourages repetition
+        best_of: 2,  // Returns the best result from 2 generations
+        n: 2  // Returns 2 possible completions
       });
       
       console.log('Received successful response from Deepseek API');

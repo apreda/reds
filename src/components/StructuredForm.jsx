@@ -62,7 +62,7 @@ export default function StructuredForm({ onComplete }) {
 
   return (
     <div className="structured-form">
-      <h2>Structured Complaint Form</h2>
+      <h2 className="section-title">Structured Complaint Form</h2>
       
       <div className="form-field">
         <label htmlFor="mainComplaint">Main Complaint:</label>

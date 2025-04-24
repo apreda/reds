@@ -32,11 +32,17 @@ function App() {
 
       <main>
         {step === 'rant' && (
-          <div className="input-options">
+          <div className="input-options-vertical">
             <div className="free-form-option">
               <ChatBox onComplete={handleRantComplete} />
             </div>
-            <div className="divider"></div>
+            
+            <div className="option-divider">
+              <span className="divider-line"></span>
+              <span className="divider-text">OR</span>
+              <span className="divider-line"></span>
+            </div>
+            
             <div className="structured-option">
               <StructuredForm onComplete={handleRantComplete} />
             </div>

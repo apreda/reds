@@ -18,7 +18,7 @@ export default function ChatBox({ onComplete }) {
 
   return (
     <div className="chat-box">
-      <h2>Vent Your Frustration</h2>
+      <h2 className="section-title">Vent Your Frustration</h2>
       <textarea
         placeholder="Let it out…"
         value={rant}

@@ -42,17 +42,37 @@ export default function StructuredForm({ onComplete }) {
   };
 
   const handleSubmit = async () => {
+    console.log('Submitting structured form data:', formData);
     setLoading(true);
     try {
+      console.log('Sending request to /api/rewrite-structured');
       const res = await fetch('/api/rewrite-structured', {
         method: 'POST',
         body: JSON.stringify({ formData }),
         headers: { 'Content-Type': 'application/json' }
       });
+      
+      console.log('Response status:', res.status);
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Server error response:', errorText);
+        throw new Error(`Server responded with ${res.status}: ${errorText}`);
+      }
+      
       const data = await res.json();
-      onComplete(data.email);
+      console.log('Received response data:', data);
+      
+      if (data.email) {
+        console.log('Calling onComplete with generated email');
+        onComplete(data.email);
+      } else {
+        console.error('Response missing email content:', data);
+        alert('Error: The server response was missing the email content.');
+      }
     } catch (error) {
       console.error('Error generating email from form:', error);
+      alert(`Error generating email: ${error.message}`);
     } finally {
       setLoading(false);
     }

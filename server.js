@@ -101,11 +101,15 @@ app.post(['/send', '/api/send'], async (req, res) => {
 
 // Handle structured form submissions
 app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) => {
+  console.log('Received structured form request:', req.body);
   const { formData } = req.body;
 
   if (!formData || !formData.mainComplaint) {
+    console.error('Missing required field: mainComplaint');
     return res.status(400).json({ error: 'Main complaint is required' });
   }
+  
+  console.log('Processing structured form with main complaint:', formData.mainComplaint);
 
   try {
     const formattedTargets = formatTargets(formData.complaintTarget);
@@ -132,13 +136,24 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
     - If the user chose to remain anonymous, don't include identifying information
     `;    
 
-    const completion = await openai.chat.completions.create({
-      model: 'deepseek-chat',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7
-    });
-
-    res.status(200).json({ email: completion.choices[0].message.content });
+    console.log('Sending prompt to Deepseek API');
+    
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'deepseek-chat',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7
+      });
+      
+      console.log('Received successful response from Deepseek API');
+      const emailContent = completion.choices[0].message.content;
+      console.log('Generated email:', emailContent.substring(0, 100) + '...');
+      
+      res.status(200).json({ email: emailContent });
+    } catch (apiError) {
+      console.error('Deepseek API error:', apiError.message);
+      throw apiError;
+    }
   } catch (error) {
     console.error('Error processing structured form:', error);
     res.status(500).json({ error: 'Failed to process structured form' });

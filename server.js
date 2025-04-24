@@ -64,6 +64,11 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
     Take this raw rant and turn it into a well-crafted but emotionally honest letter 
     to the owner of the Cincinnati Reds. Keep the tone respectful but firm.
     
+    IMPORTANT: Structure your response in EXACTLY these three parts and keep it concise:
+    1. Intro (2-3 sentences introducing yourself and your main concern)
+    2. Body (3-4 sentences explaining your specific complaint with evidence)
+    3. Closing (1-2 sentences with a call to action)
+    
     Rant:
     ${rant}
     
@@ -173,14 +178,17 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
     ${formData.signature ? `Signature: ${formData.signature}` : ''}
     Anonymous: ${formData.anonymous ? 'Yes' : 'No'}
     
-    Instructions:
+    IMPORTANT: Structure your response in EXACTLY these three parts and keep it concise:
+    1. Intro (2-3 sentences introducing yourself and your main concern)
+    2. Body (3-4 sentences explaining your specific complaint with evidence)
+    3. Closing (1-2 sentences with a call to action)
+    
+    Additional Instructions:
     - Maintain a respectful but firm tone
-    - Be specific about the issues mentioned
     - Focus primarily on the main complaint
-    - Include specific details from other fields where relevant
-    - Format as a professional email
     - If the user provided a signature and isn't anonymous, include it at the end
     - If the user chose to remain anonymous, don't include identifying information
+    - Keep the total email to around 150-200 words maximum
     `;    
 
     console.log('Sending prompt to OpenAI API');

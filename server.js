@@ -126,28 +126,48 @@ app.post(['/send', '/api/send'], async (req, res) => {
   }
 
   try {
+    // Log the email sending attempt
+    console.log('Attempting to send email to pcastellini@reds.com');
+    
+    // Initialize email transport - we're using a service-based approach
+    // This will use the SMTP settings from your environment variables
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.example.com',
-      port: parseInt(process.env.EMAIL_PORT || '587'),
+      service: process.env.EMAIL_SERVICE || 'Gmail', // Can be 'Gmail', 'Outlook', 'SendGrid', etc.
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       }
     });
 
+    // Configure the email options
     const mailOptions = {
-      from: `"${senderName} via Dear Castellini" <${process.env.EMAIL_USER}>`,
-      to: process.env.RECIPIENT_EMAIL || 'owner@reds.com',
-      subject: 'A Message From a Passionate Reds Fan',
+      from: `"Reds Fan Feedback" <${process.env.EMAIL_USER}>`, // More anonymous sender name
+      to: 'pcastellini@reds.com', // Send directly to Phil Castellini
+      subject: 'Feedback from a Passionate Reds Fan',
       text: emailText,
-      replyTo: senderEmail
+      // Only include reply-to if user is not anonymous
+      ...(senderEmail && senderName && { replyTo: senderEmail })
     };
 
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ success: true });
+    // Check if email environment variables are set
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error('Missing email credentials in environment variables');
+      return res.status(500).json({ 
+        error: 'Email service not properly configured. Contact administrator.',
+        details: 'Missing email credentials'
+      });
+    }
+    
+    // Send the email
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
+    res.status(200).json({ success: true, messageId: info.messageId });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Failed to send email' });
+    res.status(500).json({ 
+      error: 'Failed to send email', 
+      details: error.message 
+    });
   }
 });
 

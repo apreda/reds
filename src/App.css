@@ -17,16 +17,21 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('../images/background.png');
+  background-image: url('./images/background.png');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
   color: var(--text-color);
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .app-container {
   max-width: 800px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem 1rem;
   min-height: 100vh;
@@ -34,11 +39,13 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  box-sizing: border-box;
 }
 
 header {
   text-align: center;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 h1 {
@@ -63,6 +70,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 /* Vertical Layout */
@@ -71,8 +79,9 @@ main {
   flex-direction: column;
   gap: 4rem;
   width: 100%;
-  max-width: 650px;
+  max-width: 600px;
   align-items: center;
+  margin: 0 auto;
 }
 
 .free-form-option,
@@ -82,6 +91,7 @@ main {
   padding: 2rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  box-sizing: border-box;
 }
 
 .option-divider {
@@ -110,9 +120,11 @@ main {
 .structured-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
   align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .form-field {
@@ -129,7 +141,8 @@ main {
 }
 
 .form-field textarea,
-.form-field input[type="text"] {
+.form-field input[type="text"],
+.rant-input {
   padding: 0.8rem;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
@@ -187,9 +200,11 @@ footer {
 .chat-box {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
   align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .rant-input {
@@ -201,6 +216,7 @@ footer {
   min-height: 150px;
   font-family: inherit;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 .submit-button {

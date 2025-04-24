@@ -73,7 +73,7 @@ app.post('/send', async (req, res) => {
     });
 
     const mailOptions = {
-      from: `"${senderName} via Dear Bobbot" <${process.env.EMAIL_USER}>`,
+      from: `"${senderName} via Dear Castellini" <${process.env.EMAIL_USER}>`,
       to: process.env.RECIPIENT_EMAIL || 'owner@reds.com',
       subject: 'A Message From a Passionate Reds Fan',
       text: emailText,
@@ -85,6 +85,63 @@ app.post('/send', async (req, res) => {
   } catch (error) {
     console.error('Error sending email:', error);
     res.status(500).json({ error: 'Failed to send email' });
+  }
+});
+
+// Helper function to format targets for prompt
+const formatTargets = (targets) => {
+  if (!targets || targets.length === 0) return 'Not specified';
+  if (targets.length === 1) return targets[0];
+  if (targets.length === 2) return `${targets[0]} and ${targets[1]}`;
+  
+  const lastTarget = targets[targets.length - 1];
+  const otherTargets = targets.slice(0, -1).join(', ');
+  return `${otherTargets}, and ${lastTarget}`;
+};
+
+// Handle structured form submissions
+app.post('/rewrite-structured', async (req, res) => {
+  const { formData } = req.body;
+
+  if (!formData || !formData.mainComplaint) {
+    return res.status(400).json({ error: 'Main complaint is required' });
+  }
+
+  try {
+    const formattedTargets = formatTargets(formData.complaintTarget);
+    
+    const prompt = `
+    You're a passionate Cincinnati Reds fan who wants to write a respectful but firm letter 
+    to the ownership/management of the team. Create a professional email from the following structured input:
+    
+    Main Complaint: ${formData.mainComplaint}
+    Offensive Complaint: ${formData.offensiveComplaint || 'Not provided'}
+    Defensive Complaint: ${formData.defensiveComplaint || 'Not provided'}
+    Why Frustration Occurred: ${formData.frustrationReason || 'Not provided'}
+    Directed Towards: ${formattedTargets}
+    ${formData.signature ? `Signature: ${formData.signature}` : ''}
+    Anonymous: ${formData.anonymous ? 'Yes' : 'No'}
+    
+    Instructions:
+    - Maintain a respectful but firm tone
+    - Be specific about the issues mentioned
+    - Focus primarily on the main complaint
+    - Include specific details from other fields where relevant
+    - Format as a professional email
+    - If the user provided a signature and isn't anonymous, include it at the end
+    - If the user chose to remain anonymous, don't include identifying information
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.7
+    });
+
+    res.status(200).json({ email: completion.choices[0].message.content });
+  } catch (error) {
+    console.error('Error processing structured form:', error);
+    res.status(500).json({ error: 'Failed to process structured form' });
   }
 });
 

@@ -19,6 +19,10 @@
       "dest": "/server.js"
     },
     {
+      "src": "/api/rewrite-structured",
+      "dest": "/server.js"
+    },
+    {
       "src": "/api/send",
       "dest": "/server.js"
     },

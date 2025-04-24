@@ -17,10 +17,10 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('./images/ChatGPT Image Apr 23, 2025, 08_19_13 PM.png');
-  background-size: cover;
+  background-image: url('./images/ba1.png');
+  background-size: 25% 25%; /* Makes each image 1/4 width and 1/4 height (16 images total in a grid) */
+  background-repeat: repeat;
   background-attachment: fixed;
-  background-position: center;
   color: var(--text-color);
   line-height: 1.6;
   margin: 0;
@@ -62,7 +62,7 @@ h1 {
 main {
   flex: 1;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.97);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 2rem;

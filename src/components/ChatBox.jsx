@@ -26,13 +26,15 @@ export default function ChatBox({ onComplete }) {
         rows={6}
         className="rant-input"
       />
-      <button 
-        disabled={loading || !rant.trim()} 
-        onClick={handleSubmit}
-        className="submit-button"
-      >
-        {loading ? 'Rewriting...' : 'Rewrite as Email'}
-      </button>
+      <div className="button-container">
+        <button 
+          disabled={loading || !rant.trim()} 
+          onClick={handleSubmit}
+          className="submit-button"
+        >
+          {loading ? 'Rewriting...' : 'Rewrite as Email'}
+        </button>
+      </div>
     </div>
   );
 }

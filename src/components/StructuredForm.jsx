@@ -150,13 +150,15 @@ export default function StructuredForm({ onComplete }) {
         <label htmlFor="anonymous">Remain Anonymous</label>
       </div>
       
-      <button 
-        onClick={handleSubmit} 
-        disabled={loading || !isFormValid}
-        className="submit-button"
-      >
-        {loading ? 'Generating Email...' : 'Generate Email'}
-      </button>
+      <div className="button-container">
+        <button 
+          onClick={handleSubmit} 
+          disabled={loading || !isFormValid}
+          className="submit-button"
+        >
+          {loading ? 'Generating Email...' : 'Generate Email'}
+        </button>
+      </div>
     </div>
   );
 }

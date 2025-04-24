@@ -23,7 +23,13 @@ export default function ChatBox({ onComplete }) {
       onComplete(data.email);
     } catch (error) {
       console.error('Error submitting rant:', error);
-      alert('Sorry, there was an error processing your request. Please try again later.\n\nError: ' + error.message);
+      
+      // Check if this is an API key error
+      if (error.message && (error.message.includes('API key') || error.message.includes('OpenAI API key'))) {
+        alert('There is an issue with the OpenAI API configuration. Please contact the site administrator.\n\nError: API key validation failed');
+      } else {
+        alert('Sorry, there was an error processing your request. Please try again later.\n\nError: ' + error.message);
+      }
     } finally {
       setLoading(false);
     }

@@ -16,10 +16,25 @@ app.use(cors());
 app.use(express.json());
 
 // Initialize OpenAI SDK with API key
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY,
-  // No baseURL specified to use default OpenAI endpoint
-});
+let openai;
+try {
+  // Check if API key is available
+  const apiKey = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
+  console.log('API key starts with:', apiKey ? apiKey.substring(0, 10) + '...' : 'undefined');
+  
+  if (!apiKey) {
+    console.error('No API key provided in environment variables');
+  }
+  
+  openai = new OpenAI({ 
+    apiKey: apiKey,
+    // No baseURL specified to use default OpenAI endpoint
+  });
+  
+  console.log('OpenAI client initialized successfully');
+} catch (error) {
+  console.error('Error initializing OpenAI client:', error);
+}
 
 // Helper function to format targets for prompt
 const formatTargets = (targets) => {
@@ -80,6 +95,16 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
     res.status(200).json({ email: emailContent });
   } catch (error) {
     console.error('Error calling OpenAI API:', error);
+    
+    // Handle API key errors specially
+    if (error.message && error.message.includes('API key')) {
+      console.error('API KEY ERROR: This appears to be an authentication issue with OpenAI');
+      return res.status(500).json({ 
+        error: `OpenAI API key error: ${error.message}`,
+        apiKeyError: true
+      });
+    }
+    
     res.status(500).json({ error: `Failed to process rant: ${error.message}` });
   }
 });
@@ -185,6 +210,16 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
       res.status(200).json({ email: emailContent });
     } catch (apiError) {
       console.error('OpenAI API error:', apiError);
+      
+      // Handle API key errors specially
+      if (apiError.message && apiError.message.includes('API key')) {
+        console.error('API KEY ERROR: This appears to be an authentication issue with OpenAI');
+        return res.status(500).json({ 
+          error: `OpenAI API key error: ${apiError.message}`,
+          apiKeyError: true
+        });
+      }
+      
       throw apiError;
     }
   } catch (error) {

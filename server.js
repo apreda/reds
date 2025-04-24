@@ -16,17 +16,25 @@ app.use(cors());
 app.use(express.json());
 
 // Initialize OpenAI SDK with API key
-const apiKey = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
-console.log('API key available:', !!apiKey);
+// Log all available environment variables (without values) to help debug
+console.log('Available environment variables:', Object.keys(process.env));
 
-if (!apiKey) {
-  console.error('WARNING: No API key provided in environment variables');
+// Try to find the API key from various possible environment variable names
+const apiKey = process.env.OPENAI_API_KEY || 
+             process.env.VITE_OPENAI_API_KEY || 
+             process.env.VERCEL_OPENAI_API_KEY || 
+             process.env.DEEPSEEK_API_KEY;
+
+console.log('API key found:', !!apiKey);
+if (apiKey) {
+  console.log('API key starts with:', apiKey.substring(0, 3) + '...');
+} else {
+  console.error('WARNING: No API key found in environment variables');
 }
 
-// Always initialize the OpenAI client, even without an API key
-// This avoids 'undefined' errors, and the API call will fail with a proper error message
+// Initialize the OpenAI client
 const openai = new OpenAI({ 
-  apiKey: apiKey || 'dummy-key-to-prevent-undefined-errors',
+  apiKey: apiKey,
 });
 
 console.log('OpenAI client initialized successfully');

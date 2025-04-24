@@ -25,12 +25,17 @@ function App() {
 
   return (
     <div className="app-container">
-      <header>
-        <h1>Dear Castellini</h1>
-        <p className="subtitle">Transform your Reds fan frustration into respectful emails</p>
-      </header>
-
       <main>
+        <header className="content-header">
+          <div className="header-content">
+            <img src="./src/images/ba1.png" alt="Reds Fan" className="mobile-header-image" />
+            <div className="header-text">
+              <h1>Dear Castellini</h1>
+              <p className="subtitle">Transform your Reds fan frustration into respectful emails</p>
+            </div>
+          </div>
+        </header>
+        
         {step === 'rant' && (
           <div className="input-options-vertical">
             <div className="free-form-option">

@@ -49,6 +49,9 @@ function App() {
             </div>
             
             <div className="structured-option">
+              <div className="mobile-section-header">
+                <img src="/images/ba1.png" alt="Reds Fan" className="mobile-section-image" />
+              </div>
               <StructuredForm onComplete={handleRantComplete} />
             </div>
           </div>

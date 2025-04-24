@@ -56,7 +56,7 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
     console.log('API Key available:', !!process.env.OPENAI_API_KEY);
     
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
+      model: 'gpt-3.5-turbo-1106',  // Using a specific OpenAI model that's definitely available
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
       max_tokens: 500
@@ -159,9 +159,9 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
     console.log('API Key available:', !!process.env.OPENAI_API_KEY);
     
     try {
-      console.log('Attempting to call OpenAI with model: gpt-3.5-turbo');
+      console.log('Attempting to call OpenAI with model: gpt-3.5-turbo-1106');
       const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
+        model: 'gpt-3.5-turbo-1106',  // Using a specific OpenAI model that's definitely available
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 500

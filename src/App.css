@@ -383,16 +383,17 @@ footer {
   /* Show the image on mobile */
   .mobile-header-image {
     display: block;
-    width: 60px;
-    height: 60px;
-    margin-right: 0.5rem;
+    width: 120px;
+    height: 120px;
+    margin-right: 0.8rem;
   }
   
   .header-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
+    flex-wrap: wrap;
   }
   
   .header-text {
@@ -431,13 +432,14 @@ footer {
 
 @media (max-width: 600px) {
   .mobile-header-image {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
   
   .header-text h1 {
     font-size: 1.5rem;
     margin-bottom: 0.25rem;
+    margin-top: 0.5rem;
   }
   
   .header-text .subtitle {

@@ -6,14 +6,27 @@ export default function ChatBox({ onComplete }) {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await fetch('/api/rewrite', {
-      method: 'POST',
-      body: JSON.stringify({ rant }),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const data = await res.json();
-    onComplete(data.email);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/rewrite', {
+        method: 'POST',
+        body: JSON.stringify({ rant }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Server error:', errorText);
+        throw new Error(`Server error: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      onComplete(data.email);
+    } catch (error) {
+      console.error('Error submitting rant:', error);
+      alert('Sorry, there was an error processing your request. Please try again later.\n\nError: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

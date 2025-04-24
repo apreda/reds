@@ -52,17 +52,35 @@ app.post(['/rewrite', '/api/rewrite'], async (req, res) => {
     Email:
     `;
 
+    console.log('Attempting to call OpenAI API for rewrite');
+    console.log('API Key available:', !!process.env.OPENAI_API_KEY);
+    
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
       max_tokens: 500
     });
-
-    res.status(200).json({ email: completion.choices[0].message.content });
+    
+    console.log('Received successful response from OpenAI API');
+    
+    if (!completion.choices || completion.choices.length === 0) {
+      console.error('OpenAI API returned no choices');
+      throw new Error('API returned no content choices');
+    }
+    
+    const emailContent = completion.choices[0].message.content;
+    console.log('Generated email:', emailContent ? (emailContent.substring(0, 100) + '...') : 'Empty response');
+    
+    if (!emailContent) {
+      console.error('OpenAI API returned empty content');
+      throw new Error('API returned empty content');
+    }
+    
+    res.status(200).json({ email: emailContent });
   } catch (error) {
-    console.error('Error calling Deepseek API:', error);
-    res.status(500).json({ error: 'Failed to process rant' });
+    console.error('Error calling OpenAI API:', error);
+    res.status(500).json({ error: `Failed to process rant: ${error.message}` });
   }
 });
 
@@ -137,9 +155,11 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
     - If the user chose to remain anonymous, don't include identifying information
     `;    
 
-    console.log('Sending prompt to Deepseek API');
+    console.log('Sending prompt to OpenAI API');
+    console.log('API Key available:', !!process.env.OPENAI_API_KEY);
     
     try {
+      console.log('Attempting to call OpenAI with model: gpt-3.5-turbo');
       const completion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',  // Using OpenAI's fastest model for quick responses
         messages: [{ role: 'user', content: prompt }],
@@ -147,18 +167,29 @@ app.post(['/rewrite-structured', '/api/rewrite-structured'], async (req, res) =>
         max_tokens: 500
       });
       
-      console.log('Received successful response from Deepseek API');
+      console.log('Received successful response from OpenAI API');
+      
+      if (!completion.choices || completion.choices.length === 0) {
+        console.error('OpenAI API returned no choices');
+        throw new Error('API returned no content choices');
+      }
+      
       const emailContent = completion.choices[0].message.content;
-      console.log('Generated email:', emailContent.substring(0, 100) + '...');
+      console.log('Generated email:', emailContent ? (emailContent.substring(0, 100) + '...') : 'Empty response');
+      
+      if (!emailContent) {
+        console.error('OpenAI API returned empty content');
+        throw new Error('API returned empty content');
+      }
       
       res.status(200).json({ email: emailContent });
     } catch (apiError) {
-      console.error('Deepseek API error:', apiError.message);
+      console.error('OpenAI API error:', apiError);
       throw apiError;
     }
   } catch (error) {
     console.error('Error processing structured form:', error);
-    res.status(500).json({ error: 'Failed to process structured form' });
+    res.status(500).json({ error: `Failed to process structured form: ${error.message}` });
   }
 });
 

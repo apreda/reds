@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: `${SITE_NAME} — ${SITE_TAGLINE}`, template: `%s | ${SITE_NAME}` },
   description:
-    "Oakland fans wore SELL to tell their owner to sell the team. Now every fan base can. Protest tees for every MLB, NFL, NBA and NHL city.",
+    "Oakland fans wore SELL to tell their owner to sell the team. Now every fan base can. Protest tees for all 30 MLB cities.",
   openGraph: { siteName: SITE_NAME, type: "website" },
   twitter: { card: "summary_large_image" },
 };

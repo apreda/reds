@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
 import ShopGrid from "@/components/ShopGrid";
-import { LEAGUES, type League } from "@/lib/teams";
+import { DIVISIONS, type Division } from "@/lib/teams";
 
 export const metadata: Metadata = {
-  title: "Shop Every City",
-  description: "SELL tees for every MLB, NFL, NBA and NHL fan base. Pick your city.",
+  title: "Shop All 30",
+  description: "A SELL tee for every MLB fan base. Pick your city.",
 };
 
-export default async function ShopPage({ searchParams }: { searchParams: Promise<{ league?: string }> }) {
-  const { league } = await searchParams;
-  const initial = LEAGUES.some((l) => l.id === league) ? (league as League) : "all";
+export default async function ShopPage({ searchParams }: { searchParams: Promise<{ division?: string }> }) {
+  const { division } = await searchParams;
+  const initial = DIVISIONS.some((d) => d.id === division) ? (division as Division) : "all";
   return (
     <div className="wrap">
       <div className="section-head" style={{ marginTop: 40 }}>
         <div>
-          <span className="eyebrow">124 fan bases · One message</span>
-          <h2 className="display">Shop Every City</h2>
+          <span className="eyebrow">30 ballparks · One message</span>
+          <h2 className="display">Shop All 30</h2>
         </div>
       </div>
-      <ShopGrid key={initial} initialLeague={initial} />
+      <ShopGrid key={initial} initialDivision={initial} />
       <div style={{ height: 80 }} />
     </div>
   );

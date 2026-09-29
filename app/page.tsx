@@ -1,20 +1,19 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import Tee from "@/components/Tee";
-import { FEATURED_SLUG, getTeam, LEAGUES, teamsByLeague } from "@/lib/teams";
+import { shirtHex } from "@/lib/products";
+import { DIVISIONS, FEATURED_SLUG, getTeam, teamsByDivision } from "@/lib/teams";
 
 const PICKS = [
   "oakland",
   "chicago-south-side",
-  "washington-football",
-  "new-york-basketball",
-  "san-diego-baseball",
-  "ottawa-hockey",
-  "las-vegas-football",
-  "pittsburgh-baseball",
+  "pittsburgh",
+  "colorado",
+  "tampa-bay",
+  "washington",
+  "miami",
+  "cincinnati",
 ];
-
-const SPORT_COVERS = { mlb: "bronx-baseball", nfl: "green-bay-football", nba: "los-angeles-basketball", nhl: "chicago-hockey" };
 
 export default function Home() {
   const hero = getTeam(FEATURED_SLUG)!;
@@ -23,7 +22,7 @@ export default function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <span className="eyebrow">A fan protest, now in every city</span>
+          <span className="eyebrow">A fan protest, now in every ballpark</span>
           <h1 className="display">Sell.</h1>
           <p>
             In 2023, 27,759 fans packed the Oakland Coliseum in green shirts carrying one word for their owner. The shirt
@@ -52,7 +51,7 @@ export default function Home() {
               <h2 className="display">Wear it to the game</h2>
             </div>
             <Link href="/shop" className="btn ghost">
-              Shop all 124
+              Shop all 30
             </Link>
           </div>
           <div className="grid">
@@ -73,7 +72,7 @@ export default function Home() {
               handed out thousands of $5 green &ldquo;SELL&rdquo; shirts, and chanted it in unison, to show the team
               could thrive in Oakland if its owner sold to someone who wanted to stay.
             </p>
-            <p>That shirt became the uniform of a movement. We made one for every fan base.</p>
+            <p>That shirt became the uniform of a movement. We made one for all 30 MLB fan bases.</p>
             <Link href="/story" className="btn" style={{ marginTop: 12 }}>
               Read the story
             </Link>
@@ -99,26 +98,29 @@ export default function Home() {
         <div className="wrap">
           <div className="section-head">
             <div>
-              <span className="eyebrow">Every league</span>
-              <h2 className="display">Pick your sport</h2>
+              <span className="eyebrow">All 30 ballparks</span>
+              <h2 className="display">Find your division</h2>
             </div>
           </div>
-          <div className="grid">
-            {LEAGUES.map((l) => {
-              const sample = getTeam(SPORT_COVERS[l.id])!;
-              return (
-                <Link key={l.id} href={`/shop?league=${l.id}`} className="card">
-                  <div className="card-img">
-                    <Tee team={sample} />
-                  </div>
-                  <div className="card-body">
-                    <span className="card-league">{l.name}</span>
-                    <span className="card-title">{l.label}</span>
-                    <span className="card-sub">{teamsByLeague(l.id).length} cities</span>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="divisions">
+            {DIVISIONS.map((d) => (
+              <div key={d.id}>
+                <h3>
+                  <Link href={`/shop?division=${d.id}`}>{d.label}</Link>
+                </h3>
+                <ul>
+                  {teamsByDivision(d.id).map((t) => (
+                    <li key={t.slug}>
+                      <Link href={`/shirt/${t.slug}`}>
+                        <span className="dot" style={{ background: shirtHex(t) }} />
+                        {t.city}
+                        <small>{t.nickname}</small>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -128,7 +130,7 @@ export default function Home() {
           <div className="step">
             <b>01</b>
             <h3>Pick your city</h3>
-            <p>Every shirt is the same message in your team&rsquo;s colors. No logos, no team names &mdash; just SELL.</p>
+            <p>Every shirt is the same message in your club&rsquo;s colors. No logos, no team names &mdash; just SELL.</p>
           </div>
           <div className="step">
             <b>02</b>

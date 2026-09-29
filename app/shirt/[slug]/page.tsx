@@ -6,7 +6,7 @@ import ProductCard from "@/components/ProductCard";
 import Tee from "@/components/Tee";
 import { shirtHex, sizesFor } from "@/lib/products";
 import { ordersOpen } from "@/lib/site";
-import { fanLabel, getTeam, leagueName, LEAGUES, TEAMS } from "@/lib/teams";
+import { divisionName, fanLabel, getTeam, TEAMS } from "@/lib/teams";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,14 +29,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ShirtPage({ params }: Props) {
   const team = getTeam((await params).slug);
   if (!team) notFound();
-  const league = LEAGUES.find((l) => l.id === team.league)!;
   const sameCity = TEAMS.filter((t) => t.market === team.market && t.slug !== team.slug);
-  const related = [...sameCity, ...TEAMS.filter((t) => t.league === team.league && t.market !== team.market)].slice(0, 4);
+  const related = [...sameCity, ...TEAMS.filter((t) => t.division === team.division && t.market !== team.market)].slice(0, 4);
 
   return (
     <div className="wrap">
       <div className="crumbs">
-        <Link href="/shop">Shop</Link> / <Link href={`/shop?league=${league.id}`}>{league.label}</Link> / {team.city}
+        <Link href="/shop">Shop</Link> / <Link href={`/shop?division=${team.division}`}>{divisionName(team.division)}</Link> / {team.city}
       </div>
       <div className="pdp">
         <div className="pdp-gallery">
@@ -47,7 +46,7 @@ export default async function ShirtPage({ params }: Props) {
         <div className="pdp-info">
           <div>
             <span className="eyebrow">
-              {leagueName(team.league)} · For {fanLabel(team)} fans
+              {divisionName(team.division)} · For {fanLabel(team)} fans
             </span>
             <h1 className="display">SELL Tee — {team.city}</h1>
           </div>
@@ -93,7 +92,7 @@ export default async function ShirtPage({ params }: Props) {
       {related.length > 0 && (
         <section style={{ paddingBottom: 80 }}>
           <div className="section-head">
-            <h2 className="display">{sameCity.length ? `More for ${team.market}` : `More ${league.label}`}</h2>
+            <h2 className="display">{sameCity.length ? `More for ${team.market}` : `More from the ${divisionName(team.division)}`}</h2>
           </div>
           <div className="grid">
             {related.map((t) => (

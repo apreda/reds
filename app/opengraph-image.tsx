@@ -23,7 +23,7 @@ export default async function OG() {
       >
         <div style={{ fontSize: 260, letterSpacing: 30, lineHeight: 1, paddingLeft: 30 }}>SELL</div>
         <div style={{ fontSize: 34, letterSpacing: 12, marginTop: 30, color: "#EFB21E" }}>
-          SELL THE TEAM · EVERY CITY · EVERY LEAGUE
+          SELL THE TEAM · ALL 30 BALLPARKS
         </div>
       </div>
     ),

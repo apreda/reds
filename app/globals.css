@@ -386,3 +386,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .footer a:hover { text-decoration: underline; }
 .footer .fine { font-size: 12px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); line-height: 1.6; }
 @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- division directory ---------- */
+.divisions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 28px; border-top: 1px solid var(--line); padding-top: 24px; }
+.divisions h3 { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.06em; font-size: 20px; margin: 0 0 12px; }
+.divisions ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.divisions li a { display: grid; grid-template-columns: 14px 1fr; column-gap: 10px; align-items: center; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; }
+.divisions li a:hover { color: var(--muted); }
+.divisions small { grid-column: 2; font-size: 12px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+.dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.12); }
+@media (max-width: 1000px) { .divisions { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .divisions { grid-template-columns: repeat(2, 1fr); } }

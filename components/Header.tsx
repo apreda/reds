@@ -6,10 +6,6 @@ import { useCart } from "./CartProvider";
 
 const LINKS = [
   { href: "/shop", label: "Shop All" },
-  { href: "/shop?league=mlb", label: "Baseball" },
-  { href: "/shop?league=nfl", label: "Football" },
-  { href: "/shop?league=nba", label: "Basketball" },
-  { href: "/shop?league=nhl", label: "Hockey" },
 ];
 
 export default function Header() {
@@ -20,7 +16,7 @@ export default function Header() {
       <div className="wrap header-inner">
         <div>
           <nav className="nav" aria-label="Primary">
-            {LINKS.slice(0, 3).map((l) => (
+            {LINKS.map((l) => (
               <Link key={l.href} href={l.href}>
                 {l.label}
               </Link>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DIVISIONS } from "@/lib/teams";
 
 export default function Footer() {
   return (
@@ -16,10 +17,12 @@ export default function Footer() {
           <div>
             <h4>Shop</h4>
             <ul>
-              <li><Link href="/shop?league=mlb">Baseball</Link></li>
-              <li><Link href="/shop?league=nfl">Football</Link></li>
-              <li><Link href="/shop?league=nba">Basketball</Link></li>
-              <li><Link href="/shop?league=nhl">Hockey</Link></li>
+              <li><Link href="/shop">All 30 Teams</Link></li>
+              {DIVISIONS.map((d) => (
+                <li key={d.id}>
+                  <Link href={`/shop?division=${d.id}`}>{d.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -40,7 +43,7 @@ export default function Footer() {
         </div>
         <p className="fine">
           Sell The Team is an independent fan project. We are not affiliated with, licensed, sponsored or endorsed by
-          MLB, the NFL, the NBA, the NHL, or any team or owner. Team names appear on this site only to help fans find
+          Major League Baseball, any club, or any owner. Team names appear on this site only to help fans find
           their city&rsquo;s shirt; they are never printed on our products. &copy; {new Date().getFullYear()} Sell The Team.
         </p>
       </div>

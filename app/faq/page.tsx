@@ -51,8 +51,8 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
     a: "Because each shirt is made just for you, we can't accept returns for the wrong size or a change of heart. If your shirt arrives misprinted, damaged, or defective, email us a photo within 30 days of delivery and we'll send a replacement or refund, free.",
   },
   {
-    q: "Are you affiliated with the teams or leagues?",
-    a: "No. Sell The Team is an independent fan project with no connection to MLB, the NFL, the NBA, the NHL, any team, or any owner. Our shirts never carry team names or logos — just the word SELL and a city, in colors fans will recognize. Team names only appear on this site so you can find your city.",
+    q: "Are you affiliated with MLB or the teams?",
+    a: "No. Sell The Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL and a city, in colors fans will recognize. Team names only appear on this site so you can find your city.",
   },
   {
     q: "Is this the original Oakland shirt?",

@@ -2,38 +2,38 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { LEAGUES, TEAMS, teamsByLeague, type League } from "@/lib/teams";
+import { DIVISIONS, TEAMS, teamsByDivision, type Division } from "@/lib/teams";
 import ProductCard from "./ProductCard";
 
-export default function ShopGrid({ initialLeague }: { initialLeague: League | "all" }) {
+export default function ShopGrid({ initialDivision }: { initialDivision: Division | "all" }) {
   const router = useRouter();
-  const [league, setLeague] = useState<League | "all">(initialLeague);
+  const [division, setDivision] = useState<Division | "all">(initialDivision);
   const [q, setQ] = useState("");
 
   const teams = useMemo(() => {
-    const base = league === "all" ? LEAGUES.flatMap((l) => teamsByLeague(l.id)) : teamsByLeague(league);
+    const base = division === "all" ? DIVISIONS.flatMap((d) => teamsByDivision(d.id)) : teamsByDivision(division);
     const needle = q.trim().toLowerCase();
     if (!needle) return base;
     return base.filter((t) =>
       [t.market, t.nickname, t.city, `${t.market} ${t.nickname}`].some((s) => s.toLowerCase().includes(needle)),
     );
-  }, [league, q]);
+  }, [division, q]);
 
-  const pick = (id: League | "all") => {
-    setLeague(id);
-    router.replace(id === "all" ? "/shop" : `/shop?league=${id}`, { scroll: false });
+  const pick = (id: Division | "all") => {
+    setDivision(id);
+    router.replace(id === "all" ? "/shop" : `/shop?division=${id}`, { scroll: false });
   };
 
   return (
     <>
       <div className="shop-controls">
-        <div className="tabs" role="tablist" aria-label="League">
-          <button className="tab" role="tab" aria-selected={league === "all"} onClick={() => pick("all")}>
-            All ({TEAMS.length})
+        <div className="tabs" role="tablist" aria-label="Division">
+          <button className="tab" role="tab" aria-selected={division === "all"} onClick={() => pick("all")}>
+            All {TEAMS.length}
           </button>
-          {LEAGUES.map((l) => (
-            <button key={l.id} className="tab" role="tab" aria-selected={league === l.id} onClick={() => pick(l.id)}>
-              {l.label}
+          {DIVISIONS.map((d) => (
+            <button key={d.id} className="tab" role="tab" aria-selected={division === d.id} onClick={() => pick(d.id)}>
+              {d.label}
             </button>
           ))}
         </div>

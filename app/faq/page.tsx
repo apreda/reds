@@ -1,0 +1,85 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "FAQ", description: "Shipping, sizing, returns and more." };
+
+const QA: { id?: string; q: string; a: React.ReactNode }[] = [
+  {
+    id: "shipping",
+    q: "How long does shipping take?",
+    a: "Every shirt is printed to order by our production partner. Most orders ship within 2–5 business days and arrive 3–7 business days after that in the US (a little longer to Canada). You'll get tracking by email when it ships. Shipping is a flat $5.99 per order to the US and Canada.",
+  },
+  {
+    id: "sizing",
+    q: "How do the shirts fit?",
+    a: (
+      <>
+        <p>
+          We print on the Bella+Canvas 3001 &mdash; a soft, lightweight unisex tee with a modern retail fit. If you like a
+          roomier fit, size up. Approximate body width / length in inches:
+        </p>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+          <thead>
+            <tr style={{ textAlign: "left", borderBottom: "1px solid var(--line)" }}>
+              <th style={{ padding: "8px 0" }}>Size</th>
+              <th>Width</th>
+              <th>Length</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["S", "18", "28"],
+              ["M", "20", "29"],
+              ["L", "22", "30"],
+              ["XL", "24", "31"],
+              ["2XL", "26", "32"],
+              ["3XL", "28", "33"],
+            ].map(([s, w, l]) => (
+              <tr key={s} style={{ borderBottom: "1px solid var(--line)" }}>
+                <td style={{ padding: "8px 0" }}>{s}</td>
+                <td>{w}&Prime;</td>
+                <td>{l}&Prime;</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    ),
+  },
+  {
+    id: "returns",
+    q: "Can I return or exchange?",
+    a: "Because each shirt is made just for you, we can't accept returns for the wrong size or a change of heart. If your shirt arrives misprinted, damaged, or defective, email us a photo within 30 days of delivery and we'll send a replacement or refund, free.",
+  },
+  {
+    q: "Are you affiliated with the teams or leagues?",
+    a: "No. Sell The Team is an independent fan project with no connection to MLB, the NFL, the NBA, the NHL, any team, or any owner. Our shirts never carry team names or logos — just the word SELL and a city, in colors fans will recognize. Team names only appear on this site so you can find your city.",
+  },
+  {
+    q: "Is this the original Oakland shirt?",
+    a: "No. The original 2023 shirt was made by the fan group Oakland 68s with Oaklandish. Our Oakland tee is a tribute to it, and the rest of the collection carries the idea to every other city.",
+  },
+  {
+    q: "My city has more than one team. Which shirt is mine?",
+    a: "Each team gets its own colorway, and where cities share a market we use the neighborhood or home turf fans already use (North Side vs. South Side, Queens vs. the Bronx). Search your team's name on the shop page and it'll show up.",
+  },
+  {
+    q: "Do you ship internationally?",
+    a: "Right now we ship to the US and Canada. More countries soon.",
+  },
+];
+
+export default function FAQ() {
+  return (
+    <div className="wrap">
+      <h1 className="display page-title">FAQ</h1>
+      <div className="details" style={{ maxWidth: 760, marginBottom: 90 }}>
+        {QA.map(({ id, q, a }) => (
+          <details key={q} id={id} open={id === "shipping"}>
+            <summary>{q}</summary>
+            <div className="content">{a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  );
+}

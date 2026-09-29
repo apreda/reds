@@ -1,0 +1,45 @@
+# Sell The Team
+
+Protest tees for fans whose owners stopped listening, one per MLB, NFL, NBA and NHL fan base (124 in all). The idea comes from the green "SELL" shirts Oakland A's fans wore to the June 13, 2023 reverse boycott.
+
+- **Stack:** Next.js (App Router) on Vercel
+- **Payments:** Stripe Checkout
+- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
+
+## How it works
+
+| Piece | Where |
+| --- | --- |
+| Team catalog (city, colorway, Printful shirt color) | `lib/teams.ts` |
+| Prices, sizes, shipping | `lib/products.ts` |
+| Printful variant IDs per color/size | `lib/printful-variants.json` (regenerate with `node scripts/sync-printful-variants.mjs`) |
+| On-site shirt mockups (SVG) | `components/Tee.tsx` |
+| Print-ready PNG sent to Printful (12"x16" @150dpi, transparent) | `/api/print/<slug>.png` |
+| Mockup PNG for Stripe Checkout / social | `/api/mockup/<slug>` |
+| Create Stripe Checkout session | `POST /api/checkout` |
+| Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
+
+Shirts never carry team names or logos, only "SELL", a city or neighborhood, and colors. Team names appear on the site only so fans can find their shirt, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
+
+## Local dev
+
+```bash
+npm install
+npm run dev
+```
+
+Until `STRIPE_SECRET_KEY` is set, the site runs in **pre-launch mode**: browsing and the bag work, but checkout shows "Orders open soon".
+
+## Going live (checklist)
+
+1. **Vercel.** Import this repo (framework is Next.js, already pinned in `vercel.json`). Add your domain and set `NEXT_PUBLIC_SITE_URL` to it.
+2. **Printful.** Create a free account, then add a "Manual order platform / API" store. Under *Settings → API* create a private token with order scopes, and set `PRINTFUL_API_TOKEN` (and `PRINTFUL_STORE_ID` if the token covers several stores). Add a payment method in Printful billing, since Printful charges you its cost for each order.
+3. **Stripe.** Set `STRIPE_SECRET_KEY`. Under *Developers → Webhooks* add the endpoint `https://<your-domain>/api/webhooks/stripe` with events `checkout.session.completed` and `checkout.session.async_payment_succeeded`, then set `STRIPE_WEBHOOK_SECRET` to its signing secret.
+4. **Redeploy.** Env vars are read at build time for the "orders open" banner.
+5. **Test.** Place an order with Stripe test keys. It shows up in Printful as a **draft**. Check that the print file and placement look right, then set `PRINTFUL_AUTO_CONFIRM=true` so paid orders go straight to production.
+
+Without a Printful token the webhook still acknowledges payments and logs `needs manual fulfillment`. Nothing is lost, because every order is in the Stripe dashboard.
+
+## Pricing
+
+$25 per tee (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping, all set in `lib/products.ts`. Printful's cost is about $12–16 per shirt plus its shipping, so each order nets roughly $8–10 before Stripe fees.

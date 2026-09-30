@@ -8,7 +8,7 @@ export default function Tee({ team, sizes, eager }: { team: Team; sizes: string;
   return (
     <Image
       src={mockupPath(team)}
-      alt={`${team.shirt} t-shirt printed with SELL and ${team.city}`}
+      alt={`${team.shirt} t-shirt printed with SELL in white`}
       fill
       sizes={sizes}
       className="tee"

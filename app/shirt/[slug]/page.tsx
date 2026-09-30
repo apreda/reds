@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BuyBox from "@/components/BuyBox";
+import { INK } from "@/components/PrintArt";
 import ProductCard from "@/components/ProductCard";
 import Tee from "@/components/Tee";
 import { mockupPath, productName, shirtHex, sizesFor } from "@/lib/products";
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const team = getTeam((await params).slug);
   if (!team) return {};
   const title = productName(team);
-  const description = `A SELL protest tee with ${team.city} underneath. ${team.shirt} tee, printed to order.`;
+  const description = `The SELL protest tee for ${team.market}: white SELL on a ${team.shirt} tee, printed to order.`;
   return {
     title,
     description,
@@ -52,16 +53,15 @@ export default async function ShirtPage({ params }: Props) {
           <div className="swatch-row">
             <span className="swatch" style={{ background: shirtHex(team) }} />
             {team.shirt} tee
-            <span className="swatch" style={{ background: team.ink, marginLeft: 10 }} />
-            <span className="swatch" style={{ background: team.accent }} />
-            print
+            <span className="swatch" style={{ background: INK, marginLeft: 10 }} />
+            white print
           </div>
           <div className="details">
             <details open>
               <summary>Why SELL</summary>
               <div className="content">
-                Modeled on the shirt Oakland fans wore to the 2023 reverse boycott. One word, your team&rsquo;s colors,
-                your city underneath. It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
+                Modeled on the shirt Oakland fans wore to the 2023 reverse boycott. One word in white on your
+                team&rsquo;s color. It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
                 seen from the owner&rsquo;s suite. <Link href="/story" style={{ textDecoration: "underline" }}>Read the story.</Link>
               </div>
             </details>
@@ -72,7 +72,7 @@ export default async function ShirtPage({ params }: Props) {
                   <li>Bella+Canvas 3001 unisex tee, 100% combed ring-spun cotton (heather colors are a blend)</li>
                   <li>Soft, lightweight 4.2 oz jersey; retail fit</li>
                   <li>Direct-to-garment print, front only</li>
-                  <li>No team names or logos &mdash; just SELL and your city</li>
+                  <li>No team names or logos &mdash; just SELL</li>
                 </ul>
               </div>
             </details>

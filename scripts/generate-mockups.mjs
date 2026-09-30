@@ -66,7 +66,7 @@ for (const team of teams) {
     variant_ids: [variant],
     format: "png",
     option_groups: [STYLE],
-    files: [{ placement: "front", image_url: `${base}/api/print/${team.slug}.png`, position: PRINT_AREA }],
+    files: [{ placement: "front", image_url: `${base}/api/print/${team.slug}.png?v=${Date.now()}`, position: PRINT_AREA }],
   });
   let result;
   do {

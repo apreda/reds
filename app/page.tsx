@@ -131,7 +131,7 @@ export default function Home() {
           <div className="step">
             <b>01</b>
             <h3>Pick your city</h3>
-            <p>Every shirt is the same message in your club&rsquo;s colors. No logos, no team names &mdash; just SELL.</p>
+            <p>Every shirt is the same message on your club&rsquo;s color. No logos, no team names &mdash; just SELL.</p>
           </div>
           <div className="step">
             <b>02</b>

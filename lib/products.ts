@@ -1,3 +1,4 @@
+import { ART_VERSION } from "./art";
 import variants from "./printful-variants.json";
 import { getTeam, type Team } from "./teams";
 
@@ -39,9 +40,9 @@ export function productName(team: Team): string {
   return `SELL Tee — ${team.city}`;
 }
 
-// Photo mockup made by Printful from the print file (scripts/generate-mockups.mjs).
+// Photo mockup made from the print file (see README, "Shirt photos").
 export function mockupPath(team: Team): string {
-  return `/mockups/${team.slug}.png`;
+  return `/mockups/${team.slug}.png?v=${ART_VERSION}`;
 }
 
 export type CartLine = { slug: string; size: Size; qty: number };

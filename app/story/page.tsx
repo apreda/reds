@@ -80,7 +80,7 @@ export default function Story() {
           message is the same everywhere &mdash; so we made the shirt for all 30 MLB fan bases.
         </p>
         <p>
-          Every design is just SELL and your city in your team&rsquo;s colors. No logos, no team names. Wear it to the
+          Every shirt is just SELL, in white, on your team&rsquo;s color. No logos, no team names. Wear it to the
           game. Get your section to wear it. One shirt is a complaint. Ten thousand is a headline.
         </p>
         <p style={{ margin: "32px 0" }}>

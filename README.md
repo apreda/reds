@@ -10,20 +10,20 @@ Protest tees for baseball fans whose owners stopped listening, one for each of t
 
 | Piece | Where |
 | --- | --- |
-| Team catalog (city, colorway, Printful shirt color) | `lib/teams.ts` |
+| Team catalog (listing name, Printful shirt color) | `lib/teams.ts` |
 | Prices, sizes, shipping | `lib/products.ts` |
 | Printful variant IDs per color/size | `lib/printful-variants.json` (regenerate with `node scripts/sync-printful-variants.mjs`) |
 | Shirt photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png`, shown by `components/Tee.tsx` |
-| Print-ready PNG sent to Printful (12"x16" @150dpi, transparent, Inter Bold lettering) | `/api/print/<slug>.png` |
+| Print-ready PNG sent to Printful (12"x16" @150dpi, transparent, Inter SemiBold lettering) | `/api/print/<slug>.png` |
 | Old mockup URL, redirects to the photo | `/api/mockup/<slug>` |
 | Create Stripe Checkout session | `POST /api/checkout` |
 | Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
 
-Shirts and product listings never carry team names or logos, only "SELL", a city or neighborhood, and colors. The nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
+Every shirt is the same white "SELL" on the team's primary color, like the Oakland originals. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
 
 ## Shirt photos
 
-Every shirt image comes from the print file, so the lettering always matches what Printful prints. Regenerate the photos after changing the artwork, a colorway or a team, then commit `public/mockups/`:
+Every shirt image comes from the print file, so the lettering always matches what Printful prints. Regenerate the photos after changing the artwork, a colorway or a team, bump `ART_VERSION` in `lib/art.ts` (Printful and `next/image` both cache by URL), then commit `public/mockups/`:
 
 - **Printful Mockup Generator (preferred).** Printful fetches the print files itself, so serve this code at a public URL first (the production site, or `cloudflared tunnel --url http://localhost:3000` against `npm run dev`), then run `node --env-file=.env.local scripts/generate-mockups.mjs` with `PRINTFUL_API_TOKEN` and `BASE_URL` set. `--options` lists the available styles (`MOCKUP_STYLE`, default `Flat`).
 - **Fallback, no token needed.** `BASE_URL=http://localhost:3000 python3 scripts/composite-mockups.py` prints the artwork onto Printful's catalog photo of the blank tee in each color (needs numpy, scipy and Pillow).

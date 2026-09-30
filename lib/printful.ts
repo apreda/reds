@@ -1,3 +1,4 @@
+import { ART_VERSION } from "./art";
 import { printfulVariantId, type Size } from "./products";
 import { siteUrl } from "./site";
 import { getTeam } from "./teams";
@@ -22,7 +23,7 @@ export function printfulConfigured(): boolean {
 }
 
 export function printFileUrl(slug: string): string {
-  return `${siteUrl()}/api/print/${slug}.png`;
+  return `${siteUrl()}/api/print/${slug}.png?v=${ART_VERSION}`;
 }
 
 const dollars = (cents: number) => (cents / 100).toFixed(2);

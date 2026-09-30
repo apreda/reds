@@ -24,10 +24,11 @@ ROOT = Path(__file__).resolve().parent.parent
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000").rstrip("/")
 
 # Printful's catalog photos all share one model and pose (700x1000). Measured on
-# that photo: shirt body ~20" (size M) across 270px, neckline at x=348, y=307.
-PX_PER_IN = 13.5
+# that photo: the shirt's front (~16" of a size M, the rest wraps around the
+# body) spans ~265px, and the neckline is at x=348, y=307.
+PX_PER_IN = 16.5
 NECK = (348, 307)
-PRINT_DROP_IN = 1.5  # top of the 12"x16" print area below the neckline
+PRINT_DROP_IN = 1.0  # top of the 12"x16" print area below the neckline
 CROP = (88, 245, 608, 895)  # torso, 4:5
 SCALE = 2  # output 1040x1300
 TILE = np.array([0xF5, 0xF4, 0xF0], np.float32) / 255  # --tile, replaces the white backdrop

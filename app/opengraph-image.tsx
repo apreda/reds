@@ -28,6 +28,6 @@ export default async function OG() {
         </div>
       </div>
     ),
-    { ...size, fonts: [{ name: SHIRT_FONT, data: await shirtFont(), weight: 700 }] },
+    { ...size, fonts: [{ name: SHIRT_FONT, data: await shirtFont(), weight: 600 }] },
   );
 }

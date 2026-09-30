@@ -7,8 +7,8 @@ import { getTeam } from "@/lib/teams";
 // background. The art is the same for every team; only the shirt color changes.
 const W = 1800;
 const H = 2400;
-const ART_WIDTH = 1650; // SELL spans 11" of the 12" print area
-const CAP_TOP = 375; // letters start 2.5" into the print area: mid-chest
+const ART_WIDTH = 1780; // SELL's ink spans ~11.5" of the 12" print area
+const CAP_TOP = 640; // letters start ~4.3" into the print area: mid-chest
 
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const team = getTeam((await params).slug.replace(/\.png$/, ""));

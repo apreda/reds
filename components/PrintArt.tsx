@@ -10,7 +10,7 @@ export const INK = "#FFFFFF";
 const ADVANCE: Record<string, number> = { S: 0.65, E: 0.605, L: 0.565 };
 // With lineHeight 1, Inter's cap height (0.7275em) sits 0.136em below the top of the box.
 export const CAP_INSET = 0.136;
-const TRACK = 0.2; // em between letters
+const TRACK = 0.14; // em between letters
 
 // Font size that makes "SELL" `width` px wide, from the first letter's edge to the last.
 export function wordSize(width: number): number {

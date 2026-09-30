@@ -23,10 +23,11 @@ from scipy.ndimage import gaussian_filter, map_coordinates
 ROOT = Path(__file__).resolve().parent.parent
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000").rstrip("/")
 
-# Printful's catalog photos all share one model and pose (700x1000). Measured on
-# that photo: the shirt's front (~16" of a size M, the rest wraps around the
-# body) spans ~265px, and the neckline is at x=348, y=307.
-PX_PER_IN = 16.5
+# Printful's catalog photos all share one model and pose (700x1000). The chest
+# faces the camera, so the print scales like the shirt's length: neckline
+# (x=348, y=307) to hem is ~25.5" of a size M over 508px, a little less
+# toward the sides where the shirt wraps around the body.
+PX_PER_IN = 18.5
 NECK = (348, 307)
 PRINT_DROP_IN = 1.0  # top of the 12"x16" print area below the neckline
 CROP = (88, 245, 608, 895)  # torso, 4:5

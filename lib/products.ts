@@ -34,8 +34,14 @@ export function formatPrice(cents: number): string {
   return `$${(cents / 100).toFixed(2).replace(/\.00$/, "")}`;
 }
 
+// Only "SELL" and the city line: never a team name or nickname.
 export function productName(team: Team): string {
   return `SELL Tee — ${team.city}`;
+}
+
+// Photo mockup made by Printful from the print file (scripts/generate-mockups.mjs).
+export function mockupPath(team: Team): string {
+  return `/mockups/${team.slug}.png`;
 }
 
 export type CartLine = { slug: string; size: Size; qty: number };

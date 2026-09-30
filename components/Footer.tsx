@@ -43,8 +43,8 @@ export default function Footer() {
         </div>
         <p className="fine">
           Sell The Team is an independent fan project. We are not affiliated with, licensed, sponsored or endorsed by
-          Major League Baseball, any club, or any owner. Team names appear on this site only to help fans find
-          their city&rsquo;s shirt; they are never printed on our products. &copy; {new Date().getFullYear()} Sell The Team.
+          Major League Baseball, any club, or any owner. Our shirts carry no team names or logos, only the word
+          SELL and a city. &copy; {new Date().getFullYear()} Sell The Team.
         </p>
       </div>
     </footer>

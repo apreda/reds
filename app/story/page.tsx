@@ -19,8 +19,8 @@ export default function Story() {
         <h1 className="display page-title" style={{ marginTop: 8 }}>
           One word. 27,759 people.
         </h1>
-        <div style={{ background: "var(--tile)", padding: "30px 18%", margin: "0 0 28px" }}>
-          <Tee team={oak} />
+        <div className="story-photo">
+          <Tee team={oak} sizes="(max-width: 480px) 100vw, 440px" />
         </div>
         <p>
           By the spring of 2023, Oakland fans had spent years watching their team get stripped down, their ballpark left

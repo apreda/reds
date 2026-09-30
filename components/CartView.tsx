@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { SHIPPING_CENTS, formatPrice, resolveLine } from "@/lib/products";
-import { fanLabel } from "@/lib/teams";
+import { SHIPPING_CENTS, formatPrice, productName, resolveLine } from "@/lib/products";
 import { useCart } from "./CartProvider";
 import Tee from "./Tee";
 
@@ -52,12 +51,12 @@ export default function CartView({ open }: { open: boolean }) {
         {resolved.map(({ line, r }) => (
           <div className="cart-line" key={`${line.slug}-${line.size}`}>
             <Link href={`/shirt/${line.slug}`} className="cart-thumb">
-              <Tee team={r!.team} />
+              <Tee team={r!.team} sizes="110px" />
             </Link>
             <div>
-              <h3>SELL Tee — {r!.team.city}</h3>
+              <h3>{productName(r!.team)}</h3>
               <div className="meta">
-                For {fanLabel(r!.team)} fans · {r!.team.shirt} · Size {line.size}
+                {r!.team.shirt} · Size {line.size}
               </div>
               <div className="qty" style={{ height: 38, marginTop: 10 }}>
                 <button aria-label="Decrease" onClick={() => setQty(line.slug, line.size, line.qty - 1)}>

@@ -1,6 +1,6 @@
-// Team catalog. Shirts never use team names or logos: just "SELL", a city /
-// neighborhood line, and a colorway. Nicknames are only used on-site so fans
-// can find their team (with a "not affiliated" disclaimer everywhere).
+// Team catalog. Shirts and listings never show team names or logos: just
+// "SELL", a city / neighborhood line, and a colorway. The nickname is a hidden
+// search keyword so fans can type their team's name in the shop search.
 //
 // `shirt` must be a Bella+Canvas 3001 color name exactly as Printful lists it
 // (see lib/printful-variants.json). `ink` prints "SELL", `accent` prints the
@@ -13,7 +13,7 @@ export type Team = {
   division: Division;
   city: string; // printed on the shirt
   market: string; // how fans refer to the market on-site
-  nickname: string; // for search / labeling only, never printed
+  nickname: string; // search keyword only, never displayed or printed
   shirt: string;
   ink: string;
   accent: string;
@@ -94,9 +94,4 @@ export function teamsByDivision(division: Division): Team[] {
 
 export function divisionName(division: Division): string {
   return DIVISIONS.find((d) => d.id === division)!.label;
-}
-
-// "Oakland A's fans" style label, for on-site copy only.
-export function fanLabel(t: Team): string {
-  return `${t.market} ${t.nickname}`;
 }

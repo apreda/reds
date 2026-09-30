@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import BuyBox from "@/components/BuyBox";
 import ProductCard from "@/components/ProductCard";
 import Tee from "@/components/Tee";
-import { shirtHex, sizesFor } from "@/lib/products";
+import { mockupPath, productName, shirtHex, sizesFor } from "@/lib/products";
 import { ordersOpen } from "@/lib/site";
-import { divisionName, fanLabel, getTeam, TEAMS } from "@/lib/teams";
+import { divisionName, getTeam, TEAMS } from "@/lib/teams";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,12 +17,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const team = getTeam((await params).slug);
   if (!team) return {};
-  const title = `SELL Tee — ${team.city}`;
-  const description = `A SELL protest tee for ${fanLabel(team)} fans. ${team.shirt} tee, printed to order.`;
+  const title = productName(team);
+  const description = `A SELL protest tee with ${team.city} underneath. ${team.shirt} tee, printed to order.`;
   return {
     title,
     description,
-    openGraph: { title, description, images: [`/api/mockup/${team.slug}`] },
+    openGraph: { title, description, images: [mockupPath(team)] },
   };
 }
 
@@ -40,15 +40,13 @@ export default async function ShirtPage({ params }: Props) {
       <div className="pdp">
         <div className="pdp-gallery">
           <div className="pdp-main">
-            <Tee team={team} />
+            <Tee team={team} sizes="(max-width: 860px) 100vw, 660px" eager />
           </div>
         </div>
         <div className="pdp-info">
           <div>
-            <span className="eyebrow">
-              {divisionName(team.division)} · For {fanLabel(team)} fans
-            </span>
-            <h1 className="display">SELL Tee — {team.city}</h1>
+            <span className="eyebrow">{divisionName(team.division)}</span>
+            <h1 className="display">{productName(team)}</h1>
           </div>
           <BuyBox slug={team.slug} sizes={sizesFor(team)} open={ordersOpen()} />
           <div className="swatch-row">

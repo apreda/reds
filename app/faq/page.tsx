@@ -52,7 +52,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   },
   {
     q: "Are you affiliated with MLB or the teams?",
-    a: "No. Sell The Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL and a city, in colors fans will recognize. Team names only appear on this site so you can find your city.",
+    a: "No. Sell The Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL and a city, in colors fans will recognize. Team names never appear on our shirts or product listings, but you can still search for your team's name in the shop.",
   },
   {
     q: "Is this the original Oakland shirt?",

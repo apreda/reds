@@ -38,7 +38,9 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-art">
-          <Tee team={hero} />
+          <div className="hero-photo">
+            <Tee team={hero} sizes="(max-width: 860px) 100vw, 50vw" eager />
+          </div>
           <span className="hero-stat">The original · Oakland, June 13, 2023</span>
         </div>
       </section>
@@ -114,7 +116,6 @@ export default function Home() {
                       <Link href={`/shirt/${t.slug}`}>
                         <span className="dot" style={{ background: shirtHex(t) }} />
                         {t.city}
-                        <small>{t.nickname}</small>
                       </Link>
                     </li>
                   ))}

@@ -3,8 +3,8 @@
 // listing ("SELL Tee — NORTH SIDE") and the nickname is a hidden search keyword
 // so fans can type their team's name in the shop search. Neither is printed.
 //
-// `shirt` must be a Bella+Canvas 3001 color name exactly as Printful lists it
-// (see lib/printful-variants.json).
+// `shirt` (Bella+Canvas 3001 tee) and `hoodie` (Gildan 18500) must be color
+// names exactly as Printful lists them (see lib/printful-variants.json).
 
 export type Division = "al-east" | "al-central" | "al-west" | "nl-east" | "nl-central" | "nl-west";
 
@@ -15,6 +15,7 @@ export type Team = {
   market: string; // how fans refer to the market on-site
   nickname: string; // search keyword only, never displayed or printed
   shirt: string;
+  hoodie: string;
 };
 
 export const DIVISIONS: { id: Division; label: string }[] = [
@@ -26,54 +27,55 @@ export const DIVISIONS: { id: Division; label: string }[] = [
   { id: "nl-west", label: "NL West" },
 ];
 
-type Row = [slug: string, division: Division, market: string, nickname: string, city: string, shirt: string];
+type Row = [slug: string, division: Division, market: string, nickname: string, city: string, shirt: string, hoodie: string];
 
 const ROWS: Row[] = [
   // AL East
-  ["baltimore", "al-east", "Baltimore", "Orioles", "BALTIMORE", "Orange"],
-  ["boston", "al-east", "Boston", "Red Sox", "FENWAY", "Red"],
-  ["the-bronx", "al-east", "New York", "Yankees", "THE BRONX", "Navy"],
-  ["tampa-bay", "al-east", "Tampa Bay", "Rays", "TAMPA BAY", "Navy"],
-  ["toronto", "al-east", "Toronto", "Blue Jays", "TORONTO", "True Royal"],
+  ["baltimore", "al-east", "Baltimore", "Orioles", "BALTIMORE", "Orange", "Orange"],
+  ["boston", "al-east", "Boston", "Red Sox", "FENWAY", "Red", "Red"],
+  ["the-bronx", "al-east", "New York", "Yankees", "THE BRONX", "Navy", "Navy"],
+  ["tampa-bay", "al-east", "Tampa Bay", "Rays", "TAMPA BAY", "Navy", "Navy"],
+  ["toronto", "al-east", "Toronto", "Blue Jays", "TORONTO", "True Royal", "Royal"],
   // AL Central
-  ["chicago-south-side", "al-central", "Chicago", "White Sox", "SOUTH SIDE", "Black"],
-  ["cleveland", "al-central", "Cleveland", "Guardians", "CLEVELAND", "Navy"],
-  ["detroit", "al-central", "Detroit", "Tigers", "DETROIT", "Navy"],
-  ["kansas-city", "al-central", "Kansas City", "Royals", "KANSAS CITY", "True Royal"],
-  ["minnesota", "al-central", "Minnesota", "Twins", "MINNESOTA", "Navy"],
+  ["chicago-south-side", "al-central", "Chicago", "White Sox", "SOUTH SIDE", "Black", "Black"],
+  ["cleveland", "al-central", "Cleveland", "Guardians", "CLEVELAND", "Navy", "Navy"],
+  ["detroit", "al-central", "Detroit", "Tigers", "DETROIT", "Navy", "Navy"],
+  ["kansas-city", "al-central", "Kansas City", "Royals", "KANSAS CITY", "True Royal", "Royal"],
+  ["minnesota", "al-central", "Minnesota", "Twins", "MINNESOTA", "Navy", "Navy"],
   // AL West
-  ["oakland", "al-west", "Oakland", "A's", "OAKLAND", "Kelly"],
-  ["houston", "al-west", "Houston", "Astros", "HOUSTON", "Navy"],
-  ["anaheim", "al-west", "Anaheim", "Angels", "ANAHEIM", "Red"],
-  ["seattle", "al-west", "Seattle", "Mariners", "SEATTLE", "Navy"],
-  ["texas", "al-west", "Texas", "Rangers", "TEXAS", "True Royal"],
+  ["oakland", "al-west", "Oakland", "A's", "OAKLAND", "Kelly", "Irish Green"],
+  ["houston", "al-west", "Houston", "Astros", "HOUSTON", "Navy", "Navy"],
+  ["anaheim", "al-west", "Anaheim", "Angels", "ANAHEIM", "Red", "Red"],
+  ["seattle", "al-west", "Seattle", "Mariners", "SEATTLE", "Navy", "Navy"],
+  ["texas", "al-west", "Texas", "Rangers", "TEXAS", "True Royal", "Royal"],
   // NL East
-  ["atlanta", "nl-east", "Atlanta", "Braves", "ATLANTA", "Navy"],
-  ["miami", "nl-east", "Miami", "Marlins", "MIAMI", "Black"],
-  ["queens", "nl-east", "New York", "Mets", "QUEENS", "True Royal"],
-  ["philadelphia", "nl-east", "Philadelphia", "Phillies", "PHILADELPHIA", "Red"],
-  ["washington", "nl-east", "Washington", "Nationals", "WASHINGTON", "Red"],
+  ["atlanta", "nl-east", "Atlanta", "Braves", "ATLANTA", "Navy", "Navy"],
+  ["miami", "nl-east", "Miami", "Marlins", "MIAMI", "Black", "Black"],
+  ["queens", "nl-east", "New York", "Mets", "QUEENS", "True Royal", "Royal"],
+  ["philadelphia", "nl-east", "Philadelphia", "Phillies", "PHILADELPHIA", "Red", "Red"],
+  ["washington", "nl-east", "Washington", "Nationals", "WASHINGTON", "Red", "Red"],
   // NL Central
-  ["chicago-north-side", "nl-central", "Chicago", "Cubs", "NORTH SIDE", "True Royal"],
-  ["cincinnati", "nl-central", "Cincinnati", "Reds", "CINCINNATI", "Red"],
-  ["milwaukee", "nl-central", "Milwaukee", "Brewers", "MILWAUKEE", "Navy"],
-  ["pittsburgh", "nl-central", "Pittsburgh", "Pirates", "PITTSBURGH", "Black"],
-  ["st-louis", "nl-central", "St. Louis", "Cardinals", "ST. LOUIS", "Red"],
+  ["chicago-north-side", "nl-central", "Chicago", "Cubs", "NORTH SIDE", "True Royal", "Royal"],
+  ["cincinnati", "nl-central", "Cincinnati", "Reds", "CINCINNATI", "Red", "Red"],
+  ["milwaukee", "nl-central", "Milwaukee", "Brewers", "MILWAUKEE", "Navy", "Navy"],
+  ["pittsburgh", "nl-central", "Pittsburgh", "Pirates", "PITTSBURGH", "Black", "Black"],
+  ["st-louis", "nl-central", "St. Louis", "Cardinals", "ST. LOUIS", "Red", "Red"],
   // NL West
-  ["arizona", "nl-west", "Arizona", "Diamondbacks", "ARIZONA", "Cardinal"],
-  ["colorado", "nl-west", "Colorado", "Rockies", "COLORADO", "Team Purple"],
-  ["los-angeles", "nl-west", "Los Angeles", "Dodgers", "LOS ANGELES", "True Royal"],
-  ["san-diego", "nl-west", "San Diego", "Padres", "SAN DIEGO", "Brown"],
-  ["san-francisco", "nl-west", "San Francisco", "Giants", "SAN FRANCISCO", "Orange"],
+  ["arizona", "nl-west", "Arizona", "Diamondbacks", "ARIZONA", "Cardinal", "Maroon"],
+  ["colorado", "nl-west", "Colorado", "Rockies", "COLORADO", "Team Purple", "Purple"],
+  ["los-angeles", "nl-west", "Los Angeles", "Dodgers", "LOS ANGELES", "True Royal", "Royal"],
+  ["san-diego", "nl-west", "San Diego", "Padres", "SAN DIEGO", "Brown", "Dark Chocolate"],
+  ["san-francisco", "nl-west", "San Francisco", "Giants", "SAN FRANCISCO", "Orange", "Orange"],
 ];
 
-export const TEAMS: Team[] = ROWS.map(([slug, division, market, nickname, city, shirt]) => ({
+export const TEAMS: Team[] = ROWS.map(([slug, division, market, nickname, city, shirt, hoodie]) => ({
   slug,
   division,
   market,
   nickname,
   city,
   shirt,
+  hoodie,
 }));
 
 export const FEATURED_SLUG = "oakland";

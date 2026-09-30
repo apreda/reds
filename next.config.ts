@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   // Generated images read the shirt font (Inter SemiBold) from disk at runtime.
   outputFileTracingIncludes: {
     "/api/print/[slug]": ["./assets/inter-600.ttf"],
+    "/api/print/hoodie/[slug]": ["./assets/inter-600.ttf"],
     "/opengraph-image": ["./assets/inter-600.ttf"],
   },
 };

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import Tee from "@/components/Tee";
-import { shirtHex } from "@/lib/products";
+import ProductPhoto from "@/components/ProductPhoto";
+import { colorHex } from "@/lib/products";
 import { DIVISIONS, FEATURED_SLUG, getTeam, teamsByDivision } from "@/lib/teams";
 
 const PICKS = [
@@ -14,6 +14,8 @@ const PICKS = [
   "miami",
   "cincinnati",
 ];
+
+const HOODIE_PICKS = ["oakland", "baltimore", "the-bronx", "st-louis"];
 
 export default function Home() {
   const hero = getTeam(FEATURED_SLUG)!;
@@ -39,7 +41,7 @@ export default function Home() {
         </div>
         <div className="hero-art">
           <div className="hero-photo">
-            <Tee team={hero} sizes="(max-width: 860px) 100vw, 50vw" eager />
+            <ProductPhoto team={hero} style="tee" sizes="(max-width: 860px) 100vw, 50vw" eager />
           </div>
           <span className="hero-stat">The original · Oakland, June 13, 2023</span>
         </div>
@@ -59,6 +61,25 @@ export default function Home() {
           <div className="grid">
             {picks.map((t) => (
               <ProductCard key={t.slug} team={t} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <div className="section-head">
+            <div>
+              <span className="eyebrow">For the cold ones</span>
+              <h2 className="display">Hoodies</h2>
+            </div>
+            <Link href="/shop?style=hoodie" className="btn ghost">
+              Shop hoodies
+            </Link>
+          </div>
+          <div className="grid">
+            {HOODIE_PICKS.map((s) => (
+              <ProductCard key={s} team={getTeam(s)!} style="hoodie" />
             ))}
           </div>
         </div>
@@ -114,7 +135,7 @@ export default function Home() {
                   {teamsByDivision(d.id).map((t) => (
                     <li key={t.slug}>
                       <Link href={`/shirt/${t.slug}`}>
-                        <span className="dot" style={{ background: shirtHex(t) }} />
+                        <span className="dot" style={{ background: colorHex(t, "tee") }} />
                         {t.city}
                       </Link>
                     </li>

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { formatPrice, priceFor, type Size } from "@/lib/products";
+import { formatPrice, priceFor, type Size, type Style } from "@/lib/products";
 import { useCart } from "./CartProvider";
 
-export default function BuyBox({ slug, sizes, open }: { slug: string; sizes: Size[]; open: boolean }) {
+export default function BuyBox({ slug, style, sizes, open }: { slug: string; style: Style; sizes: Size[]; open: boolean }) {
   const { add } = useCart();
   const [size, setSize] = useState<Size | null>(null);
   const [qty, setQty] = useState(1);
@@ -17,14 +17,14 @@ export default function BuyBox({ slug, sizes, open }: { slug: string; sizes: Siz
       setErr("Pick a size first.");
       return;
     }
-    add(slug, size, qty);
+    add(slug, style, size, qty);
     setAdded(true);
     setErr("");
   };
 
   return (
     <div style={{ display: "grid", gap: 18 }}>
-      <div className="pdp-price">{formatPrice(priceFor(size ?? "M"))}</div>
+      <div className="pdp-price">{formatPrice(priceFor(style, size ?? "M"))}</div>
       <div>
         <div className="label-row">
           Size

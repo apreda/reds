@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { SHIPPING_CENTS, formatPrice, productName, resolveLine } from "@/lib/products";
+import { SHIPPING_CENTS, colorName, formatPrice, productName, productPath, resolveLine } from "@/lib/products";
 import { useCart } from "./CartProvider";
-import Tee from "./Tee";
+import ProductPhoto from "./ProductPhoto";
 
 export default function CartView({ open }: { open: boolean }) {
   const { lines, ready, setQty, remove } = useCart();
@@ -49,26 +49,26 @@ export default function CartView({ open }: { open: boolean }) {
     <div className="cart">
       <div className="cart-lines">
         {resolved.map(({ line, r }) => (
-          <div className="cart-line" key={`${line.slug}-${line.size}`}>
-            <Link href={`/shirt/${line.slug}`} className="cart-thumb">
-              <Tee team={r!.team} sizes="110px" />
+          <div className="cart-line" key={`${line.slug}-${r!.style}-${line.size}`}>
+            <Link href={productPath(r!.team, r!.style)} className="cart-thumb">
+              <ProductPhoto team={r!.team} style={r!.style} sizes="110px" />
             </Link>
             <div>
-              <h3>{productName(r!.team)}</h3>
+              <h3>{productName(r!.team, r!.style)}</h3>
               <div className="meta">
-                {r!.team.shirt} · Size {line.size}
+                {colorName(r!.team, r!.style)} · Size {line.size}
               </div>
               <div className="qty" style={{ height: 38, marginTop: 10 }}>
-                <button aria-label="Decrease" onClick={() => setQty(line.slug, line.size, line.qty - 1)}>
+                <button aria-label="Decrease" onClick={() => setQty(line.slug, r!.style, line.size, line.qty - 1)}>
                   −
                 </button>
                 <span>{line.qty}</span>
-                <button aria-label="Increase" onClick={() => setQty(line.slug, line.size, line.qty + 1)}>
+                <button aria-label="Increase" onClick={() => setQty(line.slug, r!.style, line.size, line.qty + 1)}>
                   +
                 </button>
               </div>
               <div>
-                <button className="link-btn" onClick={() => remove(line.slug, line.size)}>
+                <button className="link-btn" onClick={() => remove(line.slug, r!.style, line.size)}>
                   Remove
                 </button>
               </div>

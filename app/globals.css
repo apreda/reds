@@ -176,7 +176,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   position: relative;
   overflow: hidden;
 }
-.hero-photo { position: absolute; inset: 0; }
+.hero-photo { position: absolute; inset: 4% 4% 8%; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-stat {
   position: absolute;
@@ -242,12 +242,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .card-img {
   position: relative;
   background: var(--tile);
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
-.tee { object-fit: cover; object-position: 50% 20%; }
-.card-img .tee { transition: transform 0.25s; }
-.card:hover .card-img .tee { transform: scale(1.03); }
+.photo { object-fit: contain; padding: 7%; }
+.card-img .photo { transition: transform 0.25s; }
+.card:hover .card-img .photo { transform: scale(1.03); }
 .card-body { padding-top: 12px; display: grid; gap: 2px; }
 .card-league { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .card-title { font-weight: 600; font-size: 14px; }
@@ -281,7 +281,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .crumbs a:hover { color: var(--ink); }
 .pdp { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; padding-bottom: 80px; }
 .pdp-gallery { display: grid; gap: 12px; }
-.pdp-main { position: relative; background: var(--tile); aspect-ratio: 4 / 5; overflow: hidden; }
+.pdp-main { position: relative; background: var(--tile); aspect-ratio: 1 / 1; overflow: hidden; }
 .pdp-info { position: sticky; top: 92px; align-self: start; display: grid; gap: 18px; }
 .pdp-info h1 { font-size: clamp(34px, 4vw, 48px); margin: 4px 0 0; }
 .pdp-price { font-size: 20px; }
@@ -326,6 +326,19 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .details details[open] summary::after { content: "–"; }
 .details .content { padding: 0 0 18px; color: #444; font-size: 14px; }
 .details ul { margin: 0; padding-left: 18px; }
+.style-switch { display: flex; gap: 22px; }
+.style-switch a, .style-switch button {
+  background: none;
+  border: 0;
+  padding: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+}
+.style-switch [aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
 .swatch-row { display: flex; gap: 8px; align-items: center; font-size: 13px; }
 .swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.15); }
 @media (max-width: 860px) {
@@ -339,7 +352,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .cart { display: grid; grid-template-columns: 1fr 360px; gap: 48px; padding-bottom: 80px; align-items: start; }
 .cart-lines { border-top: 1px solid var(--line); }
 .cart-line { display: grid; grid-template-columns: 110px 1fr auto; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: center; }
-.cart-thumb { position: relative; background: var(--tile); aspect-ratio: 4 / 5; overflow: hidden; }
+.cart-thumb { position: relative; background: var(--tile); aspect-ratio: 1 / 1; overflow: hidden; }
 .cart-line h3 { margin: 0 0 2px; font-size: 15px; }
 .cart-line .meta { font-size: 13px; color: var(--muted); }
 .link-btn { background: none; border: 0; padding: 0; font-size: 12px; text-decoration: underline; color: var(--muted); margin-top: 8px; }
@@ -373,7 +386,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .timeline b { font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; }
 @media (max-width: 520px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
 .sources { font-size: 13px !important; color: var(--muted) !important; }
-.story-photo { position: relative; background: var(--tile); width: min(440px, 100%); aspect-ratio: 4 / 5; overflow: hidden; margin: 0 0 28px; }
+.story-photo { position: relative; background: var(--tile); width: min(440px, 100%); aspect-ratio: 1 / 1; overflow: hidden; margin: 0 0 28px; }
 
 /* ---------- footer ---------- */
 .footer { border-top: 1px solid var(--line); margin-top: 0; padding: 56px 0 36px; background: #fff; }

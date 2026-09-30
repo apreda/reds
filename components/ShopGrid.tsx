@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { STYLE, STYLES, type Style } from "@/lib/products";
 import { DIVISIONS, TEAMS, teamsByDivision, type Division } from "@/lib/teams";
 import ProductCard from "./ProductCard";
 
-export default function ShopGrid({ initialDivision }: { initialDivision: Division | "all" }) {
+export default function ShopGrid({ initialDivision, initialStyle }: { initialDivision: Division | "all"; initialStyle: Style }) {
   const router = useRouter();
   const [division, setDivision] = useState<Division | "all">(initialDivision);
+  const [style, setStyle] = useState<Style>(initialStyle);
   const [q, setQ] = useState("");
 
   const teams = useMemo(() => {
@@ -19,20 +21,31 @@ export default function ShopGrid({ initialDivision }: { initialDivision: Divisio
     );
   }, [division, q]);
 
-  const pick = (id: Division | "all") => {
-    setDivision(id);
-    router.replace(id === "all" ? "/shop" : `/shop?division=${id}`, { scroll: false });
+  const go = (d: Division | "all", s: Style) => {
+    setDivision(d);
+    setStyle(s);
+    const params = new URLSearchParams();
+    if (s !== "tee") params.set("style", s);
+    if (d !== "all") params.set("division", d);
+    router.replace(params.size ? `/shop?${params}` : "/shop", { scroll: false });
   };
 
   return (
     <>
+      <nav className="style-switch" aria-label="Style" style={{ marginBottom: 18 }}>
+        {STYLES.map((s) => (
+          <button key={s} aria-current={s === style ? "page" : undefined} onClick={() => go(division, s)}>
+            {STYLE[s].label}s
+          </button>
+        ))}
+      </nav>
       <div className="shop-controls">
         <div className="tabs" role="tablist" aria-label="Division">
-          <button className="tab" role="tab" aria-selected={division === "all"} onClick={() => pick("all")}>
+          <button className="tab" role="tab" aria-selected={division === "all"} onClick={() => go("all", style)}>
             All {TEAMS.length}
           </button>
           {DIVISIONS.map((d) => (
-            <button key={d.id} className="tab" role="tab" aria-selected={division === d.id} onClick={() => pick(d.id)}>
+            <button key={d.id} className="tab" role="tab" aria-selected={division === d.id} onClick={() => go(d.id, style)}>
               {d.label}
             </button>
           ))}
@@ -49,7 +62,7 @@ export default function ShopGrid({ initialDivision }: { initialDivision: Divisio
       {teams.length ? (
         <div className="grid">
           {teams.map((t) => (
-            <ProductCard key={t.slug} team={t} />
+            <ProductCard key={t.slug} team={t} style={style} />
           ))}
         </div>
       ) : (

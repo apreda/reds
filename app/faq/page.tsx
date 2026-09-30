@@ -10,34 +10,39 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   },
   {
     id: "sizing",
-    q: "How do the shirts fit?",
+    q: "How do the tees and hoodies fit?",
     a: (
       <>
         <p>
-          We print on the Bella+Canvas 3001 &mdash; a soft, lightweight unisex tee with a modern retail fit. If you like a
-          roomier fit, size up. Approximate body width / length in inches:
+          Tees are the Bella+Canvas 3001, a soft, lightweight unisex tee with a modern retail fit. Hoodies are the Gildan
+          18500, a classic unisex heavy blend hoodie with a roomier fit. If you like a looser tee, size up. Approximate
+          body width / length in inches:
         </p>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
           <thead>
             <tr style={{ textAlign: "left", borderBottom: "1px solid var(--line)" }}>
               <th style={{ padding: "8px 0" }}>Size</th>
-              <th>Width</th>
-              <th>Length</th>
+              <th>Tee</th>
+              <th>Hoodie</th>
             </tr>
           </thead>
           <tbody>
             {[
-              ["S", "18", "28"],
-              ["M", "20", "29"],
-              ["L", "22", "30"],
-              ["XL", "24", "31"],
-              ["2XL", "26", "32"],
-              ["3XL", "28", "33"],
-            ].map(([s, w, l]) => (
+              ["S", "18", "28", "20", "27"],
+              ["M", "20", "29", "22", "28"],
+              ["L", "22", "30", "24", "29"],
+              ["XL", "24", "31", "26", "30"],
+              ["2XL", "26", "32", "28", "31"],
+              ["3XL", "28", "33", "30", "32"],
+            ].map(([s, tw, tl, hw, hl]) => (
               <tr key={s} style={{ borderBottom: "1px solid var(--line)" }}>
                 <td style={{ padding: "8px 0" }}>{s}</td>
-                <td>{w}&Prime;</td>
-                <td>{l}&Prime;</td>
+                <td>
+                  {tw}&Prime; / {tl}&Prime;
+                </td>
+                <td>
+                  {hw}&Prime; / {hl}&Prime;
+                </td>
               </tr>
             ))}
           </tbody>

@@ -1,32 +1,35 @@
 # Sell The Team
 
-Protest tees for baseball fans whose owners stopped listening, one for each of the 30 MLB fan bases. The idea comes from the green "SELL" shirts Oakland A's fans wore to the June 13, 2023 reverse boycott.
+Protest tees and hoodies for baseball fans whose owners stopped listening, one for each of the 30 MLB fan bases. The idea comes from the green "SELL" shirts Oakland A's fans wore to the June 13, 2023 reverse boycott.
 
 - **Stack:** Next.js (App Router) on Vercel
 - **Payments:** Stripe Checkout
-- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
+- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001 tee, Gildan 18500 hoodie). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
 
 ## How it works
 
 | Piece | Where |
 | --- | --- |
-| Team catalog (listing name, Printful shirt color) | `lib/teams.ts` |
-| Prices, sizes, shipping | `lib/products.ts` |
+| Team catalog (listing name, Printful tee and hoodie colors) | `lib/teams.ts` |
+| Styles (tee, hoodie), prices, sizes, shipping | `lib/products.ts` |
 | Printful variant IDs per color/size | `lib/printful-variants.json` (regenerate with `node scripts/sync-printful-variants.mjs`) |
-| Shirt photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png`, shown by `components/Tee.tsx` |
-| Print-ready PNG sent to Printful (12"x16" @150dpi, transparent, Inter SemiBold lettering) | `/api/print/<slug>.png` |
+| Photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png` and `public/mockups/hoodie/<slug>.png`, shown by `components/ProductPhoto.tsx` |
+| Print-ready PNGs sent to Printful (150dpi, transparent, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14") |
 | Old mockup URL, redirects to the photo | `/api/mockup/<slug>` |
 | Create Stripe Checkout session | `POST /api/checkout` |
 | Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
 
 Every shirt is the same white "SELL" on the team's primary color, like the Oakland originals. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
 
-## Shirt photos
+## Photos
 
-Every shirt image comes from the print file, so the lettering always matches what Printful prints. Regenerate the photos after changing the artwork, a colorway or a team, bump `ART_VERSION` in `lib/art.ts` (Printful and `next/image` both cache by URL), then commit `public/mockups/`:
+Every photo comes from the print files, so the lettering always matches what Printful prints. After changing the artwork, a color or a team, serve this code at a public URL (the production site, or `cloudflared tunnel --url http://localhost:3000` against `npm run dev`), regenerate with Printful's Mockup Generator, bump `ART_VERSION` in `lib/art.ts` (Printful and `next/image` both cache by URL), and commit `public/mockups/`:
 
-- **Printful Mockup Generator (preferred).** Printful fetches the print files itself, so serve this code at a public URL first (the production site, or `cloudflared tunnel --url http://localhost:3000` against `npm run dev`), then run `node --env-file=.env.local scripts/generate-mockups.mjs` with `PRINTFUL_API_TOKEN` and `BASE_URL` set. `--options` lists the available styles (`MOCKUP_STYLE`, default `Flat`).
-- **Fallback, no token needed.** `BASE_URL=http://localhost:3000 python3 scripts/composite-mockups.py` prints the artwork onto Printful's catalog photo of the blank tee in each color (needs numpy, scipy and Pillow).
+```bash
+BASE_URL=https://<public url> node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie]
+```
+
+It needs `PRINTFUL_API_TOKEN` and `PRINTFUL_STORE_ID`, renders one flat-lay per color (Printful allows about one a minute), and copies it to every team in that color.
 
 ## Local dev
 
@@ -49,4 +52,4 @@ Without a Printful token the webhook still acknowledges payments and logs `needs
 
 ## Pricing
 
-$25 per tee (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping, all set in `lib/products.ts`. Printful's cost is about $12–16 per shirt plus its shipping, so each order nets roughly $8–10 before Stripe fees.
+$25 per tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping per order, all set in `lib/products.ts`. Printful charges about $12 per tee and $23 per hoodie (same size upcharges) plus its shipping, so a single-item order nets roughly $8–10 on a tee and $15–18 on a hoodie before Stripe fees.

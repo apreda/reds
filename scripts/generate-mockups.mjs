@@ -1,37 +1,34 @@
-// Makes one photo mockup per team with Printful's Mockup Generator (Bella+Canvas
-// 3001, product 71) from that team's print file, and saves it to
-// public/mockups/<slug>.png. Printful fetches the print files itself, so BASE_URL
-// must be a public URL serving this code's /api/print/<slug>.png.
+// Makes Printful flat-lay photos of the printed tee (Bella+Canvas 3001) and
+// hoodie (Gildan 18500) in every team color with the Mockup Generator, and
+// saves them to public/mockups/<slug>.png and public/mockups/hoodie/<slug>.png.
+// The print is the same for every team, so each color is rendered once.
 //
-//   node --env-file=.env.local scripts/generate-mockups.mjs [--options] [slug ...]
+//   node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie ...] [--options]
 //
-// Env: PRINTFUL_API_TOKEN, BASE_URL, and optionally PRINTFUL_STORE_ID and
-// MOCKUP_STYLE (a Printful option group, listed by --options). Needs Node 23.6+
-// because it imports lib/teams.ts directly.
+// Env: PRINTFUL_API_TOKEN, PRINTFUL_STORE_ID, and BASE_URL: a public URL
+// serving this code's print files (Printful downloads them itself). Needs Node
+// 23.6+ because it imports lib/teams.ts directly. Bump ART_VERSION in
+// lib/art.ts after regenerating.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { TEAMS } from "../lib/teams.ts";
 
 const API = "https://api.printful.com";
-const PRODUCT = 71;
-const PRINT_AREA = { area_width: 1800, area_height: 2400, width: 1800, height: 2400, top: 0, left: 0 };
-const STYLE = process.env.MOCKUP_STYLE ?? "Flat";
-const OUT = new URL("../public/mockups/", import.meta.url);
+const STYLES = {
+  tee: { product: 71, color: (t) => t.shirt, area: [1800, 2400], print: "", out: "" },
+  hoodie: { product: 146, color: (t) => t.hoodie, area: [2100, 2100], print: "hoodie/", out: "hoodie/" },
+};
 
-const token = process.env.PRINTFUL_API_TOKEN;
+const { PRINTFUL_API_TOKEN: token, PRINTFUL_STORE_ID: store } = process.env;
 const base = process.env.BASE_URL?.replace(/\/$/, "");
-if (!token) throw new Error("Set PRINTFUL_API_TOKEN");
-const colors = JSON.parse(readFileSync(new URL("../lib/printful-variants.json", import.meta.url), "utf8"));
+if (!token || !store) throw new Error("Set PRINTFUL_API_TOKEN and PRINTFUL_STORE_ID");
+const variants = JSON.parse(readFileSync(new URL("../lib/printful-variants.json", import.meta.url), "utf8"));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function pf(path, body) {
   for (;;) {
     const res = await fetch(API + path, {
       method: body ? "POST" : "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        ...(process.env.PRINTFUL_STORE_ID ? { "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID } : {}),
-      },
+      headers: { Authorization: `Bearer ${token}`, "X-PF-Store-Id": store, "Content-Type": "application/json" },
       body: body && JSON.stringify(body),
     });
     const json = await res.json().catch(() => ({}));
@@ -48,35 +45,47 @@ async function pf(path, body) {
 }
 
 const args = process.argv.slice(2);
+const styles = args.filter((a) => a in STYLES);
 if (args.includes("--options")) {
-  const r = await pf(`/mockup-generator/printfiles/${PRODUCT}`);
-  console.log("option groups:", r.option_groups.join(", "));
-  console.log("options:", r.options.join(", "));
+  for (const s of styles.length ? styles : Object.keys(STYLES)) {
+    const r = await pf(`/mockup-generator/printfiles/${STYLES[s].product}`);
+    console.log(`${s} option groups: ${r.option_groups.join(", ")}\n${s} options: ${r.options.join(", ")}`);
+  }
   process.exit(0);
 }
-if (!base) throw new Error("Set BASE_URL to a public URL serving /api/print/<slug>.png");
+if (!base) throw new Error("Set BASE_URL to a public URL serving /api/print/...");
 
-const teams = args.length ? TEAMS.filter((t) => args.includes(t.slug)) : TEAMS;
-mkdirSync(OUT, { recursive: true });
+for (const style of styles.length ? styles : Object.keys(STYLES)) {
+  const { product, color, area, print, out } = STYLES[style];
+  const dir = new URL(`../public/mockups/${out}`, import.meta.url);
+  mkdirSync(dir, { recursive: true });
+  const byColor = Map.groupBy(TEAMS, color);
+  for (const [name, teams] of byColor) {
+    const variant = variants[style][name]?.variants?.M;
+    if (!variant) throw new Error(`No Printful ${style} variant for ${name}`);
+    const [w, h] = area;
+    const task = await pf(`/mockup-generator/create-task/${product}`, {
+      variant_ids: [variant],
+      format: "png",
+      option_groups: ["Flat"],
+      options: ["Front"],
+      files: [
+        {
+          placement: "front",
+          image_url: `${base}/api/print/${print}${teams[0].slug}.png?v=${Date.now()}`,
+          position: { area_width: w, area_height: h, width: w, height: h, top: 0, left: 0 },
+        },
+      ],
+    });
+    let result;
+    do {
+      await sleep(4000);
+      result = await pf(`/mockup-generator/task?task_key=${task.task_key}`);
+    } while (result.status === "pending");
+    if (result.status !== "completed") throw new Error(`${style} ${name}: ${JSON.stringify(result)}`);
 
-for (const team of teams) {
-  const variant = colors[team.shirt]?.variants?.M;
-  if (!variant) throw new Error(`No Printful variant for ${team.shirt}`);
-  const task = await pf(`/mockup-generator/create-task/${PRODUCT}`, {
-    variant_ids: [variant],
-    format: "png",
-    option_groups: [STYLE],
-    files: [{ placement: "front", image_url: `${base}/api/print/${team.slug}.png?v=${Date.now()}`, position: PRINT_AREA }],
-  });
-  let result;
-  do {
-    await sleep(4000);
-    result = await pf(`/mockup-generator/task?task_key=${task.task_key}`);
-  } while (result.status === "pending");
-  if (result.status !== "completed") throw new Error(`${team.slug}: ${JSON.stringify(result)}`);
-
-  const front = result.mockups.find((m) => m.placement === "front") ?? result.mockups[0];
-  const png = Buffer.from(await (await fetch(front.mockup_url)).arrayBuffer());
-  writeFileSync(new URL(`${team.slug}.png`, OUT), png);
-  console.log(`${team.slug}: ${team.shirt} (${Math.round(png.length / 1024)} KB)`);
+    const png = Buffer.from(await (await fetch(result.mockups[0].mockup_url)).arrayBuffer());
+    for (const t of teams) writeFileSync(new URL(`${t.slug}.png`, dir), png);
+    console.log(`${style} ${name} (${Math.round(png.length / 1024)} KB): ${teams.map((t) => t.slug).join(", ")}`);
+  }
 }

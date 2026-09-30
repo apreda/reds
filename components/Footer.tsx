@@ -18,6 +18,7 @@ export default function Footer() {
             <h4>Shop</h4>
             <ul>
               <li><Link href="/shop">All 30 Teams</Link></li>
+              <li><Link href="/shop?style=hoodie">Hoodies</Link></li>
               {DIVISIONS.map((d) => (
                 <li key={d.id}>
                   <Link href={`/shop?division=${d.id}`}>{d.label}</Link>

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { SHIPPING_CENTS, mockupPath, productName, resolveLine, type CartLine } from "@/lib/products";
+import { SHIPPING_CENTS, STYLE, colorName, mockupPath, productName, resolveLine, type CartLine } from "@/lib/products";
 import { ordersOpen, siteUrl } from "@/lib/site";
 import { stripe } from "@/lib/stripe";
 
@@ -32,11 +32,11 @@ export async function POST(req: Request) {
           unit_amount: r!.unit,
           product_data: {
             // Also the Printful item name (see the webhook): never a team name.
-            name: `${productName(r!.team)} (${r!.size})`,
-            description: `${r!.team.shirt} tee, printed to order`,
-            images: [`${base}${mockupPath(r!.team)}`],
+            name: `${productName(r!.team, r!.style)} (${r!.size})`,
+            description: `${colorName(r!.team, r!.style)} ${STYLE[r!.style].label.toLowerCase()}, printed to order`,
+            images: [`${base}${mockupPath(r!.team, r!.style)}`],
             // Read back by the webhook to build the Printful order.
-            metadata: { slug: r!.team.slug, size: r!.size },
+            metadata: { slug: r!.team.slug, style: r!.style, size: r!.size },
           },
         },
       })),

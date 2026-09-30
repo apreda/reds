@@ -1,11 +1,11 @@
 import { ART_VERSION } from "./art";
-import { printfulVariantId, type Size } from "./products";
+import { printfulVariantId, type Size, type Style } from "./products";
 import { siteUrl } from "./site";
 import { getTeam } from "./teams";
 
 const API = "https://api.printful.com";
 
-export type FulfillmentItem = { slug: string; size: Size; qty: number; unitCents: number; name: string };
+export type FulfillmentItem = { slug: string; style: Style; size: Size; qty: number; unitCents: number; name: string };
 export type Recipient = {
   name: string;
   address1: string;
@@ -22,8 +22,8 @@ export function printfulConfigured(): boolean {
   return Boolean(process.env.PRINTFUL_API_TOKEN);
 }
 
-export function printFileUrl(slug: string): string {
-  return `${siteUrl()}/api/print/${slug}.png?v=${ART_VERSION}`;
+export function printFileUrl(slug: string, style: Style): string {
+  return `${siteUrl()}/api/print/${style === "tee" ? "" : `${style}/`}${slug}.png?v=${ART_VERSION}`;
 }
 
 const dollars = (cents: number) => (cents / 100).toFixed(2);
@@ -40,14 +40,14 @@ export async function createPrintfulOrder(opts: {
 }): Promise<{ id?: number; duplicate?: boolean }> {
   const items = opts.items.map((it) => {
     const team = getTeam(it.slug);
-    const variant_id = team && printfulVariantId(team, it.size);
-    if (!team || !variant_id) throw new Error(`No Printful variant for ${it.slug} / ${it.size}`);
+    const variant_id = team && printfulVariantId(team, it.style, it.size);
+    if (!team || !variant_id) throw new Error(`No Printful variant for ${it.slug} / ${it.style} / ${it.size}`);
     return {
       variant_id,
       quantity: it.qty,
       name: it.name,
       retail_price: dollars(it.unitCents),
-      files: [{ type: "default", url: printFileUrl(team.slug) }],
+      files: [{ type: "default", url: printFileUrl(team.slug, it.style) }],
     };
   });
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { createPrintfulOrder, printfulConfigured, type FulfillmentItem } from "@/lib/printful";
-import { SIZES, type Size } from "@/lib/products";
+import { SIZES, isStyle, type Size } from "@/lib/products";
 import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
@@ -42,9 +42,14 @@ export async function POST(req: Request) {
     const items: FulfillmentItem[] = lineItems.data.map((li) => {
       const product = li.price?.product as Stripe.Product;
       const size = product.metadata.size as Size;
-      if (!product.metadata.slug || !SIZES.includes(size)) throw new Error(`Line item missing metadata: ${li.id}`);
+      // Orders placed before hoodies existed have no style: they're tees.
+      const style = product.metadata.style ?? "tee";
+      if (!product.metadata.slug || !SIZES.includes(size) || !isStyle(style)) {
+        throw new Error(`Line item missing metadata: ${li.id}`);
+      }
       return {
         slug: product.metadata.slug,
+        style,
         size,
         qty: li.quantity ?? 1,
         unitCents: li.price?.unit_amount ?? 0,

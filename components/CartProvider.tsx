@@ -1,20 +1,23 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import type { CartLine, Size } from "@/lib/products";
+import type { CartLine, Size, Style } from "@/lib/products";
 
 type Cart = {
   lines: CartLine[];
   count: number;
   ready: boolean;
-  add: (slug: string, size: Size, qty: number) => void;
-  setQty: (slug: string, size: Size, qty: number) => void;
-  remove: (slug: string, size: Size) => void;
+  add: (slug: string, style: Style, size: Size, qty: number) => void;
+  setQty: (slug: string, style: Style, size: Size, qty: number) => void;
+  remove: (slug: string, style: Style, size: Size) => void;
   clear: () => void;
 };
 
 const CartContext = createContext<Cart | null>(null);
 const KEY = "stt-cart-v1";
+
+const same = (l: CartLine, slug: string, style: Style, size: Size) =>
+  l.slug === slug && (l.style ?? "tee") === style && l.size === size;
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
@@ -35,23 +38,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [lines, ready]);
 
-  const setQty = useCallback((slug: string, size: Size, qty: number) => {
+  const setQty = useCallback((slug: string, style: Style, size: Size, qty: number) => {
     setLines((prev) =>
       qty <= 0
-        ? prev.filter((l) => !(l.slug === slug && l.size === size))
-        : prev.map((l) => (l.slug === slug && l.size === size ? { ...l, qty: Math.min(qty, 20) } : l)),
+        ? prev.filter((l) => !same(l, slug, style, size))
+        : prev.map((l) => (same(l, slug, style, size) ? { ...l, qty: Math.min(qty, 20) } : l)),
     );
   }, []);
 
-  const add = useCallback((slug: string, size: Size, qty: number) => {
+  const add = useCallback((slug: string, style: Style, size: Size, qty: number) => {
     setLines((prev) => {
-      const hit = prev.find((l) => l.slug === slug && l.size === size);
+      const hit = prev.find((l) => same(l, slug, style, size));
       if (hit) return prev.map((l) => (l === hit ? { ...l, qty: Math.min(l.qty + qty, 20) } : l));
-      return [...prev, { slug, size, qty }];
+      return [...prev, { slug, style, size, qty }];
     });
   }, []);
 
-  const remove = useCallback((slug: string, size: Size) => setQty(slug, size, 0), [setQty]);
+  const remove = useCallback((slug: string, style: Style, size: Size) => setQty(slug, style, size, 0), [setQty]);
   const clear = useCallback(() => setLines([]), []);
 
   const value = useMemo(

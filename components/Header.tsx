@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useCart } from "./CartProvider";
 
 const LINKS = [
-  { href: "/shop", label: "Shop All" },
+  { href: "/shop", label: "Tees" },
+  { href: "/shop?style=hoodie", label: "Hoodies" },
 ];
 
 export default function Header() {

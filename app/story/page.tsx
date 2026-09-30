@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Tee from "@/components/Tee";
+import ProductPhoto from "@/components/ProductPhoto";
 import { getTeam } from "@/lib/teams";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function Story() {
           One word. 27,759 people.
         </h1>
         <div className="story-photo">
-          <Tee team={oak} sizes="(max-width: 480px) 100vw, 440px" />
+          <ProductPhoto team={oak} style="tee" sizes="(max-width: 480px) 100vw, 440px" />
         </div>
         <p>
           By the spring of 2023, Oakland fans had spent years watching their team get stripped down, their ballpark left

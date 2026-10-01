@@ -12,3 +12,9 @@ export function siteUrl(): string {
 export function ordersOpen(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY);
 }
+
+// With a publishable key (from the same Stripe account as STRIPE_SECRET_KEY),
+// checkout is Stripe's embedded form on /checkout instead of a redirect.
+export function embeddedCheckout(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+}

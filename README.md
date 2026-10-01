@@ -16,7 +16,7 @@ Protest tees and hoodies for baseball fans whose owners stopped listening, one f
 | Photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png` and `public/mockups/hoodie/<slug>.png`, shown by `components/ProductPhoto.tsx` |
 | Print-ready PNGs sent to Printful (150dpi, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14"), `/api/print/pinstripe/<panel>.png` (pinstripe front, back and sleeves) |
 | Old mockup URL, redirects to the photo | `/api/mockup/<slug>` |
-| Create Stripe Checkout session | `POST /api/checkout` |
+| Create Stripe Checkout session (embedded on `/checkout` when `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is set, else hosted) | `POST /api/checkout` |
 | Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
 
 Every shirt is the same white "SELL" on the team's main color, like the Oakland originals (black only for the White Sox). The Yankees also get a white pinstripe tee with navy SELL. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
@@ -44,7 +44,7 @@ Until `STRIPE_SECRET_KEY` is set, the site runs in **pre-launch mode**: browsing
 
 1. **Vercel.** Import this repo (framework is Next.js, already pinned in `vercel.json`). Add your domain and set `NEXT_PUBLIC_SITE_URL` to it.
 2. **Printful.** Create a free account, then add a "Manual order platform / API" store. Under *Settings → API* create a private token with order scopes, and set `PRINTFUL_API_TOKEN` (and `PRINTFUL_STORE_ID` if the token covers several stores). Add a payment method in Printful billing, since Printful charges you its cost for each order.
-3. **Stripe.** Set `STRIPE_SECRET_KEY`. Under *Developers → Webhooks* add the endpoint `https://<your-domain>/api/webhooks/stripe` with events `checkout.session.completed` and `checkout.session.async_payment_succeeded`, then set `STRIPE_WEBHOOK_SECRET` to its signing secret.
+3. **Stripe.** Set `STRIPE_SECRET_KEY` and the same account's `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (for the embedded checkout). Under *Developers → Webhooks* add the endpoint `https://<your-domain>/api/webhooks/stripe` with events `checkout.session.completed` and `checkout.session.async_payment_succeeded`, then set `STRIPE_WEBHOOK_SECRET` to its signing secret.
 4. **Redeploy.** Env vars are read at build time for the "orders open" banner.
 5. **Test.** Place an order with Stripe test keys. It shows up in Printful as a **draft**. Check that the print file and placement look right, then set `PRINTFUL_AUTO_CONFIRM=true` so paid orders go straight to production.
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { SHIPPING_CENTS, STYLE, colorName, mockupPath, productName, resolveLine, type CartLine } from "@/lib/products";
-import { ordersOpen, siteUrl } from "@/lib/site";
+import { embeddedCheckout, ordersOpen, siteUrl } from "@/lib/site";
 import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
@@ -22,9 +22,16 @@ export async function POST(req: Request) {
   }
 
   const base = siteUrl();
+  const embedded = embeddedCheckout();
   try {
     const session = await stripe().checkout.sessions.create({
       mode: "payment",
+      // Embedded: Stripe's form renders on /checkout and returns to the success
+      // page. Hosted (no publishable key configured): redirect to Stripe.
+      ...(embedded
+        ? { ui_mode: "embedded_page", return_url: `${base}/order/success?session_id={CHECKOUT_SESSION_ID}` }
+        : { success_url: `${base}/order/success?session_id={CHECKOUT_SESSION_ID}`, cancel_url: `${base}/cart` }),
+      integration_identifier: `sellmyteam_${embedded ? "embedded" : "hosted"}_qvzhkmwr`,
       line_items: resolved.map((r) => ({
         quantity: r!.qty,
         price_data: {
@@ -56,10 +63,8 @@ export async function POST(req: Request) {
       ],
       phone_number_collection: { enabled: true },
       allow_promotion_codes: true,
-      success_url: `${base}/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/cart`,
     });
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json(embedded ? { clientSecret: session.client_secret } : { url: session.url });
   } catch (e) {
     console.error("checkout error", e);
     return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 500 });

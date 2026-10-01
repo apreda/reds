@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SHIPPING_CENTS, colorName, formatPrice, productName, productPath, resolveLine } from "@/lib/products";
 import { useCart } from "./CartProvider";
 import ProductPhoto from "./ProductPhoto";
 
 export default function CartView({ open }: { open: boolean }) {
+  const router = useRouter();
   const { lines, ready, setQty, remove } = useCart();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -28,6 +30,11 @@ export default function CartView({ open }: { open: boolean }) {
   const subtotal = resolved.reduce((n, { r }) => n + r!.unit * r!.qty, 0);
 
   const checkout = async () => {
+    // Embedded checkout lives on /checkout; otherwise redirect to Stripe.
+    if (process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+      router.push("/checkout");
+      return;
+    }
     setBusy(true);
     setErr("");
     try {

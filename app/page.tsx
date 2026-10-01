@@ -9,17 +9,17 @@ import { DIVISIONS, FEATURED_SLUG, getTeam, LEAGUES, teamsByDivision } from "@/l
 // own tabs in the shop.
 const PICKS: [string, Style][] = [
   ["oakland", "tee"],
-  ["the-bronx", "tee"],
+  ["new-york-navy", "tee"],
   ["cincinnati", "tee"],
   ["pittsburgh", "tee"],
-  ["chicago-north-side", "tee"],
+  ["chicago-blue", "tee"],
   ["miami", "tee"],
   ["baltimore", "tee"],
   ["colorado", "tee"],
   ["st-louis", "tee"],
 ];
 
-const HOODIE_PICKS = ["oakland", "the-bronx", "chicago-north-side", "st-louis", "baltimore", "pittsburgh"];
+const HOODIE_PICKS = ["oakland", "new-york-navy", "chicago-blue", "st-louis", "baltimore", "pittsburgh"];
 
 export default function Home() {
   const hero = getTeam(FEATURED_SLUG)!;

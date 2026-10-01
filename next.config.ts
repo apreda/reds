@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 import { ART_VERSION } from "./lib/art";
+import { OLD_SLUGS } from "./lib/teams";
 
 const nextConfig: NextConfig = {
+  // Old team addresses forward to the new ones, so shared links keep working.
+  async redirects() {
+    return Object.entries(OLD_SLUGS).flatMap(([from, to]) => [
+      { source: `/${from}`, destination: `/${to}`, permanent: true },
+      { source: `/:style(shirt|city|hoodie)/${from}`, destination: `/:style/${to}`, permanent: true },
+    ]);
+  },
   // next/image only optimizes the current shirt photos.
   images: { localPatterns: [{ pathname: "/mockups/**", search: `?v=${ART_VERSION}` }] },
   // Generated images read the shirt font (Inter SemiBold) from disk at runtime.

@@ -89,7 +89,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
         <div className="pdp-info">
           <div>
             <span className="eyebrow">{teamLabel(team)}</span>
-            <h1 className="display">{productName(team, style)}</h1>
+            <h1 className="display">{cityName(team)}</h1>
           </div>
           <nav className="style-switch" aria-label="Style">
             {stylesFor(team).map((s) => (

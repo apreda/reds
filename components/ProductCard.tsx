@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { formatPrice, priceFor, productName, productPath, type Style } from "@/lib/products";
-import { teamLabel, type Team } from "@/lib/teams";
+import { formatPrice, priceFor, productPath, type Style } from "@/lib/products";
+import { cityName, teamLabel, type Team } from "@/lib/teams";
 import ProductPhoto from "./ProductPhoto";
 
 export default function ProductCard({ team, style = "tee" }: { team: Team; style?: Style }) {
@@ -11,7 +11,7 @@ export default function ProductCard({ team, style = "tee" }: { team: Team; style
       </div>
       <div className="card-body">
         <span className="card-league">{teamLabel(team)}</span>
-        <span className="card-title">{productName(team, style)}</span>
+        <span className="card-title">{cityName(team)}</span>
         <span className="card-price">{formatPrice(priceFor(style, "M"))}</span>
       </div>
     </Link>

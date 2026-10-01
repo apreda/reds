@@ -1,4 +1,4 @@
-import { ART_VERSION, PINSTRIPE_PANELS } from "./art";
+import { ART_VERSION } from "./art";
 import { printfulVariantId, type Size, type Style } from "./products";
 import { siteUrl } from "./site";
 import { getTeam } from "./teams";
@@ -22,8 +22,8 @@ export function printfulConfigured(): boolean {
   return Boolean(process.env.PRINTFUL_API_TOKEN);
 }
 
-// Files for one Printful order item: the front print, or every panel of the
-// all-over-print pinstripe tee.
+// Files for one Printful order item: the front print (and the back, for the
+// NEPO PHIL jersey).
 export function printFiles(slug: string, style: Style): { type: string; url: string }[] {
   const v = `?v=${ART_VERSION}`;
   // Cincinnati specials print from fixed files in public/print.
@@ -34,9 +34,6 @@ export function printFiles(slug: string, style: Style): { type: string; url: str
       { type: "default", url: `${siteUrl()}/print/nepo-phil-jersey-front.png${v}` },
       { type: "back", url: `${siteUrl()}/print/nepo-phil-jersey-back.png${v}` },
     ];
-  }
-  if (style === "pinstripe") {
-    return PINSTRIPE_PANELS.map((p) => ({ type: `${p}_dtfabric`, url: `${siteUrl()}/api/print/pinstripe/${p}.png${v}` }));
   }
   return [{ type: "default", url: `${siteUrl()}/api/print/${style === "tee" ? "" : `${style}/`}${slug}.png${v}` }];
 }

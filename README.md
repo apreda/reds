@@ -4,7 +4,7 @@ Protest tees and hoodies for fans whose owners stopped listening, one for every 
 
 - **Stack:** Next.js (App Router) on Vercel
 - **Payments:** Stripe Checkout
-- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001 tee, Gildan 18500 hoodie, and an all-over-print cotton tee for the Yankees pinstripe edition). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
+- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001 tee, Gildan 18500 hoodie). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
 
 ## How it works
 
@@ -14,12 +14,12 @@ Protest tees and hoodies for fans whose owners stopped listening, one for every 
 | Styles (tee, hoodie), prices, sizes, shipping | `lib/products.ts` |
 | Printful variant IDs per color/size | `lib/printful-variants.json` (regenerate with `node scripts/sync-printful-variants.mjs`) |
 | Photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png` and `public/mockups/hoodie/<slug>.png`, shown by `components/ProductPhoto.tsx` |
-| Print-ready PNGs sent to Printful (150dpi, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14"), `/api/print/pinstripe/<panel>.png` (pinstripe front, back and sleeves) |
+| Print-ready PNGs sent to Printful (150dpi, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/city/<slug>.png` (tee with the city), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14"), `public/print/` (Cincinnati specials) |
 | Old mockup URL, redirects to the photo | `/api/mockup/<slug>` |
 | Create Stripe Checkout session (embedded on `/checkout` when `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is set, else hosted) | `POST /api/checkout` |
 | Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
 
-Every shirt is the same white "SELL" on the team's main color, like the Oakland originals (black only for the White Sox). The Yankees also get a white pinstripe tee with navy SELL. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
+Each team has two tees, white "SELL" on the team's main color and the same with the city underneath, plus a SELL hoodie; Cincinnati also has three NEPO PHIL tees. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
 
 ## Photos
 
@@ -30,6 +30,8 @@ BASE_URL=https://<public url> node --env-file=.env.local scripts/generate-mockup
 ```
 
 It needs `PRINTFUL_API_TOKEN` and `PRINTFUL_STORE_ID`, renders one flat-lay per color (Printful allows about one a minute), and copies it to every team in that color.
+
+City tee photos are made from those: `BASE_URL=http://localhost:3000 python3 scripts/city-mockups.py` adds each team's city line to its plain tee photo, in the same place and scale Printful prints it.
 
 ## Local dev
 
@@ -52,4 +54,4 @@ Without a Printful token the webhook still acknowledges payments and logs `needs
 
 ## Pricing
 
-$25 per tee, $35 for the pinstripe tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL), with free shipping to the US and Canada, all set in `lib/products.ts`. Printful charges $11.92 per tee, $25.49 per pinstripe tee and $22.63 per hoodie (same size upcharges), plus its shipping (US: $4.95 for one tee, $7.15 for two, $8.79 for a hoodie; Canada about $2–4 more). After Stripe's 2.9% + 30¢, a single-item US order nets about $7.10 on a tee, $3.50 on a pinstripe tee and $12 on a hoodie.
+$25 per tee ($30 for the NEPO PHIL jersey) and $45 per hoodie (+$2 for 2XL, +$4 for 3XL), with free shipping to the US and Canada, all set in `lib/products.ts`. Printful charges $11.92 per tee and $22.63 per hoodie (same size upcharges), plus its shipping (US: $4.95 for one tee, $7.15 for two, $8.79 for a hoodie; Canada about $2–4 more). After Stripe's 2.9% + 30¢, a single-item US order nets about $7.10 on a tee and $12 on a hoodie.

@@ -9,8 +9,8 @@ import { DIVISIONS, FEATURED_SLUG, getTeam, LEAGUES, teamsByDivision } from "@/l
 // own tabs in the shop.
 const PICKS: [string, Style][] = [
   ["oakland", "tee"],
-  ["the-bronx", "pinstripe"],
-  ["cincinnati", "nepo-sign"],
+  ["the-bronx", "tee"],
+  ["cincinnati", "tee"],
   ["pittsburgh", "tee"],
   ["chicago-north-side", "tee"],
   ["miami", "tee"],

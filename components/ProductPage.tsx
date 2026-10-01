@@ -24,31 +24,28 @@ const TEE = "Bella+Canvas 3001 unisex tee, 100% combed ring-spun cotton";
 // "Why SELL" line.
 const DETAILS: Record<Style, string[]> = {
   tee: [TEE, "Soft, lightweight 4.2 oz jersey; retail fit", "Direct-to-garment print, front only"],
+  city: [TEE, "SELL with the team's city underneath", "Direct-to-garment print, front only"],
   hoodie: [
     "Gildan 18500 unisex heavy blend hoodie, 50% cotton / 50% polyester",
     "Midweight 8 oz fleece, front pouch pocket, double-lined hood with drawcord",
     "Direct-to-garment print, front only",
-  ],
-  pinstripe: [
-    "White cotton tee printed edge to edge with navy pinstripes, SELL in navy",
-    "96% cotton / 4% elastane, midweight 5.6 oz; regular fit, sizes S–2XL",
   ],
   nepo: [TEE, "NEPO PHIL over SELL in white on red", "Direct-to-garment print, front only"],
   "nepo-jersey": [TEE, "SELL on the chest; NEPO PHIL and 00 across the back", "Direct-to-garment print, front and back"],
   "nepo-sign": [TEE, "NEPO PHIL: SELL! in red marker lettering on natural", "Direct-to-garment print, front only"],
 };
 const PRINT_COLOR: Record<Style, string> = {
-  tee: "white", hoodie: "white", pinstripe: "navy", nepo: "white", "nepo-jersey": "white", "nepo-sign": "red",
+  tee: "white", city: "white", hoodie: "white", nepo: "white", "nepo-jersey": "white", "nepo-sign": "red",
 };
 const WHY: Partial<Record<Style, string>> = {
-  pinstripe: "One word in navy across the pinstripes.",
+  city: "One word in white on your team\u2019s color, with your city underneath.",
   nepo: "His name, then the one word.",
   "nepo-jersey": "His name across the back, like a jersey.",
   "nepo-sign": "Marker lettering, like the sign you'd hold up behind home plate.",
 };
 
 const SHARE_TEXT: Partial<Record<Style, (t: Team) => string>> = {
-  pinstripe: () => "A white pinstripe shirt with SELL across the chest in navy. Wear it to the game until they sell the team. Free shipping.",
+  city: (t) => `A ${colorLabel(t, "city")} shirt with SELL and ${cityName(t)} across the chest. Wear it to the game until they sell the team. Free shipping.`,
   nepo: () => "A red shirt that says NEPO PHIL over SELL. Wear it to the game. Free shipping.",
   "nepo-jersey": () => "A red shirt with SELL on the front and NEPO PHIL 00 on the back. Wear it to the game. Free shipping.",
   "nepo-sign": () => "A cream shirt that says NEPO PHIL: SELL! in red marker. Wear it to the game. Free shipping.",
@@ -59,7 +56,7 @@ export async function productMetadata(slug: string, style: Style): Promise<Metad
   if (!team) return {};
   // Plain words for link previews: "SELL shirt for Cincinnati fans".
   const fans = `for ${cityName(team).replace(/^The /, "")} fans`;
-  const shareTitle = `${style.startsWith("nepo") ? "NEPO PHIL shirt" : `SELL ${style === "pinstripe" ? "pinstripe shirt" : garment(style)}`} ${fans}`;
+  const shareTitle = `${style.startsWith("nepo") ? "NEPO PHIL shirt" : `SELL ${garment(style)}`} ${fans}`;
   const description = SHARE_TEXT[style]?.(team) ?? `A ${colorLabel(team, style)} ${garment(style)} with SELL across the chest. Wear it to the game until they sell the team. Free shipping.`;
   return {
     title: productName(team, style),
@@ -104,7 +101,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           <BuyBox key={style} slug={team.slug} style={style} sizes={sizesFor(team, style)} open={ordersOpen()} />
           <div className="swatch-row">
             <span className="swatch" style={{ background: colorHex(team, style) }} />
-            {style === "pinstripe" ? "White with navy pinstripes" : `${colorLabel(team, style)[0].toUpperCase()}${colorLabel(team, style).slice(1)} ${garment(style)}`}
+            {`${colorLabel(team, style)[0].toUpperCase()}${colorLabel(team, style).slice(1)} ${garment(style)}`}
             <span className="swatch" style={{ background: STYLE[style].ink, marginLeft: 10 }} />
             {PRINT_COLOR[style]} print
           </div>

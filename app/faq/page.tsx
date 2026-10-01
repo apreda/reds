@@ -17,8 +17,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
       <>
         <p>
           Tees are the Bella+Canvas 3001, a soft, lightweight unisex tee with a modern retail fit. Hoodies are the Gildan
-          18500, a classic unisex heavy blend hoodie with a roomier fit. If you like a looser tee, size up. The Yankees
-          pinstripe tee comes in S&ndash;2XL and runs about an inch narrower than our other tees. Approximate body width /
+          18500, a classic unisex heavy blend hoodie with a roomier fit. If you like a looser tee, size up. Approximate body width /
           length in inches:
         </p>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
@@ -75,7 +74,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   },
   {
     q: "My city has more than one team. Which shirt is mine?",
-    a: "Each team's shirt comes in the color fans think of for that team, and where teams share a city the listing uses the neighborhood or conference fans already use (North Side vs. South Side, Queens vs. the Bronx, New York (AFC) vs. New York (NFC)). Search your team's name on the shop page and it'll show up.",
+    a: "Each team's shirt comes in the color fans think of for that team, so teams that share a city get the same city name and the color tells them apart. Search your team's name on the shop page and it'll show up.",
   },
   {
     q: "Do you ship internationally?",

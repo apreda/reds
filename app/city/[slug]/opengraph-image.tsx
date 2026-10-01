@@ -7,9 +7,9 @@ export const contentType = "image/png";
 
 // Built at deploy time so link previews load instantly.
 export function generateStaticParams() {
-  return TEAMS.filter((t) => t.pinstripe).map((t) => ({ slug: t.slug }));
+  return TEAMS.map((t) => ({ slug: t.slug }));
 }
 
 export default async function OG({ params }: { params: Promise<{ slug: string }> }) {
-  return teamCard((await params).slug, "pinstripe");
+  return teamCard((await params).slug, "city");
 }

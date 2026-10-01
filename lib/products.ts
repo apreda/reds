@@ -1,17 +1,16 @@
 import { ART_VERSION } from "./art";
 import variants from "./printful-variants.json";
-import { getTeam, PINSTRIPE_NAVY, type Team } from "./teams";
+import { getTeam, type Team } from "./teams";
 
 export const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"] as const;
 export type Size = (typeof SIZES)[number];
 
-export const STYLES = ["tee", "hoodie", "pinstripe", "nepo", "nepo-jersey", "nepo-sign"] as const;
+export const STYLES = ["tee", "city", "hoodie", "nepo", "nepo-jersey", "nepo-sign"] as const;
 export type Style = (typeof STYLES)[number];
 
 // Retail prices in cents. Printful's price (blank + print) is about $12 for the
-// tee (+$5.95 with a back print), $23 for the hoodie and $25.50 for the
-// all-over-print pinstripe tee, +$2 at 2XL and +$4 at 3XL.
-type Blank = "tee" | "hoodie" | "pinstripe";
+// tee (+$5.95 with a back print) and $23 for the hoodie, +$2 at 2XL and +$4 at 3XL.
+type Blank = "tee" | "hoodie";
 type StyleInfo = {
   label: string; // "Tee" in "SELL Tee — OAKLAND"
   path: string; // URL segment: /<path>/<slug>
@@ -23,9 +22,9 @@ type StyleInfo = {
 };
 export const STYLE: Record<Style, StyleInfo> = {
   tee: { label: "Tee", path: "shirt", base: 2500, ink: "#FFFFFF", blank: "tee" },
+  // The same tee with the team's city under SELL.
+  city: { label: "City Tee", path: "city", base: 2500, ink: "#FFFFFF", blank: "tee" },
   hoodie: { label: "Hoodie", path: "hoodie", base: 4500, ink: "#FFFFFF", blank: "hoodie" },
-  // White with navy pinstripes, so SELL prints in the stripes' navy.
-  pinstripe: { label: "Pinstripe Tee", path: "pinstripe", base: 3500, ink: PINSTRIPE_NAVY, blank: "pinstripe", color: "White" },
   // Cincinnati specials.
   nepo: { label: "Nepo Phil Tee", path: "nepo-phil", base: 2500, ink: "#FFFFFF", blank: "tee", color: "Red", name: "NEPO PHIL SELL Tee" },
   "nepo-jersey": { label: "Nepo Phil Jersey", path: "nepo-phil-jersey", base: 3000, ink: "#FFFFFF", blank: "tee", color: "Red", name: "NEPO PHIL Jersey Tee" },
@@ -43,10 +42,10 @@ export function isStyle(s: unknown): s is Style {
   return STYLES.includes(s as Style);
 }
 
-// The styles a team's shirt comes in: every team has a tee and a hoodie, and a
-// few have a special edition.
+// The styles a team's shirt comes in: SELL, SELL with the city, and the hoodie
+// (plus the NEPO PHIL tees for Cincinnati).
 export function stylesFor(team: Team): Style[] {
-  return ["tee", ...(team.pinstripe ? ["pinstripe" as const] : []), ...(team.nepo ? NEPO_STYLES : []), "hoodie"];
+  return ["tee", "city", ...(team.nepo ? NEPO_STYLES : []), "hoodie"];
 }
 
 // Printful color name of this team's blank in this style.

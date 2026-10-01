@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ShopGrid from "@/components/ShopGrid";
-import { isStyle } from "@/lib/products";
 import { DIVISIONS, LEAGUES, type Division, type League } from "@/lib/teams";
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   const initial = {
     league,
     division: (division?.id ?? "all") as Division | "all",
-    style: isStyle(sp.style) && sp.style !== "pinstripe" ? sp.style : "tee",
+    style: sp.style === "hoodie" ? ("hoodie" as const) : ("tee" as const),
   };
   return (
     <div className="wrap">

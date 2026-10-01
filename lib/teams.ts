@@ -1,8 +1,9 @@
-// Team catalog for MLB, NBA and NFL. Every shirt is the same white "SELL" on
-// the color fans think of for the team, like the Oakland originals. Black only
+// Team catalog for MLB, NBA and NFL. Every shirt is white "SELL" on the color
+// fans think of for the team, like the Oakland originals, either alone or with
+// the city underneath. Black only
 // for teams that really are black and white/silver (White Sox, Nets, Spurs,
 // Raiders); nothing else is printed. `city` names the
-// listing ("SELL Tee — NORTH SIDE") and the nickname is a hidden search keyword
+// listing ("SELL Tee — CHICAGO") and the nickname is a hidden search keyword
 // so fans can type their team's name in the shop search. Neither is printed.
 //
 // `shirt` (Bella+Canvas 3001 tee) and `hoodie` (Gildan 18500) must be color
@@ -30,13 +31,9 @@ export type Team = {
   nickname: string; // search keyword only, never displayed or printed
   shirt: string;
   hoodie: string;
-  pinstripe: boolean; // also sold as a white tee with navy pinstripes
-  nepo: boolean; // also sold as the NEPO PHIL: SELL! tee
+  nepo: boolean; // also sold as the NEPO PHIL tees
 };
 
-// Yankees navy, for the pinstripe edition's stripes and lettering.
-export const PINSTRIPE_NAVY = "#0C2340";
-const PINSTRIPE = new Set(["the-bronx"]);
 const NEPO = new Set(["cincinnati"]);
 
 export const DIVISIONS: { id: Division; label: string; league: League }[] = [
@@ -67,12 +64,12 @@ type Row = [slug: string, division: Division, market: string, nickname: string, 
 const ROWS: Row[] = [
   // AL East
   ["baltimore", "al-east", "Baltimore", "Orioles", "BALTIMORE", "Orange", "Orange"],
-  ["boston", "al-east", "Boston", "Red Sox", "FENWAY", "Red", "Red"],
-  ["the-bronx", "al-east", "New York", "Yankees", "THE BRONX", "Navy", "Navy"],
+  ["boston", "al-east", "Boston", "Red Sox", "BOSTON", "Red", "Red"],
+  ["the-bronx", "al-east", "New York", "Yankees", "NEW YORK", "Navy", "Navy"],
   ["tampa-bay", "al-east", "Tampa Bay", "Rays", "TAMPA BAY", "Navy", "Navy"],
   ["toronto", "al-east", "Toronto", "Blue Jays", "TORONTO", "True Royal", "Royal"],
   // AL Central
-  ["chicago-south-side", "al-central", "Chicago", "White Sox", "SOUTH SIDE", "Black", "Black"],
+  ["chicago-south-side", "al-central", "Chicago", "White Sox", "CHICAGO", "Black", "Black"],
   ["cleveland", "al-central", "Cleveland", "Guardians", "CLEVELAND", "Navy", "Navy"],
   ["detroit", "al-central", "Detroit", "Tigers", "DETROIT", "Navy", "Navy"],
   ["kansas-city", "al-central", "Kansas City", "Royals", "KANSAS CITY", "True Royal", "Royal"],
@@ -86,11 +83,11 @@ const ROWS: Row[] = [
   // NL East
   ["atlanta", "nl-east", "Atlanta", "Braves", "ATLANTA", "Navy", "Navy"],
   ["miami", "nl-east", "Miami", "Marlins", "MIAMI", "Aqua", "Carolina Blue"],
-  ["queens", "nl-east", "New York", "Mets", "QUEENS", "True Royal", "Royal"],
+  ["queens", "nl-east", "New York", "Mets", "NEW YORK", "True Royal", "Royal"],
   ["philadelphia", "nl-east", "Philadelphia", "Phillies", "PHILADELPHIA", "Red", "Red"],
   ["washington", "nl-east", "Washington", "Nationals", "WASHINGTON", "Red", "Red"],
   // NL Central
-  ["chicago-north-side", "nl-central", "Chicago", "Cubs", "NORTH SIDE", "True Royal", "Royal"],
+  ["chicago-north-side", "nl-central", "Chicago", "Cubs", "CHICAGO", "True Royal", "Royal"],
   ["cincinnati", "nl-central", "Cincinnati", "Reds", "CINCINNATI", "Red", "Red"],
   ["milwaukee", "nl-central", "Milwaukee", "Brewers", "MILWAUKEE", "Navy", "Navy"],
   ["pittsburgh", "nl-central", "Pittsburgh", "Pirates", "PITTSBURGH", "Gold", "Gold"],
@@ -127,8 +124,8 @@ const ROWS: Row[] = [
   ["nba-portland", "nba-northwest", "Portland", "Trail Blazers", "PORTLAND", "Red", "Red"],
   ["nba-utah", "nba-northwest", "Utah", "Jazz", "UTAH", "Team Purple", "Purple"],
   // NBA Pacific
-  ["nba-the-bay", "nba-pacific", "San Francisco", "Warriors Golden State", "THE BAY", "True Royal", "Royal"],
-  ["nba-inglewood", "nba-pacific", "Los Angeles", "Clippers", "INGLEWOOD", "Red", "Red"],
+  ["nba-the-bay", "nba-pacific", "San Francisco", "Warriors Golden State", "SAN FRANCISCO", "True Royal", "Royal"],
+  ["nba-inglewood", "nba-pacific", "Los Angeles", "Clippers", "LOS ANGELES", "Red", "Red"],
   ["nba-los-angeles", "nba-pacific", "Los Angeles", "Lakers", "LOS ANGELES", "Gold", "Gold"],
   ["nba-phoenix", "nba-pacific", "Phoenix", "Suns", "PHOENIX", "Orange", "Orange"],
   ["nba-sacramento", "nba-pacific", "Sacramento", "Kings", "SACRAMENTO", "Team Purple", "Purple"],
@@ -143,7 +140,7 @@ const ROWS: Row[] = [
   ["nfl-buffalo", "afc-east", "Buffalo", "Bills", "BUFFALO", "True Royal", "Royal"],
   ["nfl-miami", "afc-east", "Miami", "Dolphins", "MIAMI", "Aqua", "Orange"],
   ["nfl-new-england", "afc-east", "New England", "Patriots Pats", "NEW ENGLAND", "Navy", "Navy"],
-  ["nfl-new-york-afc", "afc-east", "New York", "Jets", "NEW YORK (AFC)", "Kelly", "Irish Green"],
+  ["nfl-new-york-afc", "afc-east", "New York", "Jets", "NEW YORK", "Kelly", "Irish Green"],
   // AFC North
   ["nfl-baltimore", "afc-north", "Baltimore", "Ravens", "BALTIMORE", "Team Purple", "Purple"],
   ["nfl-cincinnati", "afc-north", "Cincinnati", "Bengals", "CINCINNATI", "Orange", "Orange"],
@@ -158,10 +155,10 @@ const ROWS: Row[] = [
   ["nfl-denver", "afc-west", "Denver", "Broncos", "DENVER", "Orange", "Orange"],
   ["nfl-kansas-city", "afc-west", "Kansas City", "Chiefs", "KANSAS CITY", "Red", "Red"],
   ["nfl-las-vegas", "afc-west", "Las Vegas", "Raiders", "LAS VEGAS", "Black", "Black"],
-  ["nfl-los-angeles-afc", "afc-west", "Los Angeles", "Chargers Bolts", "LOS ANGELES (AFC)", "Heather Columbia Blue", "Carolina Blue"],
+  ["nfl-los-angeles-afc", "afc-west", "Los Angeles", "Chargers Bolts", "LOS ANGELES", "Heather Columbia Blue", "Carolina Blue"],
   // NFC East
   ["nfl-dallas", "nfc-east", "Dallas", "Cowboys", "DALLAS", "Navy", "Navy"],
-  ["nfl-new-york-nfc", "nfc-east", "New York", "Giants", "NEW YORK (NFC)", "True Royal", "Royal"],
+  ["nfl-new-york-nfc", "nfc-east", "New York", "Giants", "NEW YORK", "True Royal", "Royal"],
   ["nfl-philadelphia", "nfc-east", "Philadelphia", "Eagles", "PHILADELPHIA", "Forest", "Forest Green"],
   ["nfl-washington", "nfc-east", "Washington", "Commanders", "WASHINGTON", "Maroon", "Maroon"],
   // NFC North
@@ -176,7 +173,7 @@ const ROWS: Row[] = [
   ["nfl-tampa-bay", "nfc-south", "Tampa Bay", "Buccaneers Bucs", "TAMPA BAY", "Red", "Red"],
   // NFC West
   ["nfl-arizona", "nfc-west", "Arizona", "Cardinals", "ARIZONA", "Cardinal", "Maroon"],
-  ["nfl-los-angeles-nfc", "nfc-west", "Los Angeles", "Rams", "LOS ANGELES (NFC)", "True Royal", "Royal"],
+  ["nfl-los-angeles-nfc", "nfc-west", "Los Angeles", "Rams", "LOS ANGELES", "True Royal", "Royal"],
   ["nfl-san-francisco", "nfc-west", "San Francisco", "49ers Niners", "SAN FRANCISCO", "Red", "Red"],
   ["nfl-seattle", "nfc-west", "Seattle", "Seahawks", "SEATTLE", "Navy", "Navy"],
 ];
@@ -190,7 +187,6 @@ export const TEAMS: Team[] = ROWS.map(([slug, division, market, nickname, city, 
   city,
   shirt,
   hoodie,
-  pinstripe: PINSTRIPE.has(slug),
   nepo: NEPO.has(slug),
 }));
 
@@ -212,10 +208,9 @@ export function leagueOf(id: League) {
   return LEAGUES.find((l) => l.id === id)!;
 }
 
-// The listing name in normal case for sentences: "NORTH SIDE" -> "North Side",
-// "ST. LOUIS" -> "St. Louis", "NEW YORK (AFC)" -> "New York (AFC)".
+// The city in normal case for sentences: "ST. LOUIS" -> "St. Louis".
 export function cityName(t: Team): string {
-  return t.city.replace(/[A-Z][A-Z.']*/g, (w) => (/^\(?[AN]FC\)?$/.test(w) ? w : w[0] + w.slice(1).toLowerCase()));
+  return t.city.replace(/[A-Z][A-Z.']*/g, (w) => w[0] + w.slice(1).toLowerCase());
 }
 
 // Card and page eyebrow: NBA division names need the league to read clearly.

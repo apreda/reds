@@ -1,6 +1,6 @@
 // Makes Printful flat-lay photos of every product with the Mockup Generator:
-// the tee (Bella+Canvas 3001) and hoodie (Gildan 18500) in each team color, and
-// the all-over-print pinstripe tee, saved to public/mockups/[<style>/]<slug>.png.
+// the tee (Bella+Canvas 3001), city tee and hoodie (Gildan 18500) in each team
+// color and the Cincinnati specials, saved to public/mockups/[<style>/]<slug>.png.
 // The print is the same for every team, so each color is rendered once.
 //
 //   node --env-file=.env.local scripts/generate-mockups.mjs [style ...] [team-slug ...] [--missing] [--options]
@@ -19,22 +19,21 @@ const API = "https://api.printful.com";
 // File paths are relative to BASE_URL (the site root).
 const TEE = [1800, 2400];
 const front = (path, area) => () => [{ placement: "front", path, area }];
-const PANELS = { front: [4200, 5400], back: [4200, 5400], sleeve_left: [3000, 1800], sleeve_right: [3000, 1800] };
 const STYLES = {
   tee: { product: 71, color: (t) => t.shirt, files: (slug) => [{ placement: "front", path: `api/print/${slug}.png`, area: TEE }], out: "" },
+  // The city differs per team, so each team is rendered (no color sharing).
+  city: {
+    product: 71,
+    color: (t) => t.shirt,
+    files: (slug) => [{ placement: "front", path: `api/print/city/${slug}.png`, area: TEE }],
+    perTeam: true,
+    out: "city/",
+  },
   hoodie: {
     product: 146,
     color: (t) => t.hoodie,
     files: (slug) => [{ placement: "front", path: `api/print/hoodie/${slug}.png`, area: [2100, 2100] }],
     out: "hoodie/",
-  },
-  pinstripe: {
-    product: 1414,
-    color: () => "White",
-    only: (t) => t.pinstripe,
-    files: () =>
-      Object.entries(PANELS).map(([p, area]) => ({ placement: `${p}_dtfabric`, path: `api/print/pinstripe/${p}.png`, area })),
-    out: "pinstripe/",
   },
   // Cincinnati specials print from fixed files in public/print.
   nepo: { product: 71, color: () => "Red", only: (t) => t.nepo, files: front("print/nepo-phil.png", TEE), out: "nepo/" },
@@ -91,24 +90,24 @@ if (args.includes("--options")) {
 if (!base) throw new Error("Set BASE_URL to a public URL serving /api/print/...");
 
 for (const style of styles.length ? styles : Object.keys(STYLES)) {
-  const { product, color, only = () => true, files, out, view = "front" } = STYLES[style];
+  const { product, color, only = () => true, files, out, view = "front", perTeam = false } = STYLES[style];
   const dir = new URL(`../public/mockups/${out}`, import.meta.url);
   mkdirSync(dir, { recursive: true });
-  const byColor = Map.groupBy(TEAMS.filter((t) => only(t) && (!slugs.size || slugs.has(t.slug))), color);
+  const byColor = Map.groupBy(TEAMS.filter((t) => only(t) && (!slugs.size || slugs.has(t.slug))), perTeam ? (t) => t.slug : color);
   const photo = (t) => new URL(`${t.slug}.png`, dir);
   for (const [name, all] of byColor) {
     let teams = all;
     if (args.includes("--missing")) {
       teams = all.filter((t) => !existsSync(photo(t)));
       if (!teams.length) continue;
-      const donor = TEAMS.find((t) => only(t) && color(t) === name && existsSync(photo(t)));
+      const donor = perTeam ? null : TEAMS.find((t) => only(t) && color(t) === name && existsSync(photo(t)));
       if (donor) {
         for (const t of teams) copyFileSync(photo(donor), photo(t));
         console.log(`${style} ${name}: copied from ${donor.slug} to ${teams.map((t) => t.slug).join(", ")}`);
         continue;
       }
     }
-    const variant = variants[{ hoodie: "hoodie", pinstripe: "pinstripe" }[style] ?? "tee"][name]?.variants?.M;
+    const variant = variants[style === "hoodie" ? "hoodie" : "tee"][color(teams[0])]?.variants?.M;
     if (!variant) throw new Error(`No Printful ${style} variant for ${name}`);
     const task = await pf(`/mockup-generator/create-task/${product}`, {
       variant_ids: [variant],

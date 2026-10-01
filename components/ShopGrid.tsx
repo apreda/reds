@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { STYLE, stylesFor, type Style } from "@/lib/products";
+import { STYLE, type Style } from "@/lib/products";
 import { DIVISIONS, LEAGUES, teamsByDivision, type Division, type League } from "@/lib/teams";
 import ProductCard from "./ProductCard";
 
@@ -75,12 +75,10 @@ export default function ShopGrid({ initial }: { initial: Filter }) {
       </div>
       {teams.length ? (
         <div className="grid">
-          {teams.flatMap((t) =>
-            // Special editions (the pinstripe tee) sit next to the team's tee.
-            (style === "tee" ? stylesFor(t).filter((s) => s !== "hoodie") : [style]).map((s) => (
-              <ProductCard key={`${t.slug}-${s}`} team={t} style={s} />
-            )),
-          )}
+          {teams.map((t) => (
+            // One card per team; the city tee and specials are options on the team's page.
+            <ProductCard key={t.slug} team={t} style={style} />
+          ))}
         </div>
       ) : (
         <p className="empty">No shirts match &ldquo;{q}&rdquo;. Try a city name.</p>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ShopGrid from "@/components/ShopGrid";
 import { isStyle } from "@/lib/products";
-import { DIVISIONS, LEAGUES, TEAMS, type Division, type League } from "@/lib/teams";
+import { DIVISIONS, LEAGUES, type Division, type League } from "@/lib/teams";
 
 export const metadata: Metadata = {
   title: "Shop Every Team",
@@ -13,7 +13,7 @@ type Search = { league?: string; division?: string; style?: string };
 export default async function ShopPage({ searchParams }: { searchParams: Promise<Search> }) {
   const sp = await searchParams;
   const division = DIVISIONS.find((d) => d.id === sp.division);
-  const league: League | "all" = division?.league ?? (LEAGUES.some((l) => l.id === sp.league) ? (sp.league as League) : "all");
+  const league: League = division?.league ?? (LEAGUES.some((l) => l.id === sp.league) ? (sp.league as League) : "mlb");
   const initial = {
     league,
     division: (division?.id ?? "all") as Division | "all",
@@ -23,8 +23,8 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     <div className="wrap">
       <div className="section-head" style={{ marginTop: 40 }}>
         <div>
-          <span className="eyebrow">{TEAMS.length} teams · One message</span>
-          <h2 className="display">Shop every team</h2>
+          <span className="eyebrow">Every team · One message</span>
+          <h2 className="display">Shop</h2>
         </div>
       </div>
       <ShopGrid key={`${initial.league}-${initial.division}-${initial.style}`} initial={initial} />

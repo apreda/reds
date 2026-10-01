@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { STYLE, stylesFor, type Style } from "@/lib/products";
-import { DIVISIONS, LEAGUES, TEAMS, teamsByDivision, type Division, type League } from "@/lib/teams";
+import { DIVISIONS, LEAGUES, teamsByDivision, type Division, type League } from "@/lib/teams";
 import ProductCard from "./ProductCard";
 
-type Filter = { league: League | "all"; division: Division | "all"; style: Style };
+type Filter = { league: League; division: Division | "all"; style: Style };
 
 export default function ShopGrid({ initial }: { initial: Filter }) {
   const router = useRouter();
@@ -14,9 +14,10 @@ export default function ShopGrid({ initial }: { initial: Filter }) {
   const [q, setQ] = useState("");
 
   const teams = useMemo(() => {
-    const divisions = DIVISIONS.filter((d) => (division === "all" ? league === "all" || d.league === league : d.id === division));
-    const base = divisions.flatMap((d) => teamsByDivision(d.id));
     const needle = q.trim().toLowerCase();
+    // A search looks across every league, so "Lakers" works from the baseball tab.
+    const divisions = DIVISIONS.filter((d) => (needle ? true : division === "all" ? d.league === league : d.id === division));
+    const base = divisions.flatMap((d) => teamsByDivision(d.id));
     if (!needle) return base;
     return base.filter((t) =>
       [t.market, t.nickname, t.city, `${t.market} ${t.nickname}`].some((s) => s.toLowerCase().includes(needle)),
@@ -29,7 +30,7 @@ export default function ShopGrid({ initial }: { initial: Filter }) {
     setFilter(f);
     const params = new URLSearchParams();
     if (f.style !== "tee") params.set("style", f.style);
-    if (f.league !== "all") params.set("league", f.league);
+    if (f.league !== "mlb") params.set("league", f.league);
     if (f.division !== "all") params.set("division", f.division);
     router.replace(params.size ? `/shop?${params}` : "/shop", { scroll: false });
   };
@@ -38,9 +39,6 @@ export default function ShopGrid({ initial }: { initial: Filter }) {
     <>
       <div className="shop-switches">
         <nav className="style-switch" aria-label="League">
-          <button aria-current={league === "all" ? "page" : undefined} onClick={() => go({ league: "all" })}>
-            All {TEAMS.length}
-          </button>
           {LEAGUES.map((l) => (
             <button key={l.id} aria-current={l.id === league ? "page" : undefined} onClick={() => go({ league: l.id })}>
               {l.sport}
@@ -56,20 +54,16 @@ export default function ShopGrid({ initial }: { initial: Filter }) {
         </nav>
       </div>
       <div className="shop-controls">
-        {league !== "all" ? (
-          <div className="tabs" role="tablist" aria-label="Division">
-            <button className="tab" role="tab" aria-selected={division === "all"} onClick={() => go({ division: "all" })}>
-              All {LEAGUES.find((l) => l.id === league)!.label}
+        <div className="tabs" role="tablist" aria-label="Division">
+          <button className="tab" role="tab" aria-selected={division === "all"} onClick={() => go({ division: "all" })}>
+            All {LEAGUES.find((l) => l.id === league)!.label}
+          </button>
+          {DIVISIONS.filter((d) => d.league === league).map((d) => (
+            <button key={d.id} className="tab" role="tab" aria-selected={division === d.id} onClick={() => go({ division: d.id })}>
+              {d.label}
             </button>
-            {DIVISIONS.filter((d) => d.league === league).map((d) => (
-              <button key={d.id} className="tab" role="tab" aria-selected={division === d.id} onClick={() => go({ division: d.id })}>
-                {d.label}
-              </button>
-            ))}
-          </div>
-        ) : (
-          <span />
-        )}
+          ))}
+        </div>
         <input
           className="search"
           type="search"

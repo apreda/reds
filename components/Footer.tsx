@@ -17,7 +17,6 @@ export default function Footer() {
           <div>
             <h4>Shop</h4>
             <ul>
-              <li><Link href="/shop">Every Team</Link></li>
               {LEAGUES.map((l) => (
                 <li key={l.id}>
                   <Link href={`/shop?league=${l.id}`}>{l.sport}</Link>

@@ -418,6 +418,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.12); }
 .divisions.eight { grid-template-columns: repeat(4, 1fr); }
 .league-block + .league-block { margin-top: 44px; }
+.other-sports { margin: 0; font-size: 14px; color: var(--muted); }
+.other-sports a { color: var(--ink); text-decoration: underline; }
 .league-name { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.06em; font-size: 28px; margin: 0 0 14px; }
 @media (max-width: 1000px) { .divisions { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 1000px) { .divisions.eight { grid-template-columns: repeat(4, 1fr); } }

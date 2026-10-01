@@ -2,22 +2,24 @@ import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductPhoto from "@/components/ProductPhoto";
 import { colorHex, type Style } from "@/lib/products";
-import { DIVISIONS, FEATURED_SLUG, getTeam, LEAGUES, TEAMS, teamsByDivision } from "@/lib/teams";
+import { DIVISIONS, FEATURED_SLUG, getTeam, LEAGUES, teamsByDivision } from "@/lib/teams";
 
 // Rows of three, so keep these lists at multiples of 3.
+// The homepage leads with baseball; basketball and football live behind their
+// own tabs in the shop.
 const PICKS: [string, Style][] = [
   ["oakland", "tee"],
   ["the-bronx", "pinstripe"],
-  ["nba-boston", "tee"],
-  ["nfl-green-bay", "tee"],
-  ["pittsburgh", "tee"],
-  ["nba-los-angeles", "tee"],
-  ["nfl-cincinnati", "tee"],
-  ["miami", "tee"],
   ["cincinnati", "nepo-sign"],
+  ["pittsburgh", "tee"],
+  ["chicago-north-side", "tee"],
+  ["miami", "tee"],
+  ["baltimore", "tee"],
+  ["colorado", "tee"],
+  ["st-louis", "tee"],
 ];
 
-const HOODIE_PICKS = ["oakland", "nba-chicago", "nfl-green-bay", "the-bronx", "nba-los-angeles", "nfl-baltimore"];
+const HOODIE_PICKS = ["oakland", "the-bronx", "chicago-north-side", "st-louis", "baltimore", "pittsburgh"];
 
 export default function Home() {
   const hero = getTeam(FEATURED_SLUG)!;
@@ -25,7 +27,7 @@ export default function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <span className="eyebrow">A fan protest, now in every ballpark, arena and stadium</span>
+          <span className="eyebrow">A fan protest, now in every ballpark</span>
           <h1 className="display">Sell.</h1>
           <p>
             In 2023, 27,759 fans packed the Oakland Coliseum in green shirts carrying one word for their owner. The shirt
@@ -56,7 +58,7 @@ export default function Home() {
               <h2 className="display">Wear it to the game</h2>
             </div>
             <Link href="/shop" className="btn ghost">
-              Shop every team
+              Shop all 30
             </Link>
           </div>
           <div className="grid three">
@@ -96,7 +98,7 @@ export default function Home() {
               handed out thousands of $5 green &ldquo;SELL&rdquo; shirts, and chanted it in unison, to show the team
               could thrive in Oakland if its owner sold to someone who wanted to stay.
             </p>
-            <p>That shirt became the uniform of a movement. We made one for every MLB, NBA and NFL fan base.</p>
+            <p>That shirt became the uniform of a movement. We made one for all 30 MLB fan bases.</p>
             <Link href="/story" className="btn" style={{ marginTop: 12 }}>
               Read the story
             </Link>
@@ -122,17 +124,17 @@ export default function Home() {
         <div className="wrap">
           <div className="section-head">
             <div>
-              <span className="eyebrow">{TEAMS.length} teams</span>
+              <span className="eyebrow">All 30 ballparks</span>
               <h2 className="display">Find your team</h2>
             </div>
+            <p className="other-sports">
+              Also for <Link href="/shop?league=nba">basketball</Link> and <Link href="/shop?league=nfl">football</Link> fans
+            </p>
           </div>
-          {LEAGUES.map((l) => {
+          {LEAGUES.filter((l) => l.id === "mlb").map((l) => {
             const divisions = DIVISIONS.filter((d) => d.league === l.id);
             return (
               <div key={l.id} className="league-block">
-                <h3 className="league-name">
-                  <Link href={`/shop?league=${l.id}`}>{l.sport}</Link>
-                </h3>
                 <div className={`divisions${divisions.length === 8 ? " eight" : ""}`}>
                   {divisions.map((d) => (
                     <div key={d.id}>

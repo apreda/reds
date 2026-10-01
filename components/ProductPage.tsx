@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BuyBox from "@/components/BuyBox";
-import { INK } from "@/components/PrintArt";
 import ProductCard from "@/components/ProductCard";
 import ProductPhoto from "@/components/ProductPhoto";
 import {
@@ -13,7 +12,7 @@ import {
   productPath,
   sizesFor,
   STYLE,
-  STYLES,
+  stylesFor,
   type Style,
 } from "@/lib/products";
 import { ordersOpen } from "@/lib/site";
@@ -27,6 +26,10 @@ const DETAILS: Record<Style, string[]> = {
   hoodie: [
     "Gildan 18500 unisex heavy blend hoodie, 50% cotton / 50% polyester",
     "Midweight 8 oz fleece, front pouch pocket, double-lined hood with drawcord",
+  ],
+  pinstripe: [
+    "White cotton tee printed edge to edge with navy pinstripes, SELL in navy",
+    "96% cotton / 4% elastane, midweight 5.6 oz; regular fit, sizes S–2XL",
   ],
 };
 
@@ -44,6 +47,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
   if (!team) notFound();
   const sameCity = TEAMS.filter((t) => t.market === team.market && t.slug !== team.slug);
   const related = [...sameCity, ...TEAMS.filter((t) => t.division === team.division && t.market !== team.market)].slice(0, 4);
+  if (!stylesFor(team).includes(style)) notFound();
   const noun = STYLE[style].label.toLowerCase();
 
   return (
@@ -63,7 +67,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
             <h1 className="display">{productName(team, style)}</h1>
           </div>
           <nav className="style-switch" aria-label="Style">
-            {STYLES.map((s) => (
+            {stylesFor(team).map((s) => (
               <Link key={s} href={productPath(team, s)} aria-current={s === style ? "page" : undefined}>
                 {STYLE[s].label}
               </Link>
@@ -72,16 +76,16 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           <BuyBox key={style} slug={team.slug} style={style} sizes={sizesFor(team, style)} open={ordersOpen()} />
           <div className="swatch-row">
             <span className="swatch" style={{ background: colorHex(team, style) }} />
-            {colorName(team, style)} {noun}
-            <span className="swatch" style={{ background: INK, marginLeft: 10 }} />
-            white print
+            {style === "pinstripe" ? "White with navy pinstripes" : `${colorName(team, style)} ${noun}`}
+            <span className="swatch" style={{ background: STYLE[style].ink, marginLeft: 10 }} />
+            {style === "pinstripe" ? "navy" : "white"} print
           </div>
           <div className="details">
             <details open>
               <summary>Why SELL</summary>
               <div className="content">
-                Modeled on the shirt Oakland fans wore to the 2023 reverse boycott. One word in white on your
-                team&rsquo;s color. It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
+                Modeled on the shirt Oakland fans wore to the 2023 reverse boycott.{" "}
+                {style === "pinstripe" ? "One word in navy across the pinstripes." : "One word in white on your team\u2019s color."} It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
                 seen from the owner&rsquo;s suite. <Link href="/story" style={{ textDecoration: "underline" }}>Read the story.</Link>
               </div>
             </details>
@@ -92,7 +96,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
                   {DETAILS[style].map((d) => (
                     <li key={d}>{d}</li>
                   ))}
-                  <li>Direct-to-garment print, front only</li>
+                  {style !== "pinstripe" && <li>Direct-to-garment print, front only</li>}
                   <li>No team names or logos &mdash; just SELL</li>
                 </ul>
               </div>
@@ -115,7 +119,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           </div>
           <div className="grid">
             {related.map((t) => (
-              <ProductCard key={t.slug} team={t} style={style} />
+              <ProductCard key={t.slug} team={t} style={style === "pinstripe" ? "tee" : style} />
             ))}
           </div>
         </section>

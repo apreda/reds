@@ -1,9 +1,9 @@
-// Makes Printful flat-lay photos of the printed tee (Bella+Canvas 3001) and
-// hoodie (Gildan 18500) in every team color with the Mockup Generator, and
-// saves them to public/mockups/<slug>.png and public/mockups/hoodie/<slug>.png.
+// Makes Printful flat-lay photos of every product with the Mockup Generator:
+// the tee (Bella+Canvas 3001) and hoodie (Gildan 18500) in each team color, and
+// the all-over-print pinstripe tee, saved to public/mockups/[<style>/]<slug>.png.
 // The print is the same for every team, so each color is rendered once.
 //
-//   node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie ...] [--options]
+//   node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie|pinstripe ...] [team-slug ...] [--options]
 //
 // Env: PRINTFUL_API_TOKEN, PRINTFUL_STORE_ID, and BASE_URL: a public URL
 // serving this code's print files (Printful downloads them itself). Needs Node
@@ -13,9 +13,19 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { TEAMS } from "../lib/teams.ts";
 
 const API = "https://api.printful.com";
+const front = (path, area) => (slug) => [{ placement: "front", path: `${path}${slug}.png`, area }];
+const PANELS = { front: [4200, 5400], back: [4200, 5400], sleeve_left: [3000, 1800], sleeve_right: [3000, 1800] };
 const STYLES = {
-  tee: { product: 71, color: (t) => t.shirt, area: [1800, 2400], print: "", out: "" },
-  hoodie: { product: 146, color: (t) => t.hoodie, area: [2100, 2100], print: "hoodie/", out: "hoodie/" },
+  tee: { product: 71, color: (t) => t.shirt, files: front("", [1800, 2400]), out: "" },
+  hoodie: { product: 146, color: (t) => t.hoodie, files: front("hoodie/", [2100, 2100]), out: "hoodie/" },
+  pinstripe: {
+    product: 1414,
+    color: () => "White",
+    only: (t) => t.pinstripe,
+    files: () =>
+      Object.entries(PANELS).map(([p, area]) => ({ placement: `${p}_dtfabric`, path: `pinstripe/${p}.png`, area })),
+    out: "pinstripe/",
+  },
 };
 
 const { PRINTFUL_API_TOKEN: token, PRINTFUL_STORE_ID: store } = process.env;
@@ -46,6 +56,7 @@ async function pf(path, body) {
 
 const args = process.argv.slice(2);
 const styles = args.filter((a) => a in STYLES);
+const slugs = new Set(args.filter((a) => TEAMS.some((t) => t.slug === a)));
 if (args.includes("--options")) {
   for (const s of styles.length ? styles : Object.keys(STYLES)) {
     const r = await pf(`/mockup-generator/printfiles/${STYLES[s].product}`);
@@ -56,26 +67,23 @@ if (args.includes("--options")) {
 if (!base) throw new Error("Set BASE_URL to a public URL serving /api/print/...");
 
 for (const style of styles.length ? styles : Object.keys(STYLES)) {
-  const { product, color, area, print, out } = STYLES[style];
+  const { product, color, only = () => true, files, out } = STYLES[style];
   const dir = new URL(`../public/mockups/${out}`, import.meta.url);
   mkdirSync(dir, { recursive: true });
-  const byColor = Map.groupBy(TEAMS, color);
+  const byColor = Map.groupBy(TEAMS.filter((t) => only(t) && (!slugs.size || slugs.has(t.slug))), color);
   for (const [name, teams] of byColor) {
     const variant = variants[style][name]?.variants?.M;
     if (!variant) throw new Error(`No Printful ${style} variant for ${name}`);
-    const [w, h] = area;
     const task = await pf(`/mockup-generator/create-task/${product}`, {
       variant_ids: [variant],
       format: "png",
       option_groups: ["Flat"],
       options: ["Front"],
-      files: [
-        {
-          placement: "front",
-          image_url: `${base}/api/print/${print}${teams[0].slug}.png?v=${Date.now()}`,
-          position: { area_width: w, area_height: h, width: w, height: h, top: 0, left: 0 },
-        },
-      ],
+      files: files(teams[0].slug).map(({ placement, path, area: [w, h] }) => ({
+        placement,
+        image_url: `${base}/api/print/${path}?v=${Date.now()}`,
+        position: { area_width: w, area_height: h, width: w, height: h, top: 0, left: 0 },
+      })),
     });
     let result;
     do {
@@ -84,7 +92,8 @@ for (const style of styles.length ? styles : Object.keys(STYLES)) {
     } while (result.status === "pending");
     if (result.status !== "completed") throw new Error(`${style} ${name}: ${JSON.stringify(result)}`);
 
-    const png = Buffer.from(await (await fetch(result.mockups[0].mockup_url)).arrayBuffer());
+    const shot = result.mockups.find((m) => m.placement.startsWith("front")) ?? result.mockups[0];
+    const png = Buffer.from(await (await fetch(shot.mockup_url)).arrayBuffer());
     for (const t of teams) writeFileSync(new URL(`${t.slug}.png`, dir), png);
     console.log(`${style} ${name} (${Math.round(png.length / 1024)} KB): ${teams.map((t) => t.slug).join(", ")}`);
   }

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { STYLE, STYLES, type Style } from "@/lib/products";
+import { STYLE, stylesFor, type Style } from "@/lib/products";
 import { DIVISIONS, TEAMS, teamsByDivision, type Division } from "@/lib/teams";
 import ProductCard from "./ProductCard";
 
@@ -33,7 +33,7 @@ export default function ShopGrid({ initialDivision, initialStyle }: { initialDiv
   return (
     <>
       <nav className="style-switch" aria-label="Style" style={{ marginBottom: 18 }}>
-        {STYLES.map((s) => (
+        {(["tee", "hoodie"] as const).map((s) => (
           <button key={s} aria-current={s === style ? "page" : undefined} onClick={() => go(division, s)}>
             {STYLE[s].label}s
           </button>
@@ -61,9 +61,12 @@ export default function ShopGrid({ initialDivision, initialStyle }: { initialDiv
       </div>
       {teams.length ? (
         <div className="grid">
-          {teams.map((t) => (
-            <ProductCard key={t.slug} team={t} style={style} />
-          ))}
+          {teams.flatMap((t) =>
+            // Special editions (the pinstripe tee) sit next to the team's tee.
+            (style === "tee" ? stylesFor(t).filter((s) => s !== "hoodie") : [style]).map((s) => (
+              <ProductCard key={`${t.slug}-${s}`} team={t} style={s} />
+            )),
+          )}
         </div>
       ) : (
         <p className="empty">No shirts match &ldquo;{q}&rdquo;. Try a city name.</p>

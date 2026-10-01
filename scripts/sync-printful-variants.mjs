@@ -1,9 +1,10 @@
 // Regenerates lib/printful-variants.json from Printful's public catalog: the
-// Bella+Canvas 3001 tee (product 71) and the Gildan 18500 hoodie (product 146).
+// Bella+Canvas 3001 tee (product 71), the Gildan 18500 hoodie (product 146) and
+// the all-over-print cotton tee used for the pinstripe edition (product 1414).
 // Run: node scripts/sync-printful-variants.mjs
 import { writeFileSync } from "node:fs";
 
-const PRODUCTS = { tee: 71, hoodie: 146 };
+const PRODUCTS = { tee: 71, hoodie: 146, pinstripe: 1414 };
 const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"];
 
 const out = {};

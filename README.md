@@ -4,7 +4,7 @@ Protest tees and hoodies for baseball fans whose owners stopped listening, one f
 
 - **Stack:** Next.js (App Router) on Vercel
 - **Payments:** Stripe Checkout
-- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001 tee, Gildan 18500 hoodie). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
+- **Fulfillment:** Printful print-on-demand (Bella+Canvas 3001 tee, Gildan 18500 hoodie, and an all-over-print cotton tee for the Yankees pinstripe edition). No inventory: each paid order is sent to Printful automatically, and Printful prints and ships it.
 
 ## How it works
 
@@ -14,12 +14,12 @@ Protest tees and hoodies for baseball fans whose owners stopped listening, one f
 | Styles (tee, hoodie), prices, sizes, shipping | `lib/products.ts` |
 | Printful variant IDs per color/size | `lib/printful-variants.json` (regenerate with `node scripts/sync-printful-variants.mjs`) |
 | Photos (site, bag, Stripe Checkout) | `public/mockups/<slug>.png` and `public/mockups/hoodie/<slug>.png`, shown by `components/ProductPhoto.tsx` |
-| Print-ready PNGs sent to Printful (150dpi, transparent, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14") |
+| Print-ready PNGs sent to Printful (150dpi, Inter SemiBold lettering; layout in `lib/print.tsx`) | `/api/print/<slug>.png` (tee, 12"x16"), `/api/print/hoodie/<slug>.png` (hoodie, 14"x14"), `/api/print/pinstripe/<panel>.png` (pinstripe front, back and sleeves) |
 | Old mockup URL, redirects to the photo | `/api/mockup/<slug>` |
 | Create Stripe Checkout session | `POST /api/checkout` |
 | Stripe webhook → Printful order | `POST /api/webhooks/stripe` |
 
-Every shirt is the same white "SELL" on the team's primary color, like the Oakland originals. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
+Every shirt is the same white "SELL" on the team's main color, like the Oakland originals (black only for the White Sox). The Yankees also get a white pinstripe tee with navy SELL. Shirts and product listings never carry team names or logos: listings are named by city or neighborhood, the nickname is kept in `lib/teams.ts` as a hidden search keyword, and a not-affiliated disclaimer is in the footer, the FAQ and the announcement bar.
 
 ## Photos
 
@@ -52,4 +52,4 @@ Without a Printful token the webhook still acknowledges payments and logs `needs
 
 ## Pricing
 
-$25 per tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping per order, all set in `lib/products.ts`. Printful charges about $12 per tee and $23 per hoodie (same size upcharges) plus its shipping, so a single-item order nets roughly $8–10 on a tee and $15–18 on a hoodie before Stripe fees.
+$25 per tee, $35 for the pinstripe tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping per order, all set in `lib/products.ts`. Printful charges about $12 per tee and $23 per hoodie (same size upcharges) plus its shipping, so a single-item order nets roughly $8–10 on a tee and $15–18 on a hoodie before Stripe fees.

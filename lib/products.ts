@@ -1,19 +1,22 @@
 import { ART_VERSION } from "./art";
 import variants from "./printful-variants.json";
-import { getTeam, type Team } from "./teams";
+import { getTeam, PINSTRIPE_NAVY, type Team } from "./teams";
 
 export const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"] as const;
 export type Size = (typeof SIZES)[number];
 
-export const STYLES = ["tee", "hoodie"] as const;
+export const STYLES = ["tee", "hoodie", "pinstripe"] as const;
 export type Style = (typeof STYLES)[number];
 
-// Retail prices in cents. Printful's price (blank + front print) is about $12
-// for the tee and $23 for the hoodie, +$2 at 2XL and +$4 at 3XL.
-type StyleInfo = { label: string; blank: string; path: string; base: number };
+// Retail prices in cents. Printful's price (blank + print) is about $12 for the
+// tee, $23 for the hoodie and $25.50 for the all-over-print pinstripe tee,
+// +$2 at 2XL and +$4 at 3XL.
+type StyleInfo = { label: string; path: string; base: number; ink: string };
 export const STYLE: Record<Style, StyleInfo> = {
-  tee: { label: "Tee", blank: "Bella+Canvas 3001", path: "shirt", base: 2500 },
-  hoodie: { label: "Hoodie", blank: "Gildan 18500", path: "hoodie", base: 4500 },
+  tee: { label: "Tee", path: "shirt", base: 2500, ink: "#FFFFFF" },
+  hoodie: { label: "Hoodie", path: "hoodie", base: 4500, ink: "#FFFFFF" },
+  // White with navy pinstripes, so SELL prints in the stripes' navy.
+  pinstripe: { label: "Pinstripe Tee", path: "pinstripe", base: 3500, ink: PINSTRIPE_NAVY },
 };
 const SIZE_UPCHARGE: Partial<Record<Size, number>> = { "2XL": 200, "3XL": 400 };
 export const SHIPPING_CENTS = 599;
@@ -25,9 +28,14 @@ export function isStyle(s: unknown): s is Style {
   return STYLES.includes(s as Style);
 }
 
+// The styles a team's shirt comes in: every team has a tee and a hoodie.
+export function stylesFor(team: Team): Style[] {
+  return team.pinstripe ? ["tee", "pinstripe", "hoodie"] : ["tee", "hoodie"];
+}
+
 // Printful color name of this team's blank in this style.
 export function colorName(team: Team, style: Style): string {
-  return style === "tee" ? team.shirt : team.hoodie;
+  return { tee: team.shirt, hoodie: team.hoodie, pinstripe: "White" }[style];
 }
 
 export function colorHex(team: Team, style: Style): string {
@@ -35,6 +43,7 @@ export function colorHex(team: Team, style: Style): string {
 }
 
 export function sizesFor(team: Team, style: Style): Size[] {
+  if (!stylesFor(team).includes(style)) return [];
   const available = COLORS[style][colorName(team, style)]?.variants ?? {};
   return SIZES.filter((s) => s in available);
 }

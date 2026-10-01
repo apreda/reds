@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/print/[slug]": ["./assets/inter-600.ttf"],
     "/api/print/hoodie/[slug]": ["./assets/inter-600.ttf"],
+    "/api/print/pinstripe/[panel]": ["./assets/inter-600.ttf"],
     "/opengraph-image": ["./assets/inter-600.ttf"],
   },
 };

@@ -1,4 +1,4 @@
-import { ART_VERSION } from "./art";
+import { ART_VERSION, PINSTRIPE_PANELS } from "./art";
 import { printfulVariantId, type Size, type Style } from "./products";
 import { siteUrl } from "./site";
 import { getTeam } from "./teams";
@@ -22,8 +22,14 @@ export function printfulConfigured(): boolean {
   return Boolean(process.env.PRINTFUL_API_TOKEN);
 }
 
-export function printFileUrl(slug: string, style: Style): string {
-  return `${siteUrl()}/api/print/${style === "tee" ? "" : `${style}/`}${slug}.png?v=${ART_VERSION}`;
+// Files for one Printful order item: the front print, or every panel of the
+// all-over-print pinstripe tee.
+export function printFiles(slug: string, style: Style): { type: string; url: string }[] {
+  const v = `?v=${ART_VERSION}`;
+  if (style === "pinstripe") {
+    return PINSTRIPE_PANELS.map((p) => ({ type: `${p}_dtfabric`, url: `${siteUrl()}/api/print/pinstripe/${p}.png${v}` }));
+  }
+  return [{ type: "default", url: `${siteUrl()}/api/print/${style === "tee" ? "" : `${style}/`}${slug}.png${v}` }];
 }
 
 const dollars = (cents: number) => (cents / 100).toFixed(2);
@@ -47,7 +53,7 @@ export async function createPrintfulOrder(opts: {
       quantity: it.qty,
       name: it.name,
       retail_price: dollars(it.unitCents),
-      files: [{ type: "default", url: printFileUrl(team.slug, it.style) }],
+      files: printFiles(team.slug, it.style),
     };
   });
 

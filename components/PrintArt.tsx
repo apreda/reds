@@ -18,7 +18,7 @@ export function wordSize(width: number): number {
   return width / em;
 }
 
-export default function PrintArt({ width }: { width: number }) {
+export default function PrintArt({ width, color = INK }: { width: number; color?: string }) {
   const size = wordSize(width);
   return (
     <div
@@ -30,7 +30,7 @@ export default function PrintArt({ width }: { width: number }) {
         letterSpacing: TRACK * size,
         // Satori also tracks after the last letter; cancel it so the ink stays centered.
         marginRight: -TRACK * size,
-        color: INK,
+        color,
       }}
     >
       SELL

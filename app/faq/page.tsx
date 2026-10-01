@@ -15,8 +15,9 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
       <>
         <p>
           Tees are the Bella+Canvas 3001, a soft, lightweight unisex tee with a modern retail fit. Hoodies are the Gildan
-          18500, a classic unisex heavy blend hoodie with a roomier fit. If you like a looser tee, size up. Approximate
-          body width / length in inches:
+          18500, a classic unisex heavy blend hoodie with a roomier fit. If you like a looser tee, size up. The Yankees
+          pinstripe tee comes in S&ndash;2XL and runs about an inch narrower than our other tees. Approximate body width /
+          length in inches:
         </p>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
           <thead>

@@ -1,5 +1,6 @@
-// Team catalog. Every shirt is the same white "SELL" on the team's primary
-// color, like the Oakland originals; nothing else is printed. `city` names the
+// Team catalog. Every shirt is the same white "SELL" on the team's main color,
+// like the Oakland originals (black only for the White Sox, who really are
+// black and white); nothing else is printed. `city` names the
 // listing ("SELL Tee — NORTH SIDE") and the nickname is a hidden search keyword
 // so fans can type their team's name in the shop search. Neither is printed.
 //
@@ -16,7 +17,12 @@ export type Team = {
   nickname: string; // search keyword only, never displayed or printed
   shirt: string;
   hoodie: string;
+  pinstripe: boolean; // also sold as a white tee with navy pinstripes
 };
+
+// Yankees navy, for the pinstripe edition's stripes and lettering.
+export const PINSTRIPE_NAVY = "#0C2340";
+const PINSTRIPE = new Set(["the-bronx"]);
 
 export const DIVISIONS: { id: Division; label: string }[] = [
   { id: "al-east", label: "AL East" },
@@ -50,7 +56,7 @@ const ROWS: Row[] = [
   ["texas", "al-west", "Texas", "Rangers", "TEXAS", "True Royal", "Royal"],
   // NL East
   ["atlanta", "nl-east", "Atlanta", "Braves", "ATLANTA", "Navy", "Navy"],
-  ["miami", "nl-east", "Miami", "Marlins", "MIAMI", "Black", "Black"],
+  ["miami", "nl-east", "Miami", "Marlins", "MIAMI", "Aqua", "Carolina Blue"],
   ["queens", "nl-east", "New York", "Mets", "QUEENS", "True Royal", "Royal"],
   ["philadelphia", "nl-east", "Philadelphia", "Phillies", "PHILADELPHIA", "Red", "Red"],
   ["washington", "nl-east", "Washington", "Nationals", "WASHINGTON", "Red", "Red"],
@@ -58,7 +64,7 @@ const ROWS: Row[] = [
   ["chicago-north-side", "nl-central", "Chicago", "Cubs", "NORTH SIDE", "True Royal", "Royal"],
   ["cincinnati", "nl-central", "Cincinnati", "Reds", "CINCINNATI", "Red", "Red"],
   ["milwaukee", "nl-central", "Milwaukee", "Brewers", "MILWAUKEE", "Navy", "Navy"],
-  ["pittsburgh", "nl-central", "Pittsburgh", "Pirates", "PITTSBURGH", "Black", "Black"],
+  ["pittsburgh", "nl-central", "Pittsburgh", "Pirates", "PITTSBURGH", "Gold", "Gold"],
   ["st-louis", "nl-central", "St. Louis", "Cardinals", "ST. LOUIS", "Red", "Red"],
   // NL West
   ["arizona", "nl-west", "Arizona", "Diamondbacks", "ARIZONA", "Cardinal", "Maroon"],
@@ -76,6 +82,7 @@ export const TEAMS: Team[] = ROWS.map(([slug, division, market, nickname, city, 
   city,
   shirt,
   hoodie,
+  pinstripe: PINSTRIPE.has(slug),
 }));
 
 export const FEATURED_SLUG = "oakland";

@@ -394,6 +394,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .timeline b { font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; }
 @media (max-width: 520px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
 .sources { font-size: 13px !important; color: var(--muted) !important; }
+.legal { max-width: 760px; }
+.legal .effective { color: var(--muted); font-size: 14px; margin-top: -12px; }
+.legal li { margin-bottom: 6px; }
 .story-photo { position: relative; background: var(--tile); width: min(440px, 100%); aspect-ratio: 1 / 1; overflow: hidden; margin: 0 0 28px; }
 
 /* ---------- footer ---------- */

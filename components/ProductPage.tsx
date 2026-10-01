@@ -98,6 +98,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
                   ))}
                   {style !== "pinstripe" && <li>Direct-to-garment print, front only</li>}
                   <li>No team names or logos &mdash; just SELL</li>
+                  <li>Imported</li>
                 </ul>
               </div>
             </details>
@@ -105,8 +106,9 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
               <summary>Shipping &amp; returns</summary>
               <div className="content">
                 Printed to order and usually shipped within 2&ndash;5 business days, then 3&ndash;7 days in transit
-                (US). Free shipping to the US and Canada. Because each {noun} is made for you, we replace
-                misprints and damaged items free but can&rsquo;t take back the wrong size. <Link href="/faq" style={{ textDecoration: "underline" }}>FAQ</Link>
+                (US). Free shipping to the US and Canada. Because each {noun} is made for you, we can&rsquo;t take back
+                the wrong size, but misprints, defects and shipping damage are covered by our 30-day{" "}
+                <Link href="/terms#warranty" style={{ textDecoration: "underline" }}>Limited Warranty</Link>.
               </div>
             </details>
           </div>

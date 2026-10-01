@@ -102,7 +102,7 @@ export default function Story() {
           <a href="https://www.cbsnews.com/sanfrancisco/news/oakland-as-athletics-reverse-boycott-coliseum-largest-crowd/">
             CBS News Bay Area
           </a>
-          . The original shirt was made by Oakland 68s and Oaklandish; Sell The Team is an independent project and is
+          . The original shirt was made by Oakland 68s and Oaklandish; Sell My Team is an independent project and is
           not affiliated with either.
         </p>
       </div>

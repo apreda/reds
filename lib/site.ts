@@ -1,5 +1,6 @@
-export const SITE_NAME = "Sell The Team";
+export const SITE_NAME = "Sell My Team";
 export const SITE_TAGLINE = "Wear it until they sell.";
+export const CONTACT_EMAIL = "hello@sellmyteam.com";
 
 export function siteUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");

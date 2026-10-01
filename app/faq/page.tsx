@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = { title: "FAQ", description: "Shipping, sizing, returns and more." };
 
@@ -54,11 +56,18 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   {
     id: "returns",
     q: "Can I return or exchange?",
-    a: "Because each shirt is made just for you, we can't accept returns for the wrong size or a change of heart. If your shirt arrives misprinted, damaged, or defective, email us a photo within 30 days of delivery and we'll send a replacement or refund, free.",
+    a: (
+      <>
+        Because each shirt is made just for you, we can&rsquo;t accept returns for the wrong size or a change of heart.
+        If your order arrives misprinted, damaged, or defective, email{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> a photo within 30 days of delivery and we&rsquo;ll send
+        a replacement or refund, free. Full details are in our <Link href="/terms#warranty">Limited Warranty</Link>.
+      </>
+    ),
   },
   {
     q: "Are you affiliated with MLB or the teams?",
-    a: "No. Sell The Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL, in white, on a color fans will recognize. Team names never appear on our shirts or product listings, but you can still search for your team's name in the shop.",
+    a: "No. Sell My Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL, in white, on a color fans will recognize. Team names never appear on our shirts or product listings, but you can still search for your team's name in the shop.",
   },
   {
     q: "Is this the original Oakland shirt?",

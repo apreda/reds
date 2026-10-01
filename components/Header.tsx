@@ -31,7 +31,7 @@ export default function Header() {
           </button>
         </div>
         <Link href="/" className="logo" onClick={() => setOpen(false)}>
-          Sell The Team
+          Sell My Team
           <small>Est. Oakland 2023</small>
         </Link>
         <div className="header-right">

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SHIPPING_CENTS, colorName, formatPrice, productName, productPath, resolveLine } from "@/lib/products";
 import { useCart } from "./CartProvider";
+import { leagueOf } from "@/lib/teams";
 import ProductPhoto from "./ProductPhoto";
 
 export default function CartView({ open }: { open: boolean }) {
@@ -63,7 +64,7 @@ export default function CartView({ open }: { open: boolean }) {
             <div>
               <h3>{productName(r!.team, r!.style)}</h3>
               <div className="meta">
-                {colorName(r!.team, r!.style)} · Size {line.size}
+                {leagueOf(r!.team.league).sport} · {colorName(r!.team, r!.style)} · Size {line.size}
               </div>
               <div className="qty" style={{ height: 38, marginTop: 10 }}>
                 <button aria-label="Decrease" onClick={() => setQty(line.slug, r!.style, line.size, line.qty - 1)}>

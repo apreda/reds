@@ -73,11 +73,11 @@ export default function Story() {
           problem &mdash; and gave every one of them a way to say so without saying a word.
         </p>
 
-        <h2>Why every ballpark</h2>
+        <h2>Why every team</h2>
         <p>
           Oakland isn&rsquo;t the only fan base that feels this way. Payrolls slashed while ticket prices climb. Stadium
           ultimatums. Relocation threats. Years of losing with no plan to stop. If your owner has stopped listening, the
-          message is the same everywhere &mdash; so we made the shirt for all 30 MLB fan bases.
+          message is the same everywhere &mdash; so we made the shirt for every MLB, NBA and NFL fan base.
         </p>
         <p>
           Every shirt is just SELL, in white, on your team&rsquo;s color. No logos, no team names. Wear it to the

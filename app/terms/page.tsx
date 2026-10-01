@@ -26,7 +26,7 @@ export default function Terms() {
         <h2>Who we are</h2>
         <p>
           {SITE_NAME} is an independent fan project. We are not affiliated with, licensed, sponsored or endorsed by Major
-          League Baseball, any club, or any owner. Our products carry no team names or logos. Team and city names
+          League Baseball, the National Basketball Association, the National Football League, any club, or any owner. Our products carry no team names or logos. Team and city names
           appear on this site only to describe which fans a shirt is for.
         </p>
 

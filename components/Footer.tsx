@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DIVISIONS } from "@/lib/teams";
+import { LEAGUES } from "@/lib/teams";
 
 export default function Footer() {
   return (
@@ -17,13 +17,13 @@ export default function Footer() {
           <div>
             <h4>Shop</h4>
             <ul>
-              <li><Link href="/shop">All 30 Teams</Link></li>
-              <li><Link href="/shop?style=hoodie">Hoodies</Link></li>
-              {DIVISIONS.map((d) => (
-                <li key={d.id}>
-                  <Link href={`/shop?division=${d.id}`}>{d.label}</Link>
+              <li><Link href="/shop">Every Team</Link></li>
+              {LEAGUES.map((l) => (
+                <li key={l.id}>
+                  <Link href={`/shop?league=${l.id}`}>{l.sport}</Link>
                 </li>
               ))}
+              <li><Link href="/shop?style=hoodie">Hoodies</Link></li>
             </ul>
           </div>
           <div>
@@ -46,7 +46,7 @@ export default function Footer() {
         </div>
         <p className="fine">
           Sell My Team is an independent fan project. We are not affiliated with, licensed, sponsored or endorsed by
-          Major League Baseball, any club, or any owner. Our shirts carry no team names or logos, only the word
+          Major League Baseball, the National Basketball Association, the National Football League, any club, or any owner. Our shirts carry no team names or logos, only the word
           SELL. &copy; {new Date().getFullYear()} Sell My Team.
         </p>
       </div>

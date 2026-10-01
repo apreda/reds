@@ -332,7 +332,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .details details[open] summary::after { content: "–"; }
 .details .content { padding: 0 0 18px; color: #444; font-size: 14px; }
 .details ul { margin: 0; padding-left: 18px; }
-.style-switch { display: flex; gap: 22px; }
+.style-switch { display: flex; gap: 22px; flex-wrap: wrap; }
+.shop-switches { display: flex; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-bottom: 18px; }
 .style-switch a, .style-switch button {
   background: none;
   border: 0;
@@ -415,5 +416,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .divisions li a { display: grid; grid-template-columns: 14px 1fr; column-gap: 10px; align-items: center; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; }
 .divisions li a:hover { color: var(--muted); }
 .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.12); }
+.divisions.eight { grid-template-columns: repeat(4, 1fr); }
+.league-block + .league-block { margin-top: 44px; }
+.league-name { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.06em; font-size: 28px; margin: 0 0 14px; }
 @media (max-width: 1000px) { .divisions { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 560px) { .divisions { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 1000px) { .divisions.eight { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px) { .divisions, .divisions.eight { grid-template-columns: repeat(2, 1fr); } }

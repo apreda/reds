@@ -3,13 +3,16 @@
 // the all-over-print pinstripe tee, saved to public/mockups/[<style>/]<slug>.png.
 // The print is the same for every team, so each color is rendered once.
 //
-//   node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie|pinstripe ...] [team-slug ...] [--options]
+//   node --env-file=.env.local scripts/generate-mockups.mjs [tee|hoodie|pinstripe ...] [team-slug ...] [--missing] [--options]
+//
+// --missing fills in only teams without a photo, copying one from another team
+// in the same color when there is one and rendering only new colors.
 //
 // Env: PRINTFUL_API_TOKEN, PRINTFUL_STORE_ID, and BASE_URL: a public URL
 // serving this code's print files (Printful downloads them itself). Needs Node
 // 23.6+ because it imports lib/teams.ts directly. Bump ART_VERSION in
 // lib/art.ts after regenerating.
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { TEAMS } from "../lib/teams.ts";
 
 const API = "https://api.printful.com";
@@ -71,7 +74,19 @@ for (const style of styles.length ? styles : Object.keys(STYLES)) {
   const dir = new URL(`../public/mockups/${out}`, import.meta.url);
   mkdirSync(dir, { recursive: true });
   const byColor = Map.groupBy(TEAMS.filter((t) => only(t) && (!slugs.size || slugs.has(t.slug))), color);
-  for (const [name, teams] of byColor) {
+  const photo = (t) => new URL(`${t.slug}.png`, dir);
+  for (const [name, all] of byColor) {
+    let teams = all;
+    if (args.includes("--missing")) {
+      teams = all.filter((t) => !existsSync(photo(t)));
+      if (!teams.length) continue;
+      const donor = TEAMS.find((t) => only(t) && color(t) === name && existsSync(photo(t)));
+      if (donor) {
+        for (const t of teams) copyFileSync(photo(donor), photo(t));
+        console.log(`${style} ${name}: copied from ${donor.slug} to ${teams.map((t) => t.slug).join(", ")}`);
+        continue;
+      }
+    }
     const variant = variants[style][name]?.variants?.M;
     if (!variant) throw new Error(`No Printful ${style} variant for ${name}`);
     const task = await pf(`/mockup-generator/create-task/${product}`, {

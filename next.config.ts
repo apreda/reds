@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
     "/api/print/hoodie/[slug]": ["./assets/inter-600.ttf"],
     "/api/print/pinstripe/[panel]": ["./assets/inter-600.ttf"],
     "/opengraph-image": ["./assets/inter-600.ttf"],
+    "/[team]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/shirt/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/hoodie/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/pinstripe/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
   },
 };
 

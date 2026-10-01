@@ -7,7 +7,6 @@ import ProductPhoto from "@/components/ProductPhoto";
 import {
   colorHex,
   colorName,
-  mockupPath,
   productName,
   productPath,
   sizesFor,
@@ -16,7 +15,7 @@ import {
   type Style,
 } from "@/lib/products";
 import { ordersOpen } from "@/lib/site";
-import { divisionName, getTeam, TEAMS } from "@/lib/teams";
+import { divisionName, getTeam, leagueOf, teamLabel, TEAMS } from "@/lib/teams";
 
 const DETAILS: Record<Style, string[]> = {
   tee: [
@@ -39,7 +38,7 @@ export async function productMetadata(slug: string, style: Style): Promise<Metad
   const title = productName(team, style);
   const noun = STYLE[style].label.toLowerCase();
   const description = `The SELL protest ${noun} for ${team.market}: white SELL on a ${colorName(team, style)} ${noun}, printed to order.`;
-  return { title, description, openGraph: { title, description, images: [mockupPath(team, style)] } };
+  return { title, description, openGraph: { title, description } };
 }
 
 export default function ProductPage({ slug, style }: { slug: string; style: Style }) {
@@ -53,7 +52,8 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
   return (
     <div className="wrap">
       <div className="crumbs">
-        <Link href="/shop">Shop</Link> / <Link href={`/shop?division=${team.division}`}>{divisionName(team.division)}</Link> / {team.city}
+        <Link href="/shop">Shop</Link> / <Link href={`/shop?league=${team.league}`}>{leagueOf(team.league).sport}</Link> /{" "}
+        <Link href={`/shop?division=${team.division}`}>{divisionName(team.division)}</Link> / {team.city}
       </div>
       <div className="pdp">
         <div className="pdp-gallery">
@@ -63,7 +63,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
         </div>
         <div className="pdp-info">
           <div>
-            <span className="eyebrow">{divisionName(team.division)}</span>
+            <span className="eyebrow">{teamLabel(team)}</span>
             <h1 className="display">{productName(team, style)}</h1>
           </div>
           <nav className="style-switch" aria-label="Style">
@@ -117,7 +117,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
       {related.length > 0 && (
         <section style={{ paddingBottom: 80 }}>
           <div className="section-head">
-            <h2 className="display">{sameCity.length ? `More for ${team.market}` : `More from the ${divisionName(team.division)}`}</h2>
+            <h2 className="display">{sameCity.length ? `More for ${team.market}` : `More from the ${teamLabel(team)}`}</h2>
           </div>
           <div className="grid">
             {related.map((t) => (

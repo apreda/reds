@@ -1,6 +1,6 @@
 # Sell My Team
 
-Protest tees and hoodies for baseball fans whose owners stopped listening, one for each of the 30 MLB fan bases. The idea comes from the green "SELL" shirts Oakland A's fans wore to the June 13, 2023 reverse boycott.
+Protest tees and hoodies for fans whose owners stopped listening, one for every MLB, NBA and NFL fan base (92 teams). The idea comes from the green "SELL" shirts Oakland A's fans wore to the June 13, 2023 reverse boycott.
 
 - **Stack:** Next.js (App Router) on Vercel
 - **Payments:** Stripe Checkout

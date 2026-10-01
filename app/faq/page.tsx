@@ -67,7 +67,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   },
   {
     q: "Are you affiliated with MLB or the teams?",
-    a: "No. Sell My Team is an independent fan project with no connection to Major League Baseball, any club, or any owner. Our shirts never carry team names or logos — just the word SELL, in white, on a color fans will recognize. Team names never appear on our shirts or product listings, but you can still search for your team's name in the shop.",
+    a: "No. Sell My Team is an independent fan project with no connection to Major League Baseball, the National Basketball Association, the National Football League, any club, or any owner. Our shirts never carry team names or logos — just the word SELL, in white, on a color fans will recognize. Team names never appear on our shirts or product listings, but you can still search for your team's name in the shop.",
   },
   {
     q: "Is this the original Oakland shirt?",
@@ -75,7 +75,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   },
   {
     q: "My city has more than one team. Which shirt is mine?",
-    a: "Each team's shirt comes in that team's primary color, and where cities share a market the listing uses the neighborhood fans already use (North Side vs. South Side, Queens vs. the Bronx). Search your team's name on the shop page and it'll show up.",
+    a: "Each team's shirt comes in the color fans think of for that team, and where teams share a city the listing uses the neighborhood or conference fans already use (North Side vs. South Side, Queens vs. the Bronx, New York (AFC) vs. New York (NFC)). Search your team's name on the shop page and it'll show up.",
   },
   {
     q: "Do you ship internationally?",

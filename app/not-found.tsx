@@ -6,7 +6,7 @@ export default function NotFound() {
       <h1 className="display page-title">Not found</h1>
       <p>That page got traded.</p>
       <Link href="/shop" className="btn" style={{ marginTop: 20 }}>
-        Shop all 30
+        Shop every team
       </Link>
     </div>
   );

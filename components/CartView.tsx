@@ -98,11 +98,11 @@ export default function CartView({ open }: { open: boolean }) {
           <span>{formatPrice(subtotal + SHIPPING_CENTS)}</span>
         </div>
         <button className="btn block" onClick={checkout} disabled={!open || busy}>
-          {open ? (busy ? "Redirecting…" : "Check out") : "Orders open soon"}
+          {open ? (busy ? "Redirecting…" : "Check out") : "Coming soon"}
         </button>
         {!open && (
           <p className="note" style={{ margin: 0 }}>
-            We&rsquo;re in pre-launch. Your bag is saved on this device, so you can come back and check out when
+            Ordering opens soon. Your bag is saved on this device, so you can come back and check out when
             orders open.
           </p>
         )}

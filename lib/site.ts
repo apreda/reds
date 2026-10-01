@@ -9,9 +9,10 @@ export function siteUrl(): string {
   return "http://localhost:3000";
 }
 
-// Checkout is live only once Stripe is configured.
+// Ordering is switched on with ORDERS_OPEN=true (and needs Stripe configured).
+// Until then the site shows "Coming soon" and checkout is closed.
 export function ordersOpen(): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY);
+  return process.env.ORDERS_OPEN === "true" && Boolean(process.env.STRIPE_SECRET_KEY);
 }
 
 // With a publishable key (from the same Stripe account as STRIPE_SECRET_KEY),

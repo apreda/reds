@@ -69,7 +69,7 @@ export default function BuyBox({ slug, style, sizes, open }: { slug: string; sty
       )}
       {!open && (
         <p className="note" style={{ margin: 0 }}>
-          We&rsquo;re in pre-launch: you can build your bag now, and checkout opens shortly.
+          Coming soon: you can build your bag now, and ordering opens shortly.
         </p>
       )}
     </div>

@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="announce">
             {ordersOpen()
               ? "Free shipping · Printed to order · Not affiliated with any team or league"
-              : "Pre-launch · Orders open soon · Not affiliated with any team or league"}
+              : "Coming soon · Free shipping · Not affiliated with any team or league"}
           </div>
           <Header />
           <main>{children}</main>

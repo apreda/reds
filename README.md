@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-Until `STRIPE_SECRET_KEY` is set, the site runs in **pre-launch mode**: browsing and the bag work, but checkout shows "Orders open soon".
+Until `ORDERS_OPEN=true` (and `STRIPE_SECRET_KEY`) is set, the site runs in **coming-soon mode**: browsing and the bag work, but checkout shows "Coming soon". To open ordering: `vercel env add ORDERS_OPEN production` (value `true`), then redeploy.
 
 ## Going live (checklist)
 

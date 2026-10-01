@@ -6,7 +6,8 @@ import ProductCard from "@/components/ProductCard";
 import ProductPhoto from "@/components/ProductPhoto";
 import {
   colorHex,
-  colorName,
+  colorLabel,
+  garment,
   productName,
   productPath,
   sizesFor,
@@ -15,7 +16,7 @@ import {
   type Style,
 } from "@/lib/products";
 import { ordersOpen } from "@/lib/site";
-import { divisionName, getTeam, leagueOf, teamLabel, TEAMS } from "@/lib/teams";
+import { cityName, divisionName, getTeam, leagueOf, teamLabel, TEAMS, type Team } from "@/lib/teams";
 
 const TEE = "Bella+Canvas 3001 unisex tee, 100% combed ring-spun cotton";
 
@@ -46,13 +47,26 @@ const WHY: Partial<Record<Style, string>> = {
   "nepo-sign": "Marker lettering, like the sign you'd hold up behind home plate.",
 };
 
+const SHARE_TEXT: Partial<Record<Style, (t: Team) => string>> = {
+  pinstripe: () => "A white pinstripe shirt with SELL across the chest in navy. Wear it to the game until they sell the team. Free shipping.",
+  nepo: () => "A red shirt that says NEPO PHIL over SELL. Wear it to the game. Free shipping.",
+  "nepo-jersey": () => "A red shirt with SELL on the front and NEPO PHIL 00 on the back. Wear it to the game. Free shipping.",
+  "nepo-sign": () => "A cream shirt that says NEPO PHIL: SELL! in red marker. Wear it to the game. Free shipping.",
+};
+
 export async function productMetadata(slug: string, style: Style): Promise<Metadata> {
   const team = getTeam(slug);
   if (!team) return {};
-  const title = productName(team, style);
-  const noun = STYLE[style].label.toLowerCase();
-  const description = `The SELL protest ${noun} for ${team.market}: white SELL on a ${colorName(team, style)} ${noun}, printed to order.`;
-  return { title, description, openGraph: { title, description } };
+  // Plain words for link previews: "SELL shirt for Cincinnati fans".
+  const fans = `for ${cityName(team).replace(/^The /, "")} fans`;
+  const shareTitle = `${style.startsWith("nepo") ? "NEPO PHIL shirt" : `SELL ${style === "pinstripe" ? "pinstripe shirt" : garment(style)}`} ${fans}`;
+  const description = SHARE_TEXT[style]?.(team) ?? `A ${colorLabel(team, style)} ${garment(style)} with SELL across the chest. Wear it to the game until they sell the team. Free shipping.`;
+  return {
+    title: productName(team, style),
+    description,
+    openGraph: { title: shareTitle, description },
+    twitter: { title: shareTitle, description },
+  };
 }
 
 export default function ProductPage({ slug, style }: { slug: string; style: Style }) {
@@ -90,7 +104,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           <BuyBox key={style} slug={team.slug} style={style} sizes={sizesFor(team, style)} open={ordersOpen()} />
           <div className="swatch-row">
             <span className="swatch" style={{ background: colorHex(team, style) }} />
-            {style === "pinstripe" ? "White with navy pinstripes" : `${colorName(team, style)} ${style === "hoodie" ? "hoodie" : "tee"}`}
+            {style === "pinstripe" ? "White with navy pinstripes" : `${colorLabel(team, style)[0].toUpperCase()}${colorLabel(team, style).slice(1)} ${garment(style)}`}
             <span className="swatch" style={{ background: STYLE[style].ink, marginLeft: 10 }} />
             {PRINT_COLOR[style]} print
           </div>

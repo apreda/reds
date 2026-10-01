@@ -212,6 +212,12 @@ export function leagueOf(id: League) {
   return LEAGUES.find((l) => l.id === id)!;
 }
 
+// The listing name in normal case for sentences: "NORTH SIDE" -> "North Side",
+// "ST. LOUIS" -> "St. Louis", "NEW YORK (AFC)" -> "New York (AFC)".
+export function cityName(t: Team): string {
+  return t.city.replace(/[A-Z][A-Z.']*/g, (w) => (/^\(?[AN]FC\)?$/.test(w) ? w : w[0] + w.slice(1).toLowerCase()));
+}
+
 // Card and page eyebrow: NBA division names need the league to read clearly.
 export function teamLabel(t: Team): string {
   const d = divisionName(t.division);

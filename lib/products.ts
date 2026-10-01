@@ -54,6 +54,23 @@ export function colorName(team: Team, style: Style): string {
   return STYLE[style].color ?? (style === "hoodie" ? team.hoodie : team.shirt);
 }
 
+// Everyday names for Printful's color names, for anything customers read.
+const PLAIN_COLOR: Record<string, string> = {
+  Kelly: "green", "Irish Green": "green", "True Royal": "royal blue", Royal: "royal blue", "Team Purple": "purple",
+  Forest: "dark green", "Forest Green": "dark green", Cardinal: "dark red", "Heather Columbia Blue": "light blue",
+  "Carolina Blue": "light blue", "Dark Chocolate": "brown", Natural: "cream", Sand: "tan",
+};
+
+export function colorLabel(team: Team, style: Style): string {
+  const name = colorName(team, style);
+  return PLAIN_COLOR[name] ?? name.toLowerCase();
+}
+
+// "shirt" or "hoodie", for plain-English copy.
+export function garment(style: Style): string {
+  return style === "hoodie" ? "hoodie" : "shirt";
+}
+
 export function colorHex(team: Team, style: Style): string {
   return COLORS[STYLE[style].blank][colorName(team, style)]?.hex ?? "#222222";
 }

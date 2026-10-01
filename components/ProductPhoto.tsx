@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { colorName, mockupPath, STYLE, type Style } from "@/lib/products";
+import { colorLabel, garment, mockupPath, type Style } from "@/lib/products";
 import type { Team } from "@/lib/teams";
 
 // Photo of the printed shirt or hoodie. It fills its parent, which must be
@@ -18,7 +18,7 @@ export default function ProductPhoto({
   return (
     <Image
       src={mockupPath(team, style)}
-      alt={`${colorName(team, style)} ${STYLE[style].label.toLowerCase()} printed with SELL in white`}
+      alt={`${colorLabel(team, style)} ${garment(style)} with SELL on the front`}
       fill
       sizes={sizes}
       className="photo"

@@ -18,8 +18,7 @@ const display = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: `${SITE_NAME} — ${SITE_TAGLINE}`, template: `%s | ${SITE_NAME}` },
-  description:
-    "Oakland fans wore SELL to tell their owner to sell the team. Now every fan base can. Protest tees and hoodies for every MLB, NBA and NFL fan base.",
+  description: "Shirts that say SELL, in your team's color. Wear one to the game until the owner sells the team. Free shipping.",
   openGraph: { siteName: SITE_NAME, type: "website", title: "Wear SELL to the game until your owner sells." },
   twitter: { card: "summary_large_image" },
 };

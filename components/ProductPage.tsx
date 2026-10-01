@@ -105,7 +105,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
               <summary>Shipping &amp; returns</summary>
               <div className="content">
                 Printed to order and usually shipped within 2&ndash;5 business days, then 3&ndash;7 days in transit
-                (US). Flat $5.99 shipping to the US and Canada. Because each {noun} is made for you, we replace
+                (US). Free shipping to the US and Canada. Because each {noun} is made for you, we replace
                 misprints and damaged items free but can&rsquo;t take back the wrong size. <Link href="/faq" style={{ textDecoration: "underline" }}>FAQ</Link>
               </div>
             </details>

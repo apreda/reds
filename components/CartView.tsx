@@ -91,7 +91,7 @@ export default function CartView({ open }: { open: boolean }) {
         </div>
         <div className="summary-row">
           <span>Shipping (US &amp; Canada)</span>
-          <span>{formatPrice(SHIPPING_CENTS)}</span>
+          <span>{SHIPPING_CENTS ? formatPrice(SHIPPING_CENTS) : "Free"}</span>
         </div>
         <div className="summary-row total">
           <span>Total</span>

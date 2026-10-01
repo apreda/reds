@@ -52,4 +52,4 @@ Without a Printful token the webhook still acknowledges payments and logs `needs
 
 ## Pricing
 
-$25 per tee, $35 for the pinstripe tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL) and flat $5.99 shipping per order, all set in `lib/products.ts`. Printful charges about $12 per tee and $23 per hoodie (same size upcharges) plus its shipping, so a single-item order nets roughly $8–10 on a tee and $15–18 on a hoodie before Stripe fees.
+$25 per tee, $35 for the pinstripe tee and $45 per hoodie (+$2 for 2XL, +$4 for 3XL), with free shipping to the US and Canada, all set in `lib/products.ts`. Printful charges $11.92 per tee, $25.49 per pinstripe tee and $22.63 per hoodie (same size upcharges), plus its shipping (US: $4.95 for one tee, $7.15 for two, $8.79 for a hoodie; Canada about $2–4 more). After Stripe's 2.9% + 30¢, a single-item US order nets about $7.10 on a tee, $3.50 on a pinstripe tee and $12 on a hoodie.

@@ -19,7 +19,8 @@ export const STYLE: Record<Style, StyleInfo> = {
   pinstripe: { label: "Pinstripe Tee", path: "pinstripe", base: 3500, ink: PINSTRIPE_NAVY },
 };
 const SIZE_UPCHARGE: Partial<Record<Size, number>> = { "2XL": 200, "3XL": 400 };
-export const SHIPPING_CENTS = 599;
+// Free shipping to the US and Canada; Printful charges us about $4.70–11 per order.
+export const SHIPPING_CENTS = 0;
 
 type ColorEntry = { hex: string; variants: Partial<Record<Size, number>> };
 const COLORS = variants as Record<Style, Record<string, ColorEntry>>;

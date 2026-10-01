@@ -6,7 +6,7 @@ const QA: { id?: string; q: string; a: React.ReactNode }[] = [
   {
     id: "shipping",
     q: "How long does shipping take?",
-    a: "Every shirt is printed to order by our production partner. Most orders ship within 2–5 business days and arrive 3–7 business days after that in the US (a little longer to Canada). You'll get tracking by email when it ships. Shipping is a flat $5.99 per order to the US and Canada.",
+    a: "Every shirt is printed to order by our production partner. Most orders ship within 2–5 business days and arrive 3–7 business days after that in the US (a little longer to Canada). You'll get tracking by email when it ships. Shipping is free on every order to the US and Canada.",
   },
   {
     id: "sizing",

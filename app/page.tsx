@@ -1,25 +1,26 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductPhoto from "@/components/ProductPhoto";
-import { colorHex } from "@/lib/products";
+import { colorHex, type Style } from "@/lib/products";
 import { DIVISIONS, FEATURED_SLUG, getTeam, teamsByDivision } from "@/lib/teams";
 
-const PICKS = [
-  "oakland",
-  "chicago-south-side",
-  "pittsburgh",
-  "colorado",
-  "tampa-bay",
-  "washington",
-  "miami",
-  "cincinnati",
+// Rows of three, so keep these lists at multiples of 3.
+const PICKS: [string, Style][] = [
+  ["oakland", "tee"],
+  ["the-bronx", "pinstripe"],
+  ["pittsburgh", "tee"],
+  ["miami", "tee"],
+  ["chicago-south-side", "tee"],
+  ["colorado", "tee"],
+  ["chicago-north-side", "tee"],
+  ["baltimore", "tee"],
+  ["cincinnati", "tee"],
 ];
 
-const HOODIE_PICKS = ["oakland", "baltimore", "the-bronx", "st-louis"];
+const HOODIE_PICKS = ["oakland", "baltimore", "the-bronx", "st-louis", "chicago-north-side", "pittsburgh"];
 
 export default function Home() {
   const hero = getTeam(FEATURED_SLUG)!;
-  const picks = PICKS.map((s) => getTeam(s)!).filter(Boolean);
   return (
     <>
       <section className="hero">
@@ -58,9 +59,9 @@ export default function Home() {
               Shop all 30
             </Link>
           </div>
-          <div className="grid">
-            {picks.map((t) => (
-              <ProductCard key={t.slug} team={t} />
+          <div className="grid three">
+            {PICKS.map(([s, style]) => (
+              <ProductCard key={`${s}-${style}`} team={getTeam(s)!} style={style} />
             ))}
           </div>
         </div>
@@ -77,7 +78,7 @@ export default function Home() {
               Shop hoodies
             </Link>
           </div>
-          <div className="grid">
+          <div className="grid three">
             {HOODIE_PICKS.map((s) => (
               <ProductCard key={s} team={getTeam(s)!} style="hoodie" />
             ))}

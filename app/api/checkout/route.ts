@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            display_name: "Standard (printed to order)",
+            display_name: "Free shipping (printed to order)",
             fixed_amount: { amount: SHIPPING_CENTS, currency: "usd" },
             delivery_estimate: {
               minimum: { unit: "business_day", value: 5 },

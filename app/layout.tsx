@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CartProvider>
           <div className="announce">
             {ordersOpen()
-              ? "Printed to order · Flat $5.99 shipping · Not affiliated with any team or league"
+              ? "Free shipping · Printed to order · Not affiliated with any team or league"
               : "Pre-launch · Orders open soon · Not affiliated with any team or league"}
           </div>
           <Header />

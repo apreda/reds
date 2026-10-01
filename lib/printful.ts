@@ -26,6 +26,15 @@ export function printfulConfigured(): boolean {
 // all-over-print pinstripe tee.
 export function printFiles(slug: string, style: Style): { type: string; url: string }[] {
   const v = `?v=${ART_VERSION}`;
+  // Cincinnati specials print from fixed files in public/print.
+  if (style === "nepo") return [{ type: "default", url: `${siteUrl()}/print/nepo-phil.png${v}` }];
+  if (style === "nepo-sign") return [{ type: "default", url: `${siteUrl()}/print/nepo-phil-sign.png${v}` }];
+  if (style === "nepo-jersey") {
+    return [
+      { type: "default", url: `${siteUrl()}/print/nepo-phil-jersey-front.png${v}` },
+      { type: "back", url: `${siteUrl()}/print/nepo-phil-jersey-back.png${v}` },
+    ];
+  }
   if (style === "pinstripe") {
     return PINSTRIPE_PANELS.map((p) => ({ type: `${p}_dtfabric`, url: `${siteUrl()}/api/print/pinstripe/${p}.png${v}` }));
   }

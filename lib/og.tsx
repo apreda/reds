@@ -42,6 +42,9 @@ export function teamCard(slug: string, style: Style) {
   const team = getTeam(slug);
   if (!team) return siteCard();
   // The Reds get the same red as the site card rather than Printful's blank color.
+  if (style.startsWith("nepo")) {
+    return card(style === "nepo-sign" ? "#FEF1D1" : REDS_RED, STYLE[style].ink, "NEPO PHIL", `${team.city} · SELLMYTEAM.COM`);
+  }
   const bg = style === "pinstripe" ? "#FFFFFF" : slug === "cincinnati" ? REDS_RED : colorHex(team, style);
   return card(bg, STYLE[style].ink, team.city, "WEAR IT TO THE GAME UNTIL THEY SELL · SELLMYTEAM.COM");
 }

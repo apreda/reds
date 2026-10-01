@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
     "/shirt/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
     "/hoodie/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
     "/pinstripe/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/nepo-phil/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/nepo-phil-jersey/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
+    "/nepo-phil-sign/[slug]/opengraph-image": ["./assets/inter-600.ttf"],
   },
 };
 

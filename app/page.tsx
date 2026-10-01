@@ -14,7 +14,7 @@ const PICKS: [string, Style][] = [
   ["nba-los-angeles", "tee"],
   ["nfl-cincinnati", "tee"],
   ["miami", "tee"],
-  ["cincinnati", "tee"],
+  ["cincinnati", "nepo-sign"],
 ];
 
 const HOODIE_PICKS = ["oakland", "nba-chicago", "nfl-green-bay", "the-bronx", "nba-los-angeles", "nfl-baltimore"];

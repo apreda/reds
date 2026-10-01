@@ -31,11 +31,13 @@ export type Team = {
   shirt: string;
   hoodie: string;
   pinstripe: boolean; // also sold as a white tee with navy pinstripes
+  nepo: boolean; // also sold as the NEPO PHIL: SELL! tee
 };
 
 // Yankees navy, for the pinstripe edition's stripes and lettering.
 export const PINSTRIPE_NAVY = "#0C2340";
 const PINSTRIPE = new Set(["the-bronx"]);
+const NEPO = new Set(["cincinnati"]);
 
 export const DIVISIONS: { id: Division; label: string; league: League }[] = [
   { id: "al-east", label: "AL East", league: "mlb" },
@@ -189,6 +191,7 @@ export const TEAMS: Team[] = ROWS.map(([slug, division, market, nickname, city, 
   shirt,
   hoodie,
   pinstripe: PINSTRIPE.has(slug),
+  nepo: NEPO.has(slug),
 }));
 
 export const FEATURED_SLUG = "oakland";

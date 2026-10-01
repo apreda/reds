@@ -17,19 +17,33 @@ import {
 import { ordersOpen } from "@/lib/site";
 import { divisionName, getTeam, leagueOf, teamLabel, TEAMS } from "@/lib/teams";
 
+const TEE = "Bella+Canvas 3001 unisex tee, 100% combed ring-spun cotton";
+
+// Per style: what's printed (details list), the print's color name, and the
+// "Why SELL" line.
 const DETAILS: Record<Style, string[]> = {
-  tee: [
-    "Bella+Canvas 3001 unisex tee, 100% combed ring-spun cotton",
-    "Soft, lightweight 4.2 oz jersey; retail fit",
-  ],
+  tee: [TEE, "Soft, lightweight 4.2 oz jersey; retail fit", "Direct-to-garment print, front only"],
   hoodie: [
     "Gildan 18500 unisex heavy blend hoodie, 50% cotton / 50% polyester",
     "Midweight 8 oz fleece, front pouch pocket, double-lined hood with drawcord",
+    "Direct-to-garment print, front only",
   ],
   pinstripe: [
     "White cotton tee printed edge to edge with navy pinstripes, SELL in navy",
     "96% cotton / 4% elastane, midweight 5.6 oz; regular fit, sizes S–2XL",
   ],
+  nepo: [TEE, "NEPO PHIL over SELL in white on red", "Direct-to-garment print, front only"],
+  "nepo-jersey": [TEE, "SELL on the chest; NEPO PHIL and 00 across the back", "Direct-to-garment print, front and back"],
+  "nepo-sign": [TEE, "NEPO PHIL: SELL! in red marker lettering on natural", "Direct-to-garment print, front only"],
+};
+const PRINT_COLOR: Record<Style, string> = {
+  tee: "white", hoodie: "white", pinstripe: "navy", nepo: "white", "nepo-jersey": "white", "nepo-sign": "red",
+};
+const WHY: Partial<Record<Style, string>> = {
+  pinstripe: "One word in navy across the pinstripes.",
+  nepo: "His name, then the one word.",
+  "nepo-jersey": "His name across the back, like a jersey.",
+  "nepo-sign": "Marker lettering, like the sign you'd hold up behind home plate.",
 };
 
 export async function productMetadata(slug: string, style: Style): Promise<Metadata> {
@@ -76,16 +90,16 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           <BuyBox key={style} slug={team.slug} style={style} sizes={sizesFor(team, style)} open={ordersOpen()} />
           <div className="swatch-row">
             <span className="swatch" style={{ background: colorHex(team, style) }} />
-            {style === "pinstripe" ? "White with navy pinstripes" : `${colorName(team, style)} ${noun}`}
+            {style === "pinstripe" ? "White with navy pinstripes" : `${colorName(team, style)} ${style === "hoodie" ? "hoodie" : "tee"}`}
             <span className="swatch" style={{ background: STYLE[style].ink, marginLeft: 10 }} />
-            {style === "pinstripe" ? "navy" : "white"} print
+            {PRINT_COLOR[style]} print
           </div>
           <div className="details">
             <details open>
               <summary>Why SELL</summary>
               <div className="content">
                 Modeled on the shirt Oakland fans wore to the 2023 reverse boycott.{" "}
-                {style === "pinstripe" ? "One word in navy across the pinstripes." : "One word in white on your team\u2019s color."} It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
+                {WHY[style] ?? "One word in white on your team\u2019s color."} It says what a lot of {team.market} fans are thinking &mdash; loud enough to be
                 seen from the owner&rsquo;s suite. <Link href="/story" style={{ textDecoration: "underline" }}>Read the story.</Link>
               </div>
             </details>
@@ -96,8 +110,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
                   {DETAILS[style].map((d) => (
                     <li key={d}>{d}</li>
                   ))}
-                  {style !== "pinstripe" && <li>Direct-to-garment print, front only</li>}
-                  <li>No team names or logos &mdash; just SELL</li>
+                  <li>{style.startsWith("nepo") ? "No team names or logos" : <>No team names or logos &mdash; just SELL</>}</li>
                   <li>Imported</li>
                 </ul>
               </div>
@@ -121,7 +134,7 @@ export default function ProductPage({ slug, style }: { slug: string; style: Styl
           </div>
           <div className="grid">
             {related.map((t) => (
-              <ProductCard key={t.slug} team={t} style={style === "pinstripe" ? "tee" : style} />
+              <ProductCard key={t.slug} team={t} style={style === "hoodie" ? "hoodie" : "tee"} />
             ))}
           </div>
         </section>

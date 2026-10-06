@@ -66,12 +66,12 @@ const ROWS: Row[] = [
   ["baltimore", "al-east", "Baltimore", "Orioles", "BALTIMORE", "Orange", "Orange"],
   ["boston", "al-east", "Boston", "Red Sox", "BOSTON", "Red", "Red"],
   ["new-york-navy", "al-east", "New York", "Yankees", "NEW YORK", "Navy", "Navy"],
-  ["tampa-bay", "al-east", "Tampa Bay", "Rays", "TAMPA BAY", "Navy", "Navy"],
+  ["tampa-bay", "al-east", "Tampa Bay", "Rays", "TAMPA BAY", "Heather Columbia Blue", "Carolina Blue"],
   ["toronto", "al-east", "Toronto", "Blue Jays", "TORONTO", "True Royal", "Royal"],
   // AL Central
   ["chicago-black", "al-central", "Chicago", "White Sox", "CHICAGO", "Black", "Black"],
-  ["cleveland", "al-central", "Cleveland", "Guardians", "CLEVELAND", "Navy", "Navy"],
-  ["detroit", "al-central", "Detroit", "Tigers", "DETROIT", "Navy", "Navy"],
+  ["cleveland", "al-central", "Cleveland", "Guardians", "CLEVELAND", "Red", "Red"],
+  ["detroit", "al-central", "Detroit", "Tigers", "DETROIT", "Orange", "Orange"],
   ["kansas-city", "al-central", "Kansas City", "Royals", "KANSAS CITY", "True Royal", "Royal"],
   ["minnesota", "al-central", "Minnesota", "Twins", "MINNESOTA", "Navy", "Navy"],
   // AL West

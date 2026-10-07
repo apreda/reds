@@ -76,9 +76,9 @@ const ROWS: Row[] = [
   ["minnesota", "al-central", "Minnesota", "Twins", "MINNESOTA", "Navy", "Navy"],
   // AL West
   ["oakland", "al-west", "Oakland", "A's", "OAKLAND", "Kelly", "Irish Green"],
-  ["houston", "al-west", "Houston", "Astros", "HOUSTON", "Navy", "Navy"],
+  ["houston", "al-west", "Houston", "Astros", "HOUSTON", "Orange", "Orange"],
   ["anaheim", "al-west", "Anaheim", "Angels", "ANAHEIM", "Red", "Red"],
-  ["seattle", "al-west", "Seattle", "Mariners", "SEATTLE", "Navy", "Navy"],
+  ["seattle", "al-west", "Seattle", "Mariners", "SEATTLE", "Heather Deep Teal", "Navy"],
   ["texas", "al-west", "Texas", "Rangers", "TEXAS", "True Royal", "Royal"],
   // NL East
   ["atlanta", "nl-east", "Atlanta", "Braves", "ATLANTA", "Navy", "Navy"],

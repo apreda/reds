@@ -58,6 +58,7 @@ const PLAIN_COLOR: Record<string, string> = {
   Kelly: "green", "Irish Green": "green", "True Royal": "royal blue", Royal: "royal blue", "Team Purple": "purple",
   Forest: "dark green", "Forest Green": "dark green", Cardinal: "dark red", "Heather Columbia Blue": "light blue",
   "Carolina Blue": "light blue", "Dark Chocolate": "brown", Natural: "cream", Sand: "tan",
+  "Heather Deep Teal": "teal",
 };
 
 export function colorLabel(team: Team, style: Style): string {
